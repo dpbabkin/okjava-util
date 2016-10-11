@@ -7,4 +7,5 @@ apply plugin: 'okjava.buildconfig'
 
 dependencies {
     //compile group: 'com.google.code.findbugs', name: 'jsr305', version: '+'
+    testCompile  group: 'ch.qos.logback', name: 'logback-classic', version: '+'
 }
