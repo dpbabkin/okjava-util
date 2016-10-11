@@ -1,0 +1,45 @@
+package okjava.util.collections;
+
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
+
+import okjava.util.has.HasId;
+
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.function.Function;
+
+/**
+ * @author Dmitry Babkin dpbabkin@gmail.com
+ *         6/6/2016
+ *         22:24.
+ */
+public final class CopyOnModifyMapWrapperWithHasIdValues<K, V extends HasId<K>> extends BaseCopyOnModifyMapWrapper<K, V> {
+
+    private final Function<V, K> idResolver;
+
+    private CopyOnModifyMapWrapperWithHasIdValues(Map<K, V> map, MapMerger<K, V> mapMerger) {
+        super(map, mapMerger);
+        this.idResolver = HasId::getId;
+    }
+
+    public static <K, V extends HasId<K>> CopyOnModifyMapWrapperWithHasIdValues<K, V> create() {
+        return createCopyOnModifyMapWrapperWithHasIdValues();
+    }
+
+    public static <K, V extends HasId<K>> CopyOnModifyMapWrapperWithHasIdValues<K, V> createCopyOnModifyMapWrapperWithHasIdValues() {
+        return new CopyOnModifyMapWrapperWithHasIdValues<>(ImmutableMap.of(), MapsUtils::merge);
+    }
+
+    public static <K extends Enum<K>, V extends HasId<K>> CopyOnModifyMapWrapperWithHasIdValues<K, V> createEnum(Class<K> clazz) {
+        return new CopyOnModifyMapWrapperWithHasIdValues<>(Maps.immutableEnumMap(new EnumMap<>(clazz)), MapsUtils::mergeEnum);
+    }
+
+    private Function<V, K> getIdResolver() {
+        return idResolver;
+    }
+
+    public <VV extends V> VV put(VV value) {
+        return put(value, getIdResolver());
+    }
+}

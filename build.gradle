@@ -1,0 +1,10 @@
+buildscript {
+    apply from: 'https://raw.github.com/dpbabkin/okjava-build-tools/master/gradle/include.gradle', to: buildscript
+}
+apply plugin: 'okjava.buildconfig'
+
+
+
+dependencies {
+    //compile group: 'com.google.code.findbugs', name: 'jsr305', version: '+'
+}
