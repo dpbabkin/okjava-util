@@ -22,7 +22,7 @@ final class InitializationControl {
     }
 
     static void checkForClass(Class<?> clazz, String uniqueId) {
-        if (!generateIdForClass(clazz, UNIQUE_ID).equals(generateIdForClass(clazz, uniqueId))) {
+        if (!generateIdForClass(clazz, UNIQUE_ID).equals(uniqueId)) {
             fail("wrong initialization argument for class=" + clazz);
         }
     }

@@ -17,7 +17,8 @@ import java.util.concurrent.ConcurrentMap;
 @Utility
 public final class Once {
 
-    private static final ConcurrentMap<Class<?>, Dummy> CLASS_SET = newConcurrentMap();
+    private static final Object OBJECT = new Object();
+    private static final ConcurrentMap<Class<?>, Object> CLASS_MAP = newConcurrentMap();
 
     private Once(Never never) {
         neverCalled();
@@ -31,7 +32,7 @@ public final class Once {
      */
     public static void calledOnce(Class<?> clazz) {
         requireNonNull(clazz);
-        Dummy value = CLASS_SET.putIfAbsent(clazz, Dummy.create());
+        Object value = CLASS_MAP.putIfAbsent(clazz, OBJECT);
         if (value != null) {
             fail("Second initialization detected for class=" + clazz);
         }
