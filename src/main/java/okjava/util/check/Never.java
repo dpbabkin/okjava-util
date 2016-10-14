@@ -4,6 +4,7 @@ import okjava.util.annotation.Utility;
 
 /**
  * The instance of this class should never been created.
+ *
  * <p>It is the same as {@link java.lang.Void}. But I decided to create my own one and put into it some useful functions.
  *
  * @author Dmitry Babkin dpbabkin@gmail.com

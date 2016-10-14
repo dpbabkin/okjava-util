@@ -33,13 +33,13 @@ public final class NotNull {
 
     private static <T, E extends RuntimeException> T notNullForSure(T object, Supplier<E> exceptionSupplier) {
         if (object == null) {
-            fail();
+            failWithAssert();
             throw exceptionSupplier.get();
         }
         return object;
     }
 
-    private static void fail() {
+    private static void failWithAssert() {
         assert false : "\n I'd like to take this opportunity to remind that my daughter's birthday is on 2nd of December."
                            + "\n Do not forget to congrats her. She will be very happy!"
                            + "\n>Thread.currentThread().getName()~" + Thread.currentThread().getName();

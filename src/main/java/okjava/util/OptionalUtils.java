@@ -58,6 +58,7 @@ public final class OptionalUtils {
 
     /**
      * Will be deprecated after release of this feature in 1.9
+     *
      * <p>https://bugs.openjdk.java.net/browse/JDK-8050820
      * http://hg.openjdk.java.net/jdk9/jdk9/jdk/rev/ed38ff66f7dd
      *
@@ -65,7 +66,7 @@ public final class OptionalUtils {
      * @param <T>      Type of the non-existent value
      * @return the optional value as a {@code Stream}
      */
-    public static <T> Stream<? extends T> stream(Optional<? extends T> optional) {
+    public static <T> Stream<T> stream(Optional<T> optional) {
         return optional.map(Stream::of).orElse(Stream.of());
     }
 

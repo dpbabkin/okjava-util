@@ -8,6 +8,7 @@ import static okjava.util.empty.EmptyRunnable.emptyRunnable;
 import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
 
+import java.util.Objects;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -68,6 +69,6 @@ public final class IfElse {
     }
 
     public static <T> void ifNotNullElse(T object, Consumer<T> ifConsumer, Runnable elseRunnable) {
-        ifElse(object, o -> o != null, ifConsumer, o -> elseRunnable.run());
+        ifElse(object, Objects::nonNull, ifConsumer, o -> elseRunnable.run());
     }
 }

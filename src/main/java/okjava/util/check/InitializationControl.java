@@ -13,22 +13,22 @@ import java.util.UUID;
  *         14:44.
  */
 @Utility
-final class InitializationControl {
+public final class InitializationControl {
 
     private static final String UNIQUE_ID = UUID.randomUUID().toString();
 
-    private InitializationControl() {
+    private InitializationControl(Never never) {
         neverCalled();
     }
 
-    static void checkForClass(Class<?> clazz, String uniqueId) {
-        if (!generateIdForClass(clazz, UNIQUE_ID).equals(uniqueId)) {
+    public static void checkForClass(Class<?> clazz, ControlObject control) {
+        if (!generateIdForClass(clazz, UNIQUE_ID).equals(control.getId())) {
             fail("wrong initialization argument for class=" + clazz);
         }
     }
 
-    static String getIdForClass(Class<?> clazz) {
-        return generateIdForClass(clazz, UNIQUE_ID);
+    public static ControlObject generateForClass(Class<?> clazz) {
+        return ControlObject.create(generateIdForClass(clazz, UNIQUE_ID));
     }
 
     private static String generateIdForClass(Class<?> clazz, String uniqueId) {

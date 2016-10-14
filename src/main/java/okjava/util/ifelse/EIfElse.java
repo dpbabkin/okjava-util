@@ -10,6 +10,7 @@ import okjava.util.e.EPredicate;
 import okjava.util.e.ERunnable;
 import okjava.util.e.ESupplier;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -17,9 +18,8 @@ import java.util.function.Function;
  * @author Dmitry Babkin dpbabkin@gmail.com
  *         7/3/2016
  *         21:51.
- * @see com.cutesoft.util.ifelse.IfElse
- * @deprecated I do not like this class. Usages of this class prohibited until I like it.
- * Better to use {@link com.cutesoft.util.ifelse.IfElse}
+ * @see okjava.util.ifelse.IfElse
+ * @deprecated I do not like this class. Usages of this class prohibited until I like it. Better to use {@link okjava.util.ifelse.IfElse}
  */
 @Deprecated
 @Utility
@@ -34,8 +34,8 @@ public final class EIfElse {
     public static <T, E extends Exception> T tryCatch(ESupplier<T, E> supplier, Function<Exception, T> exceptionHandler) {
         try {
             return supplier.get();
-        } catch (Exception t) {
-            return exceptionHandler.apply(t);
+        } catch (Exception e) {
+            return exceptionHandler.apply(e);
         }
     }
 
@@ -43,10 +43,10 @@ public final class EIfElse {
         tryCatch(() -> {
             runnable.run();
             return Dummy.create();
-        }, t -> {
-            exceptionHandler.accept(t);
-            return Dummy.create();
-        });
+        }, e -> {
+                exceptionHandler.accept(e);
+                return Dummy.create();
+            });
     }
 
     public static <T, E extends Exception> void ifElse(T object,
@@ -71,8 +71,8 @@ public final class EIfElse {
     public static <T, E extends Exception> void ifNull(ESupplier<T, E> supplier, ERunnable<E> elseRunnable, Consumer<Exception> exceptionHandler) {
         try {
             ifNull(supplier.get(), elseRunnable, exceptionHandler);
-        } catch (Exception t) {
-            exceptionHandler.accept(t);
+        } catch (Exception e) {
+            exceptionHandler.accept(e);
         }
     }
 
@@ -81,7 +81,7 @@ public final class EIfElse {
      * Run runnable if object is null.
      */
     public static <T, E extends Exception> void ifNull(T object, ERunnable<E> runnable, Consumer<Exception> exceptionHandler) {
-        ifElse(object, o -> o != null, o -> {
+        ifElse(object, Objects::nonNull, o -> {
         }, o -> runnable.run(), exceptionHandler);
     }
 
@@ -90,12 +90,12 @@ public final class EIfElse {
      * Run consumer and pass object to it if object is not null.
      */
     public static <T, E extends Exception> void ifNotNull(T object, EConsumer<T, E> consumer, Consumer<Exception> exceptionHandler) {
-        ifElse(object, o -> o != null, consumer, o -> {
+        ifElse(object, Objects::nonNull, consumer, o -> {
         }, exceptionHandler);
     }
 
 
     public static <T, E extends Exception> void ifNotNullElse(T object, EConsumer<T, E> ifConsumer, ERunnable<E> elseRunnable, Consumer<Exception> exceptionHandler) {
-        ifElse(object, o -> o != null, ifConsumer, o -> elseRunnable.run(), exceptionHandler);
+        ifElse(object, Objects::nonNull, ifConsumer, o -> elseRunnable.run(), exceptionHandler);
     }
 }

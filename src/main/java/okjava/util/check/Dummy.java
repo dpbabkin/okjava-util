@@ -1,5 +1,7 @@
 package okjava.util.check;
 
+import static okjava.util.check.InitializationControl.checkForClass;
+import static okjava.util.check.InitializationControl.generateForClass;
 import static okjava.util.check.Once.calledOnce;
 
 import okjava.util.annotation.Singleton;
@@ -12,11 +14,11 @@ import okjava.util.annotation.Singleton;
 @Singleton
 public final class Dummy {
 
-    private static Dummy DUMMY = new Dummy(InitializationControl.getIdForClass(Dummy.class));
+    private static Dummy DUMMY = new Dummy(generateForClass(Dummy.class));
 
-    private Dummy(String uniqueId) {
-        InitializationControl.checkForClass(Dummy.class, uniqueId);
-        calledOnce(Dummy.class);
+    private Dummy(ControlObject uniqueId) {
+        checkForClass(this.getClass(), uniqueId);
+        calledOnce(this.getClass());
     }
 
     public static Dummy create() {
