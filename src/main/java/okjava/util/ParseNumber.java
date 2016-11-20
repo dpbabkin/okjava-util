@@ -1,6 +1,7 @@
 package okjava.util;
 
 import static okjava.util.OptionalUtils.or;
+import static okjava.util.check.Never.neverNeverCalled;
 
 import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
@@ -15,8 +16,8 @@ import java.util.function.Function;
  */
 @Utility
 public final class ParseNumber {
-    private ParseNumber(Never never) {
-        Never.neverCalled();
+    private ParseNumber(@SuppressWarnings("unused") Never never) {
+        neverNeverCalled();
     }
 
 

@@ -1,6 +1,7 @@
 package okjava.util.ifelse;
 
 import static java.util.Objects.requireNonNull;
+import static okjava.util.check.Never.neverNeverCalled;
 
 import okjava.util.annotation.Utility;
 import okjava.util.check.Dummy;
@@ -26,8 +27,8 @@ import java.util.function.Function;
 public final class EIfElse {
 
 
-    private EIfElse(Never never) {
-        Never.neverCalled();
+    private EIfElse(@SuppressWarnings("unused") Never never) {
+        neverNeverCalled();
     }
 
 
@@ -44,9 +45,9 @@ public final class EIfElse {
             runnable.run();
             return Dummy.create();
         }, e -> {
-                exceptionHandler.accept(e);
-                return Dummy.create();
-            });
+            exceptionHandler.accept(e);
+            return Dummy.create();
+        });
     }
 
     public static <T, E extends Exception> void ifElse(T object,

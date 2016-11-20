@@ -2,6 +2,7 @@ package okjava.util.collections;
 
 import static com.google.common.collect.Maps.newEnumMap;
 import static com.google.common.collect.Maps.newHashMap;
+import static okjava.util.check.Never.neverNeverCalled;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -20,8 +21,8 @@ import java.util.Map;
 @Utility
 public final class MapsUtils {
 
-    private MapsUtils(Never never) {
-        Never.neverCalled();
+    private MapsUtils(@SuppressWarnings("unused") Never never) {
+        neverNeverCalled();
     }
 
     public static <K, V> Map<K, V> merge(Map<K, V> sourceMap, K key, V value) {

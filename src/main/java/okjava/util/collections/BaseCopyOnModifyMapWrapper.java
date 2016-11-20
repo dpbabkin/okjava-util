@@ -1,7 +1,7 @@
 package okjava.util.collections;
 
-import static java.util.Objects.requireNonNull;
 import static okjava.util.Final.create;
+import static okjava.util.NotNull.notNull;
 
 import okjava.util.Final;
 
@@ -23,7 +23,7 @@ abstract class BaseCopyOnModifyMapWrapper<K, V> implements Supplier<Map<K, V>> {
 
     BaseCopyOnModifyMapWrapper(Map<K, V> map, MapMerger<K, V> mapMerger) {
         this.map = create(map);
-        this.mapMerger = requireNonNull(mapMerger);
+        this.mapMerger = notNull(mapMerger);
     }
 
     @Override
@@ -36,7 +36,7 @@ abstract class BaseCopyOnModifyMapWrapper<K, V> implements Supplier<Map<K, V>> {
         return (VV) map.get().get(key);
     }
 
-    public <VV extends V> VV put(VV value, Function<V, K> idResolver) {
+    final <VV extends V> VV put(VV value, Function<V, K> idResolver) {
         return put(idResolver.apply(value), value);
     }
 
@@ -57,7 +57,7 @@ abstract class BaseCopyOnModifyMapWrapper<K, V> implements Supplier<Map<K, V>> {
             synchronized (mutex) {
                 value = get(key);
                 if (value == null) {
-                    value = requireNonNull(creator.apply(key));
+                    value = notNull(creator.apply(key));
                     map = create(mapMerger.merge(map.get(), key, value));
                 }
             }

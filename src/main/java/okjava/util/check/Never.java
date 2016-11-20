@@ -15,12 +15,16 @@ import okjava.util.annotation.Utility;
 @Utility
 public final class Never {
 
-    private Never(Never never) {
-        neverCalled();
+    private Never(@SuppressWarnings("unused") Never never) {
+        neverNeverCalled();
     }
 
-    public static void neverCalled() {
-        fail("should never been called.");
+    public static void neverNeverCalled() {
+        neverNeverCalled("should never been called.");
+    }
+
+    public static void neverNeverCalled(String message) {
+        fail(message);
     }
 
     static void fail(String message) {

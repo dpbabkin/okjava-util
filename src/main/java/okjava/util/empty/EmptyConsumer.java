@@ -1,6 +1,6 @@
 package okjava.util.empty;
 
-import static okjava.util.check.Never.neverCalled;
+import static okjava.util.check.Never.neverNeverCalled;
 import static okjava.util.check.Once.calledOnce;
 
 import okjava.util.annotation.Utility;
@@ -19,8 +19,8 @@ public final class EmptyConsumer {
 
     private static ConsumerImpl<?> INSTANCE = new ConsumerImpl<>(Dummy.create());
 
-    private EmptyConsumer(Never never) {
-        neverCalled();
+    private EmptyConsumer(@SuppressWarnings("unused") Never never) {
+        neverNeverCalled();
     }
 
     @SuppressWarnings("unchecked") // safe as implementation is empty.

@@ -3,7 +3,7 @@ package okjava.util.check;
 import static com.google.common.collect.Maps.newConcurrentMap;
 import static java.util.Objects.requireNonNull;
 import static okjava.util.check.Never.fail;
-import static okjava.util.check.Never.neverCalled;
+import static okjava.util.check.Never.neverNeverCalled;
 
 import okjava.util.annotation.Utility;
 
@@ -20,8 +20,9 @@ public final class Once {
     private static final Object OBJECT = new Object();
     private static final ConcurrentMap<Class<?>, Object> CLASS_MAP = newConcurrentMap();
 
-    private Once(Never never) {
-        neverCalled();
+    @SuppressWarnings("unused")
+    private Once(@SuppressWarnings("unused") Never never) {
+        neverNeverCalled();
     }
 
     /**

@@ -1,5 +1,7 @@
 package okjava.util.collections;
 
+import static okjava.util.check.Never.neverNeverCalled;
+
 import okjava.util.annotation.Utility;
 import okjava.util.check.DummyException;
 import okjava.util.check.Never;
@@ -16,10 +18,10 @@ import java.util.function.Function;
  */
 @Utility
 public enum ConvertUtils {
-    ; // <-- I like this code.
+    ; // <-- I need this code.
 
-    ConvertUtils(Never never) {
-        Never.neverCalled();
+    ConvertUtils(@SuppressWarnings("unused") Never never) {
+        neverNeverCalled();
     }
 
     public static <I, O, C extends Collection<O>, E extends Exception> C transform(Iterable<? extends I> input, C output, Function<I, Optional<O>> itemResolver,

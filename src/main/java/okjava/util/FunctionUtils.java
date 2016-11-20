@@ -1,6 +1,6 @@
 package okjava.util;
 
-import static okjava.util.check.Never.neverCalled;
+import static okjava.util.check.Never.neverNeverCalled;
 
 import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
@@ -21,8 +21,8 @@ public final class FunctionUtils {
             throw new UnsupportedOperationException("not implemented");
         };
 
-    private FunctionUtils(Never never) {
-        neverCalled();
+    private FunctionUtils(@SuppressWarnings("unused") Never never) {
+        neverNeverCalled();
     }
 
     @SuppressWarnings("unchecked") //never cast

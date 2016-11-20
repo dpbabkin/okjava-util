@@ -1,5 +1,7 @@
 package okjava.util;
 
+import static okjava.util.check.Never.neverNeverCalled;
+
 import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
 
@@ -15,8 +17,8 @@ import java.util.Objects;
  */
 @Utility
 public final class NotEmpty {
-    private NotEmpty(Never never) {
-        Never.neverCalled();
+    private NotEmpty(@SuppressWarnings("unused") Never never) {
+        neverNeverCalled();
     }
 
     public static String notEmptyString(String string) {

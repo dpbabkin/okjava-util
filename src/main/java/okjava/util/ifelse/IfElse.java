@@ -1,7 +1,7 @@
 package okjava.util.ifelse;
 
 import static java.util.Objects.requireNonNull;
-import static okjava.util.check.Never.neverCalled;
+import static okjava.util.check.Never.neverNeverCalled;
 import static okjava.util.empty.EmptyConsumer.emptyConsumer;
 import static okjava.util.empty.EmptyRunnable.emptyRunnable;
 
@@ -22,8 +22,8 @@ import java.util.function.Supplier;
 @Utility
 public final class IfElse {
 
-    private IfElse(Never never) {
-        neverCalled();
+    private IfElse(@SuppressWarnings("unused") Never never) {
+        neverNeverCalled();
     }
 
     public static void ifElse(BooleanSupplier condition, Runnable ifRunnable, Runnable elseRunnable) {

@@ -1,5 +1,7 @@
 package okjava.util;
 
+import static okjava.util.check.Never.neverNeverCalled;
+
 import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
 
@@ -11,15 +13,15 @@ import java.util.function.Supplier;
  *         23:58.
  */
 @Utility
-public final class NotNull {
+public enum NotNull {
+    ;
+    NotNull(@SuppressWarnings("unused") Never never) {
+        neverNeverCalled();
+    }
 
     private static final Supplier<NullPointerException> NULL_POINTER_EXCEPTION_SUPPLIER = NullPointerException::new;
 
-    private NotNull(Never never) {
-        Never.neverCalled();
-    }
-
-    public static <T, E extends RuntimeException> T notNull(T object, Supplier<E> exceptionSupplier) {
+    public static <T, E extends Exception> T notNull(T object, Supplier<E> exceptionSupplier) throws E {
         return notNullForSure(object, notNull(exceptionSupplier));
     }
 
@@ -31,7 +33,7 @@ public final class NotNull {
         return notNullForSure(object, NULL_POINTER_EXCEPTION_SUPPLIER);
     }
 
-    private static <T, E extends RuntimeException> T notNullForSure(T object, Supplier<E> exceptionSupplier) {
+    private static <T, E extends Exception> T notNullForSure(T object, Supplier<E> exceptionSupplier) throws E {
         if (object == null) {
             failWithAssert();
             throw exceptionSupplier.get();

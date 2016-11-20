@@ -19,8 +19,8 @@ public final class ToStringUtils {
     private static final Function<String, String> STRING_TO_STRING_MAPPER = o -> o == null ? "null" : o;
     private static final String DEFAULT_SEPARATOR = " ";
 
-    private ToStringUtils(Never never) {
-        Never.neverCalled();
+    private ToStringUtils(@SuppressWarnings("unused") Never never) {
+        Never.neverNeverCalled();
     }
 
     @SuppressWarnings("unchecked")

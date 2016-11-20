@@ -7,7 +7,6 @@ import okjava.util.has.HasId;
 
 import java.util.EnumMap;
 import java.util.Map;
-import java.util.function.Function;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -16,11 +15,8 @@ import java.util.function.Function;
  */
 public final class CopyOnModifyMapWrapperWithHasIdValues<K, V extends HasId<K>> extends BaseCopyOnModifyMapWrapper<K, V> {
 
-    private final Function<V, K> idResolver;
-
     private CopyOnModifyMapWrapperWithHasIdValues(Map<K, V> map, MapMerger<K, V> mapMerger) {
         super(map, mapMerger);
-        this.idResolver = HasId::getId;
     }
 
     public static <K, V extends HasId<K>> CopyOnModifyMapWrapperWithHasIdValues<K, V> create() {
@@ -35,11 +31,7 @@ public final class CopyOnModifyMapWrapperWithHasIdValues<K, V extends HasId<K>> 
         return new CopyOnModifyMapWrapperWithHasIdValues<>(Maps.immutableEnumMap(new EnumMap<>(clazz)), MapsUtils::mergeEnum);
     }
 
-    private Function<V, K> getIdResolver() {
-        return idResolver;
-    }
-
     public <VV extends V> VV put(VV value) {
-        return put(value, getIdResolver());
+        return put(value, HasId::getId);
     }
 }

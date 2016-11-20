@@ -2,6 +2,7 @@ package okjava.util;
 
 import static okjava.util.NotNull.notNull;
 import static okjava.util.StreamUtils.toStream;
+import static okjava.util.check.Never.neverNeverCalled;
 
 import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
@@ -19,8 +20,8 @@ import java.util.stream.Stream;
  */
 @Utility
 public final class OptionalUtils {
-    private OptionalUtils(Never never) {
-        Never.neverCalled();
+    private OptionalUtils(@SuppressWarnings("unused") Never never) {
+        neverNeverCalled();
     }
 
     public static <T> Optional<T> or(Optional<T> first, Optional<T> second) {

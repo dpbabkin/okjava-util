@@ -21,4 +21,23 @@ public class ClazzTest {
         Class<List<Set<String>>> clazz = Clazz.cast(List.class);
         assertThat(clazz, is(notNullValue()));
     }
+
+
+    @Test(expected = ClassCastException.class)
+    public void testWithClassCastException() {
+        Long l = 0L;
+        String string = Clazz.cast(l);
+    }
+
+    @Test(expected = ClassCastException.class)
+    public void testWithClassCastException2() {
+        Long l = 0L;
+        String string = Clazz.cast(l, String.class);
+    }
+
+    @Test
+    public void test02() {
+        Long l = 0L;
+        Number string = Clazz.cast(l, Number.class);
+    }
 }

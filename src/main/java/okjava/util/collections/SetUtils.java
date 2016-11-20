@@ -1,5 +1,7 @@
 package okjava.util.collections;
 
+import static okjava.util.check.Never.neverNeverCalled;
+
 import com.google.common.collect.ImmutableSet;
 
 import okjava.util.annotation.Utility;
@@ -15,8 +17,8 @@ import java.util.Set;
 @Utility
 public final class SetUtils {
 
-    private SetUtils(Never never) {
-        Never.neverCalled();
+    private SetUtils(@SuppressWarnings("unused") Never never) {
+        neverNeverCalled();
     }
 
     public static <V> Set<V> merge(Set<V> sourceSet, V value) {

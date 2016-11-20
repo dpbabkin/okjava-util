@@ -8,5 +8,5 @@ version = '1.0'
 
 dependencies {
     //compile group: 'com.google.code.findbugs', name: 'jsr305', version: '+'
-    testCompile  group: 'ch.qos.logback', name: 'logback-classic', version: '+'
+    testCompile group: 'ch.qos.logback', name: 'logback-classic', version: '+'
 }

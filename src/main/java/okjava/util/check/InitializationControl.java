@@ -1,7 +1,7 @@
 package okjava.util.check;
 
 import static okjava.util.check.Never.fail;
-import static okjava.util.check.Never.neverCalled;
+import static okjava.util.check.Never.neverNeverCalled;
 
 import okjava.util.annotation.Utility;
 
@@ -17,8 +17,8 @@ public final class InitializationControl {
 
     private static final String UNIQUE_ID = UUID.randomUUID().toString();
 
-    private InitializationControl(Never never) {
-        neverCalled();
+    private InitializationControl(@SuppressWarnings("unused") Never never) {
+        neverNeverCalled();
     }
 
     public static void checkForClass(Class<?> clazz, ControlObject control) {
