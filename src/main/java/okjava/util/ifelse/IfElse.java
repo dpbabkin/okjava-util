@@ -1,6 +1,6 @@
 package okjava.util.ifelse;
 
-import static java.util.Objects.requireNonNull;
+import static okjava.util.NotNull.notNull;
 import static okjava.util.check.Never.neverNeverCalled;
 import static okjava.util.empty.EmptyConsumer.emptyConsumer;
 import static okjava.util.empty.EmptyRunnable.emptyRunnable;
@@ -20,18 +20,19 @@ import java.util.function.Supplier;
  *         21:51.
  */
 @Utility
-public final class IfElse {
+public enum IfElse {
+    ;
 
-    private IfElse(@SuppressWarnings("unused") Never never) {
+    IfElse(@SuppressWarnings("unused") Never never) {
         neverNeverCalled();
     }
 
     public static void ifElse(BooleanSupplier condition, Runnable ifRunnable, Runnable elseRunnable) {
         if (condition.getAsBoolean()) {
-            requireNonNull(elseRunnable);
+            notNull(elseRunnable);
             ifRunnable.run();
         } else {
-            requireNonNull(ifRunnable);
+            notNull(ifRunnable);
             elseRunnable.run();
         }
     }
