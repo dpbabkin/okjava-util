@@ -19,9 +19,10 @@ import java.util.Map;
  *         22:01.
  */
 @Utility
-public final class MapsUtils {
+public enum MapsUtils {
+    ;
 
-    private MapsUtils(@SuppressWarnings("unused") Never never) {
+    MapsUtils(@SuppressWarnings("unused") Never never) {
         neverNeverCalled();
     }
 

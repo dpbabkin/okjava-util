@@ -27,7 +27,7 @@ abstract class BaseCopyOnModifyMapWrapper<K, V> implements Supplier<Map<K, V>> {
     }
 
     @Override
-    public Map<K, V> get() {
+    public Map<K, V> get() { //'map' is not protected by lock in this call. I'm fine with that.
         return map.get();
     }
 
