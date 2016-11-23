@@ -3,6 +3,7 @@ package okjava.util;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
@@ -26,18 +27,19 @@ public class ClazzTest {
     @Test(expected = ClassCastException.class)
     public void testWithClassCastException() {
         Long l = 0L;
-        String string = Clazz.cast(l);
+        String result = Clazz.cast(l);
+        fail(result);
     }
 
     @Test(expected = ClassCastException.class)
     public void testWithClassCastException2() {
         Long l = 0L;
-        String string = Clazz.cast(l, String.class);
+        Clazz.cast(l, String.class);
     }
 
     @Test
     public void test02() {
         Long l = 0L;
-        Number string = Clazz.cast(l, Number.class);
+        Clazz.cast(l, Number.class);
     }
 }
