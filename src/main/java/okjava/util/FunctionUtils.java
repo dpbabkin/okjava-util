@@ -16,10 +16,9 @@ import java.util.function.Supplier;
  */
 @Utility
 public final class FunctionUtils {
-    private static final Function<?, ?> UNSUPPORTED_OPERATION_EXCEPTION_FUNCTION =
-        t -> {
-            throw new UnsupportedOperationException("not implemented");
-        };
+    private static final Function<?, ?> UNSUPPORTED_OPERATION_EXCEPTION_FUNCTION = t -> {
+        throw new UnsupportedOperationException("not implemented");
+    };
 
     private FunctionUtils(@SuppressWarnings("unused") Never never) {
         neverNeverCalled();
