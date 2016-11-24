@@ -45,9 +45,9 @@ public final class EIfElse {
             runnable.run();
             return Dummy.create();
         }, e -> {
-                exceptionHandler.accept(e);
-                return Dummy.create();
-            });
+            exceptionHandler.accept(e);
+            return Dummy.create();
+        });
     }
 
     public static <T, E extends Exception> void ifElse(T object,
