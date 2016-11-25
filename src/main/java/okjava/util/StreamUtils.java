@@ -15,8 +15,10 @@ import java.util.stream.StreamSupport;
  *         21:39.
  */
 @Utility
-public final class StreamUtils {
-    private StreamUtils(@SuppressWarnings("unused") Never never) {
+public enum StreamUtils {
+    ;
+
+    StreamUtils(@SuppressWarnings("unused") Never never) {
         neverNeverCalled();
     }
 

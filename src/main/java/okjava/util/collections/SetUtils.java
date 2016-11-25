@@ -15,9 +15,10 @@ import java.util.Set;
  *         22:01.
  */
 @Utility
-public final class SetUtils {
+public enum SetUtils {
+    ;
 
-    private SetUtils(@SuppressWarnings("unused") Never never) {
+    SetUtils(@SuppressWarnings("unused") Never never) {
         neverNeverCalled();
     }
 

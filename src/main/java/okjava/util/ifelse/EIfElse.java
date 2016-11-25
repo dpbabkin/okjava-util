@@ -24,10 +24,10 @@ import java.util.function.Function;
  */
 @Deprecated
 @Utility
-public final class EIfElse {
+public enum EIfElse {
+    ;
 
-
-    private EIfElse(@SuppressWarnings("unused") Never never) {
+    EIfElse(@SuppressWarnings("unused") Never never) {
         neverNeverCalled();
     }
 

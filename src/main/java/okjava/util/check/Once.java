@@ -15,13 +15,14 @@ import java.util.concurrent.ConcurrentMap;
  *         19:44.
  */
 @Utility
-public final class Once {
+public enum Once {
+    ;
 
     private static final Object OBJECT = new Object();
     private static final ConcurrentMap<Class<?>, Object> CLASS_MAP = newConcurrentMap();
 
     @SuppressWarnings("unused")
-    private Once(@SuppressWarnings("unused") Never never) {
+    Once(@SuppressWarnings("unused") Never never) {
         neverNeverCalled();
     }
 

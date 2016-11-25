@@ -3,7 +3,6 @@ package okjava.util;
 import static okjava.util.check.Once.calledOnce;
 
 import okjava.util.annotation.Singleton;
-import okjava.util.check.Dummy;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -18,9 +17,9 @@ public final class DebugUtils {
     public static final String DEBUG_PROPERTY_NAME = "cs.debug.enabled";
     private static final boolean isDebugEnabled = "true".equalsIgnoreCase(System.getProperty(DEBUG_PROPERTY_NAME));
 
-    private static final DebugUtils INSTANCE = new DebugUtils(Dummy.create());
+    private static final DebugUtils INSTANCE = new DebugUtils();
 
-    private DebugUtils(Dummy dummy) {
+    private DebugUtils() {
         calledOnce(this.getClass());
     }
 

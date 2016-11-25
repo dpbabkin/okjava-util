@@ -16,8 +16,10 @@ import java.util.Objects;
  *         22:27.
  */
 @Utility
-public final class NotEmpty {
-    private NotEmpty(@SuppressWarnings("unused") Never never) {
+public enum NotEmpty {
+    ;
+
+    NotEmpty(@SuppressWarnings("unused") Never never) {
         neverNeverCalled();
     }
 

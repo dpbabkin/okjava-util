@@ -15,12 +15,14 @@ import java.util.function.Supplier;
  *         22:27.
  */
 @Utility
-public final class FunctionUtils {
+public enum FunctionUtils {
+    ;
+
     private static final Function<?, ?> UNSUPPORTED_OPERATION_EXCEPTION_FUNCTION = t -> {
         throw new UnsupportedOperationException("not implemented");
     };
 
-    private FunctionUtils(@SuppressWarnings("unused") Never never) {
+    FunctionUtils(@SuppressWarnings("unused") Never never) {
         neverNeverCalled();
     }
 

@@ -15,11 +15,12 @@ import java.util.function.BiConsumer;
  *         14:40.
  */
 @Utility
-public final class EmptyBiConsumer {
+public enum EmptyBiConsumer {
+    ;
 
     private static BiConsumerImpl<?, ?> INSTANCE = new BiConsumerImpl<>(Dummy.create());
 
-    private EmptyBiConsumer(@SuppressWarnings("unused") Never never) {
+    EmptyBiConsumer(@SuppressWarnings("unused") Never never) {
         neverNeverCalled();
     }
 

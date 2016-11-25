@@ -14,12 +14,14 @@ import java.util.stream.StreamSupport;
  *         00:37.
  */
 @Utility
-public final class ToStringUtils {
+public enum ToStringUtils {
+    ;
+
     private static final Function<Object, String> TO_STRING_MAPPER = o -> o == null ? "null" : o.toString();
     private static final Function<String, String> STRING_TO_STRING_MAPPER = o -> o == null ? "null" : o;
     private static final String DEFAULT_SEPARATOR = " ";
 
-    private ToStringUtils(@SuppressWarnings("unused") Never never) {
+    ToStringUtils(@SuppressWarnings("unused") Never never) {
         Never.neverNeverCalled();
     }
 

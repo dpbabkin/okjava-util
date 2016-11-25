@@ -16,17 +16,15 @@ import java.util.function.Supplier;
 public enum NotNull {
     ;
 
-    NotNull(@SuppressWarnings("unused") Never never) {
-        neverNeverCalled();
-    }
-
-
     private static final Supplier<NullPointerException> NULL_POINTER_EXCEPTION_SUPPLIER = NullPointerException::new;
     private static final Supplier<NullPointerException> NULL_POINTER_EXCEPTION_SUPPLIER_WITH_ASSERT_ERROR = () -> {
         failWithAssert();
         return NULL_POINTER_EXCEPTION_SUPPLIER.get();
     };
 
+    NotNull(@SuppressWarnings("unused") Never never) {
+        neverNeverCalled();
+    }
 
     public static <T, E extends Exception> T notNull(T object, Supplier<E> exceptionSupplier) throws E {
         return notNullForSure(object, notNull(exceptionSupplier));

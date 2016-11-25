@@ -18,7 +18,7 @@ import java.util.function.Function;
  */
 @Utility
 public enum ConvertUtils {
-    ; // <-- I need this code.
+    ;
 
     ConvertUtils(@SuppressWarnings("unused") Never never) {
         neverNeverCalled();
