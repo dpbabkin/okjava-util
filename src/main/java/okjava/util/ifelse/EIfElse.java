@@ -24,10 +24,10 @@ import java.util.function.Function;
  */
 @Deprecated
 @Utility
-public final class EIfElse {
+public enum EIfElse {
+    ;
 
-
-    private EIfElse(@SuppressWarnings("unused") Never never) {
+    EIfElse(@SuppressWarnings("unused") Never never) {
         neverNeverCalled();
     }
 
@@ -45,9 +45,9 @@ public final class EIfElse {
             runnable.run();
             return Dummy.create();
         }, e -> {
-                exceptionHandler.accept(e);
-                return Dummy.create();
-            });
+            exceptionHandler.accept(e);
+            return Dummy.create();
+        });
     }
 
     public static <T, E extends Exception> void ifElse(T object,

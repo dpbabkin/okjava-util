@@ -15,8 +15,10 @@ import java.util.function.Function;
  *         23:31.
  */
 @Utility
-public final class ParseNumber {
-    private ParseNumber(@SuppressWarnings("unused") Never never) {
+public enum ParseNumber {
+    ;
+
+    ParseNumber(@SuppressWarnings("unused") Never never) {
         neverNeverCalled();
     }
 

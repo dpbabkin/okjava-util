@@ -3,7 +3,6 @@ package okjava.util.empty;
 import static okjava.util.check.Once.calledOnce;
 
 import okjava.util.annotation.Singleton;
-import okjava.util.check.Dummy;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -13,9 +12,9 @@ import okjava.util.check.Dummy;
 @Singleton
 public class EmptyRunnable implements Runnable {
 
-    private static EmptyRunnable INSTANCE = new EmptyRunnable(Dummy.create());
+    private static EmptyRunnable INSTANCE = new EmptyRunnable();
 
-    private EmptyRunnable(Dummy dummy) {
+    private EmptyRunnable() {
         calledOnce(EmptyRunnable.class);
     }
 

@@ -13,11 +13,12 @@ import java.util.UUID;
  *         14:44.
  */
 @Utility
-public final class InitializationControl {
+public enum InitializationControl {
+    ;
 
     private static final String UNIQUE_ID = UUID.randomUUID().toString();
 
-    private InitializationControl(@SuppressWarnings("unused") Never never) {
+    InitializationControl(@SuppressWarnings("unused") Never never) {
         neverNeverCalled();
     }
 

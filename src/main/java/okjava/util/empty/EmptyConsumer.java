@@ -15,11 +15,12 @@ import java.util.function.Consumer;
  *         14:40.
  */
 @Utility
-public final class EmptyConsumer {
+public enum EmptyConsumer {
+    ;
 
     private static ConsumerImpl<?> INSTANCE = new ConsumerImpl<>(Dummy.create());
 
-    private EmptyConsumer(@SuppressWarnings("unused") Never never) {
+    EmptyConsumer(@SuppressWarnings("unused") Never never) {
         neverNeverCalled();
     }
 

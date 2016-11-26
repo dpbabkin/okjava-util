@@ -19,8 +19,10 @@ import java.util.stream.Stream;
  *         23:43.
  */
 @Utility
-public final class OptionalUtils {
-    private OptionalUtils(@SuppressWarnings("unused") Never never) {
+public enum OptionalUtils {
+    ;
+
+    OptionalUtils(@SuppressWarnings("unused") Never never) {
         neverNeverCalled();
     }
 

@@ -20,8 +20,10 @@ import java.util.stream.Collector;
 
 
 @Utility
-public final class GuavaCollectors {
-    private GuavaCollectors(@SuppressWarnings("unused") Never never) {
+public enum GuavaCollectors {
+    ;
+
+    GuavaCollectors(@SuppressWarnings("unused") Never never) {
         neverNeverCalled();
     }
 
