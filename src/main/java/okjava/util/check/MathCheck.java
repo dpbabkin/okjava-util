@@ -34,4 +34,19 @@ public enum MathCheck {
         }
         return value;
     }
+
+
+    public static <E extends Exception> int lessThan(int value, int limit, IntFunction<E> exceptionIntFunction) throws E {
+        if (value >= limit) {
+            throw exceptionIntFunction.apply(value);
+        }
+        return value;
+    }
+
+    public static <E extends Exception> int lessThanOrEqual(int value, int limit, IntFunction<E> exceptionIntFunction) throws E {
+        if (value > limit) {
+            throw exceptionIntFunction.apply(value);
+        }
+        return value;
+    }
 }
