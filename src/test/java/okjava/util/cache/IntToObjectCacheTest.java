@@ -5,23 +5,21 @@ import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 
-import java.util.function.IntFunction;
-
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
  *         1/10/2017
  *         23:12.
  */
-public class IntToObjectTest {
+public class IntToObjectCacheTest {
 
 
     @Test
     public void test01() {
 
-        IntToObject<String> intToObject = new IntToObject<>(String::valueOf, 0, 10);
+        IntToObjectCache<String> intToObjectCache = new IntToObjectCache<>(String::valueOf, 0, 10);
 
         for (int i = 0; i <= 10; i++) {
-            assertThat("" + i, is(intToObject.apply(i)));
+            assertThat("" + i, is(intToObjectCache.apply(i)));
         }
     }
 }

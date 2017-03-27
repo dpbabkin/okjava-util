@@ -1,6 +1,6 @@
 package okjava.util.cache;
 
-import static okjava.util.check.MathCheck.lessThenOrEqual;
+import static okjava.util.check.MathCheck.lessThen;
 import static okjava.util.check.MathCheck.nonNegative;
 
 import com.google.common.collect.ImmutableList;
@@ -13,21 +13,30 @@ import java.util.function.IntFunction;
  *         1/7/2017
  *         21:53.
  */
-public class IntToObject<O> implements IntFunction<O> {
+public final class IntToObjectCache<O> implements IntFunction<O> {
     private final int min;
     private final List<O> list;
 
+    public static <O> IntFunction<O> create(IntFunction<O> factory, int min, int max) {
+        if (min == max) {
+            return i -> {
+                throw new IndexOutOfBoundsException("" + i);
+            };
+        }
+        return new IntToObjectCache<>(factory, min, max);
+    }
+
     @SuppressWarnings("unchecked")
-    public IntToObject(IntFunction<O> factory, int min, int max) {
-        lessThenOrEqual(min, max);
+    private IntToObjectCache(IntFunction<O> factory, int min, int max) {
+        lessThen(min, max);
         this.min = nonNegative(min);
 
-        Object[] array = new Object[max - min + 1];
+        O[] array = (O[]) new Object[max - min + 1];
         for (int i = min; i <= max; i++) {
             array[i - min] = factory.apply(i);
         }
 
-        this.list = ImmutableList.copyOf((O[]) array);
+        this.list = ImmutableList.copyOf(array);
     }
 
     @Override

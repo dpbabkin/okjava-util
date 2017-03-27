@@ -33,27 +33,23 @@ public enum MathCheck {
     };
 
 
-    private static final IntBiFunction<IllegalArgumentException> LESS_THEN_OR_EQUALS_EXCEPTION_FUNCTION_INT =
-        (IntBiFunction<IllegalArgumentException>) (left, right) -> {
-            throw new IllegalArgumentException("value " + left + " must be less then or equal to " + right);
-        };
+    private static final IntBiFunction<IllegalArgumentException> LESS_THEN_OR_EQUALS_EXCEPTION_FUNCTION_INT = (IntBiFunction<IllegalArgumentException>) (left, right) -> {
+        throw new IllegalArgumentException("value " + left + " must be less then or equal to " + right);
+    };
 
-    private static final LongBiFunction<IllegalArgumentException> LESS_THEN_OR_EQUALS_EXCEPTION_FUNCTION_LONG =
-        (LongBiFunction<IllegalArgumentException>) (left, right) -> {
-            throw new IllegalArgumentException("value " + left + " must be less then or equal to " + right);
-        };
+    private static final LongBiFunction<IllegalArgumentException> LESS_THEN_OR_EQUALS_EXCEPTION_FUNCTION_LONG = (LongBiFunction<IllegalArgumentException>) (left, right) -> {
+        throw new IllegalArgumentException("value " + left + " must be less then or equal to " + right);
+    };
 
 
-    private static final IntBiFunction<IllegalArgumentException> LESS_THEN_EXCEPTION_FUNCTION_INT =
-        (IntBiFunction<IllegalArgumentException>) (left, right) -> {
-            throw new IllegalArgumentException("value " + left + " must be less then " + right);
-        };
+    private static final IntBiFunction<IllegalArgumentException> LESS_THEN_EXCEPTION_FUNCTION_INT = (IntBiFunction<IllegalArgumentException>) (left, right) -> {
+        throw new IllegalArgumentException("value " + left + " must be less then " + right);
+    };
 
 
-    private static final LongBiFunction<IllegalArgumentException> LESS_THEN_EXCEPTION_FUNCTION_LONG =
-        (LongBiFunction<IllegalArgumentException>) (left, right) -> {
-            throw new IllegalArgumentException("value " + left + " must be less then " + right);
-        };
+    private static final LongBiFunction<IllegalArgumentException> LESS_THEN_EXCEPTION_FUNCTION_LONG = (LongBiFunction<IllegalArgumentException>) (left, right) -> {
+        throw new IllegalArgumentException("value " + left + " must be less then " + right);
+    };
 
 
     public static int nonNegative(int value) {
