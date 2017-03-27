@@ -1,5 +1,7 @@
 package okjava.util;
 
+import static okjava.util.NotNull.notNull;
+
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -16,12 +18,12 @@ public final class Holder<T> implements Supplier<T>, Consumer<T> {
         this.t = t;
     }
 
-    public static <T> Holder<T> create(T t) {
-        return new Holder<>(t);
+    public static <T> Holder<T> of(T t) {
+        return new Holder<>(notNull(t));
     }
 
-    public static <T> Holder<T> of(T t) {
-        return create(t);
+    public static <T> Holder<T> ofNullable(T t) {
+        return new Holder<>(t);
     }
 
     @Override
