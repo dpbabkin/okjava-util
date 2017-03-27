@@ -18,12 +18,20 @@ public final class Holder<T> implements Supplier<T>, Consumer<T> {
         this.t = t;
     }
 
+    private Holder() {
+        this(null);
+    }
+
     public static <T> Holder<T> of(T t) {
         return new Holder<>(notNull(t));
     }
 
     public static <T> Holder<T> ofNullable(T t) {
         return new Holder<>(t);
+    }
+
+    public static <T> Holder<T> empty() {
+        return new Holder<>();
     }
 
     @Override
