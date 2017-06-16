@@ -2,8 +2,6 @@ package okjava.util.concurrent;
 
 import static okjava.util.NotNull.notNull;
 
-import okjava.util.e.RuntimeExceptionHandler;
-
 import java.util.Queue;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -45,6 +43,7 @@ class RunnableQueue implements Runnable {
             if (i++ > 10_000_000) {
                 assert false : "live lock";
             }
-        } while (!queue.isEmpty());
+        }
+        while (!queue.isEmpty());
     }
 }

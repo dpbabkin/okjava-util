@@ -5,6 +5,8 @@ import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 
+import java.util.function.IntFunction;
+
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
  *         1/10/2017
@@ -16,7 +18,7 @@ public class IntToObjectCacheTest {
     @Test
     public void test01() {
 
-        IntToObjectCache<String> intToObjectCache = new IntToObjectCache<>(String::valueOf, 0, 10);
+        IntFunction<String> intToObjectCache = IntToObjectCache.create(String::valueOf, 0, 10);
 
         for (int i = 0; i <= 10; i++) {
             assertThat("" + i, is(intToObjectCache.apply(i)));

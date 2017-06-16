@@ -5,5 +5,11 @@ apply plugin: 'okjava.buildconfig'
 
 
 dependencies {
-    testCompile group: 'ch.qos.logback', name: 'logback-classic', version: '+'
+    //testCompile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '+'
+    testCompile group: 'org.slf4j', name: 'slf4j-simple', version: '+'
+    //testCompile group: 'org.slf4j', name: 'slf4j-jdk14', version: '+'
+
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12
+    //testCompile group: 'org.slf4j', name: 'slf4j-log4j12', version: '+'
+
 }

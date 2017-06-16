@@ -3,10 +3,8 @@ package okjava.util.cache;
 
 import static okjava.util.NotNull.notNull;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.lang.ref.Reference;
+import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
 import java.util.function.Function;
@@ -19,88 +17,60 @@ import java.util.function.Supplier;
  */
 public class ReferenceHolder<T> implements Supplier<T> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ReferenceHolder.class);
-
-    private Reference<Wrapper> reference = null;
+    private Reference<T> reference = null;
 
     private final Supplier<T> valueFactory;
 
-    private Function<Wrapper, Reference<Wrapper>> referenceFactory;
+    private Function<T, Reference<T>> referenceFactory;
 
     public static <X> ReferenceHolder<X> createSoft(Supplier<X> valueFactory) {
-        return new ReferenceHolder<X>(valueFactory, ReferenceHolder::createSoftRef);
+        return new ReferenceHolder<X>(valueFactory, x -> createSoftRef(x, ReferenceHolderFinalizer.instance().getReferenceQueue()));
     }
 
     public static <X> ReferenceHolder<X> createWeak(Supplier<X> valueFactory) {
-        return new ReferenceHolder<X>(valueFactory, ReferenceHolder::createWeakRef);
+        return new ReferenceHolder<X>(valueFactory, x -> createWeakRef(x, ReferenceHolderFinalizer.instance().getReferenceQueue()));
     }
 
-    private static <X> Reference<X> createSoftRef(X x) {
-        return new SoftReference<>(x);
+    private static <X> Reference<X> createSoftRef(X x, ReferenceQueue<? super X> queue) {
+        return new SoftReference<>(x, queue);
     }
 
-    private static <X> Reference<X> createWeakRef(X x) {
-        return new WeakReference<>(x);
+    private static <X> Reference<X> createWeakRef(X x, ReferenceQueue<? super X> queue) {
+        return new WeakReference<>(x, queue);
     }
 
-    private static <T> ReferenceHolder<T> create(Supplier<T> valueFactory, Function<ReferenceHolder<T>.Wrapper, Reference<ReferenceHolder<T>.Wrapper>> referenceFactory) {
+    private static <T> ReferenceHolder<T> create(Supplier<T> valueFactory, Function<T, Reference<T>> referenceFactory) {
         return new ReferenceHolder<T>(valueFactory, referenceFactory);
     }
 
 
-    private ReferenceHolder(Supplier<T> valueFactory, Function<ReferenceHolder<T>.Wrapper, Reference<ReferenceHolder<T>.Wrapper>> referenceFactory) {
+    private ReferenceHolder(Supplier<T> valueFactory, Function<T, Reference<T>> referenceFactory) {
         this.valueFactory = notNull(valueFactory);
         this.referenceFactory = notNull(referenceFactory);
     }
 
     @Override
     public T get() {
-        Reference<ReferenceHolder<T>.Wrapper> reference = this.reference;
-        if (reference == null) {
-            reference = createReference();
-            this.reference = reference;
+        Reference<T> reference = this.reference;
+        T value = null;
+        if (reference != null) {
+            value = reference.get();
         }
 
-        ReferenceHolder<T>.Wrapper wrapper = reference.get();
-        if (wrapper == null) {
-            T value = valueFactory.get();
+        if (value == null) {
+            value = valueFactory.get();
             this.reference = createReference(value);
-            return value;
         }
-        return wrapper.get();
+        return value;
     }
 
-    private Reference<ReferenceHolder<T>.Wrapper> createReference() {
-        return createReference(valueFactory.get());
+    private Reference<T> createReference(T value) {
+        Reference<T> reference = referenceFactory.apply(value);
+        ReferenceHolderFinalizer.<T>instance().registerReference(reference, this::clean);
+        return reference;
     }
 
-    private Reference<ReferenceHolder<T>.Wrapper> createReference(T value) {
-        return referenceFactory.apply(new ReferenceHolder<T>.Wrapper(value));
-    }
-
-    private class Wrapper implements Supplier<T> {
-        private final T value;
-
-        private Wrapper(T value) {
-            this.value = notNull(value);
-            LOGGER.trace("created " + this);
-        }
-
-        @Override
-        protected void finalize() throws Throwable {
-            super.finalize();
-            reference = null;
-            LOGGER.trace("finalized " + this);
-        }
-
-        @Override
-        public T get() {
-            return value;
-        }
-
-        @Override
-        public String toString() {
-            return "ReferenceHolder.Wrapper{value=" + value + "}";
-        }
+    private void clean() {
+        this.reference = null;
     }
 }
