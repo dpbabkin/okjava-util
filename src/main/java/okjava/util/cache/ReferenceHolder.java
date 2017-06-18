@@ -2,6 +2,9 @@ package okjava.util.cache;
 
 
 import static okjava.util.NotNull.notNull;
+import static okjava.util.RunnableUtils.wrapToString;
+
+import okjava.util.RunnableUtils;
 
 import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
@@ -66,7 +69,8 @@ public class ReferenceHolder<T> implements Supplier<T> {
 
     private Reference<T> createReference(T value) {
         Reference<T> reference = referenceFactory.apply(value);
-        ReferenceHolderFinalizer.<T>instance().registerReference(reference, this::clean);
+        ReferenceHolderFinalizer.<T>instance().registerReference(reference,
+            wrapToString(this::clean, () -> ReferenceHolder.this.getClass().getSimpleName() + ":" + valueFactory.toString()));
         return reference;
     }
 

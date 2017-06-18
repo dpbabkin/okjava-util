@@ -49,7 +49,6 @@ final class ReferenceHolderFinalizer<X> {
 
     private final ReferenceQueue<X> referenceQueue = new ReferenceQueue<>();
 
-
     private final Map<Reference<?>, Runnable> referenceClearCallBack = new ConcurrentHashMap<>();
 
     private static Thread newThread(Runnable runnable) {
@@ -74,6 +73,7 @@ final class ReferenceHolderFinalizer<X> {
 
     private void runNullable(Runnable runnable) {
         if (runnable != null) {
+            LOGGER.trace(NAME + " finalizing " + runnable);
             runnable.run();
         }
     }
