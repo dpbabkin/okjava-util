@@ -62,7 +62,7 @@ final class ReferenceHolderFinalizer<X> {
     }
 
     void registerReference(Reference<X> reference, Runnable callBack) {
-        LOGGER.trace(NAME + " registered " + reference.get());
+        LOGGER.trace(NAME + " registered: " + callBack + " value=" + reference.get());
         Runnable oldCallBack = referenceClearCallBack.put(reference, callBack);
         runNullable(oldCallBack);
     }
