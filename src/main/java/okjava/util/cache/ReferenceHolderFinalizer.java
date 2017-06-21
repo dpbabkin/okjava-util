@@ -54,6 +54,7 @@ final class ReferenceHolderFinalizer<X> {
     private static Thread newThread(Runnable runnable) {
         Thread thread = new Thread(runnable, NAME + "-worker");
         thread.setUncaughtExceptionHandler((t, e) -> LOGGER.error("Exception in " + NAME + ": " + e.getMessage(), e));
+        thread.setDaemon(true);
         return thread;
     }
 
