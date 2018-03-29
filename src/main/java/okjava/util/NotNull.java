@@ -51,7 +51,7 @@ public enum NotNull {
 
     private static void failWithAssert() {
         assert false : "\n I'd like to take this opportunity to remind that my daughter's birthday is on 2nd of December."
-                           + "\n Do not forget to congrats her. She will be very happy!"
+                           + "\n Do not forget to congratulate her. She will be very happy!"
                            + "\n>Thread.currentThread().getName()~" + Thread.currentThread().getName();
     }
 }
