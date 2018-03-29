@@ -9,8 +9,8 @@ import java.util.function.Supplier;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         7/5/2016
- *         23:58.
+ * 7/5/2016
+ * 23:58.
  */
 @Utility
 public enum NotNull {
@@ -35,6 +35,11 @@ public enum NotNull {
         return notNullForSure(object, () -> new NullPointerException(String.valueOf(message)));
     }
 
+    public static <T> T assertNotNull(T object) {
+        assert object != null : getFunnyFailMessage();
+        return object;
+    }
+
 
     public static <T> T notNull(T object) {
         return notNullForSure(object, NULL_POINTER_EXCEPTION_SUPPLIER_WITH_ASSERT_ERROR);
@@ -50,8 +55,13 @@ public enum NotNull {
 
 
     private static void failWithAssert() {
-        assert false : "\n I'd like to take this opportunity to remind that my daughter's birthday is on 2nd of December."
-                           + "\n Do not forget to congratulate her. She will be very happy!"
-                           + "\n>Thread.currentThread().getName()~" + Thread.currentThread().getName();
+        assert false : getFunnyFailMessage();
+    }
+
+
+    private static String getFunnyFailMessage() {
+        return "\n I'd like to take this opportunity to remind that my daughter's birthday is on 2nd of December."
+                   + "\n Do not forget to congratulate her. She will be very happy!"
+                   + "\n>Thread.currentThread().getName()~" + Thread.currentThread().getName();
     }
 }
