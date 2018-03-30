@@ -1,11 +1,13 @@
 package okjava.util;
 
+import static okjava.util.NotNull.notNull;
+
 import java.util.Objects;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         10/25/2015
- *         15:28.
+ * 10/25/2015
+ * 15:28.
  */
 public final class Two<A, B> {
 
@@ -13,8 +15,8 @@ public final class Two<A, B> {
     private final B b;
 
     private Two(A a, B b) {
-        this.a = Objects.requireNonNull(a);
-        this.b = Objects.requireNonNull(b);
+        this.a = notNull(a);
+        this.b = notNull(b);
     }
 
     public static <A, B> Two<A, B> create(A a, B b) {

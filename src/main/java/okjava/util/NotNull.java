@@ -16,6 +16,7 @@ import java.util.function.Supplier;
 public enum NotNull {
     ;
 
+    private static final Supplier<String> MESSAGE_SUPPLIER = NotNull::getFunnyFailMessage;
     private static final Supplier<NullPointerException> NULL_POINTER_EXCEPTION_SUPPLIER = NullPointerException::new;
     private static final Supplier<NullPointerException> NULL_POINTER_EXCEPTION_SUPPLIER_WITH_ASSERT_ERROR = () -> {
         failWithAssert();
@@ -36,10 +37,18 @@ public enum NotNull {
     }
 
     public static <T> T assertNotNull(T object) {
-        assert object != null : getFunnyFailMessage();
+        return assertNotNull(object, MESSAGE_SUPPLIER);
+    }
+
+    public static <T> T assertNotNull(T object, String message) {
+        assert object != null : message;
         return object;
     }
 
+    public static <T> T assertNotNull(T object, Supplier<String> messageSupplier) {
+        assert object != null : messageSupplier.get();
+        return object;
+    }
 
     public static <T> T notNull(T object) {
         return notNullForSure(object, NULL_POINTER_EXCEPTION_SUPPLIER_WITH_ASSERT_ERROR);
