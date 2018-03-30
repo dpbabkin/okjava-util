@@ -20,12 +20,12 @@ public enum AfterAssert {
         neverNeverCalled();
     }
 
-    public static <E extends Exception> E afterAssert(String message, Function<String, E> exceptionConstructor) throws E {
+    public static <E extends Exception> E throwAfterAssert(String message, Function<String, E> exceptionConstructor) throws E {
         assert false : message;
         throw exceptionConstructor.apply(message);
     }
 
-    public static IllegalArgumentException IllegalArgumentExceptionAfterAssert(String message) {
-        return afterAssert(message, IllegalArgumentException::new);
+    public static IllegalArgumentException throwIllegalArgumentExceptionAfterAssert(String message) {
+        return throwAfterAssert(message, IllegalArgumentException::new);
     }
 }
