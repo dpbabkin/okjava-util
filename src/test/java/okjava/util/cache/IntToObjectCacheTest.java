@@ -16,11 +16,31 @@ public class IntToObjectCacheTest {
 
 
     @Test
-    public void test01() {
+    public void testIntToObjectCacheImmutableFixed() {
 
-        IntFunction<String> intToObjectCache = IntToObjectCache.create(String::valueOf, 0, 10);
+        IntFunction<String> intToObjectCache = IntToObjectCacheImmutableFixed.create(String::valueOf, 0, 10);
 
         for (int i = 0; i <= 10; i++) {
+            assertThat("" + i, is(intToObjectCache.apply(i)));
+        }
+    }
+
+    @Test
+    public void testIntToObjectCacheLazy() {
+
+        IntFunction<String> intToObjectCache = IntToObjectCacheLazy.create(String::valueOf);
+
+        for (int i = 0; i <= 10; i++) {
+            assertThat("" + i, is(intToObjectCache.apply(i)));
+        }
+    }
+
+    @Test
+    public void testIntToObjectCacheLazyReversed() {
+
+        IntFunction<String> intToObjectCache = IntToObjectCacheLazy.create(String::valueOf);
+
+        for (int i = 10; i >= 0; i--) {
             assertThat("" + i, is(intToObjectCache.apply(i)));
         }
     }

@@ -13,7 +13,7 @@ import java.util.function.IntFunction;
  *         1/7/2017
  *         21:53.
  */
-public final class IntToObjectCache<O> implements IntFunction<O> {
+public final class IntToObjectCacheImmutableFixed<O> implements IntFunction<O> {
     private final int min;
     private final List<O> list;
 
@@ -23,11 +23,11 @@ public final class IntToObjectCache<O> implements IntFunction<O> {
                 throw new IndexOutOfBoundsException("" + i);
             };
         }
-        return new IntToObjectCache<>(factory, min, max);
+        return new IntToObjectCacheImmutableFixed<>(factory, min, max);
     }
 
     @SuppressWarnings("unchecked")
-    private IntToObjectCache(IntFunction<O> factory, int min, int max) {
+    private IntToObjectCacheImmutableFixed(IntFunction<O> factory, int min, int max) {
         lessThen(min, max);
         this.min = nonNegative(min);
 
