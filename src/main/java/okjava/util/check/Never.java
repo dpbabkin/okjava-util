@@ -32,11 +32,11 @@ public final class Never {
             message = "null";
         }
         assert false : message;
-        throw new TheBiggestInstantinationMistakeEverEverEver(message);
+        throw new TheBiggestInstantinationErrorEverEverEver(message);
     }
 
-    private static final class TheBiggestInstantinationMistakeEverEverEver extends Error {
-        TheBiggestInstantinationMistakeEverEverEver(String message) {
+    private static final class TheBiggestInstantinationErrorEverEverEver extends Error {
+        TheBiggestInstantinationErrorEverEverEver(String message) {
             super(message);
         }
     }
