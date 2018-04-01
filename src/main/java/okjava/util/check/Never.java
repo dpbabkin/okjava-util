@@ -8,8 +8,8 @@ import okjava.util.annotation.Utility;
  * <p>It is the same as {@link java.lang.Void}. But I decided to create my own one and put into it some useful functions.
  *
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         9/17/2016
- *         14:44.
+ * 9/17/2016
+ * 14:44.
  * @see java.lang.Void
  */
 @Utility
@@ -20,7 +20,7 @@ public final class Never {
     }
 
     public static void neverNeverCalled() {
-        neverNeverCalled("should never been called.");
+        neverNeverCalled("should never been called");
     }
 
     public static void neverNeverCalled(String message) {
@@ -32,11 +32,11 @@ public final class Never {
             message = "null";
         }
         assert false : message;
-        throw new TheBiggestInstantinationErrorEverEverEver(message);
+        throw new TheBiggestInstantiationErrorEverEverEver(message);
     }
 
-    private static final class TheBiggestInstantinationErrorEverEverEver extends Error {
-        TheBiggestInstantinationErrorEverEverEver(String message) {
+    private static final class TheBiggestInstantiationErrorEverEverEver extends Error {
+        TheBiggestInstantiationErrorEverEverEver(String message) {
             super(message);
         }
     }
