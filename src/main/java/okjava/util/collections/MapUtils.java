@@ -12,6 +12,7 @@ import okjava.util.check.Never;
 
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -19,10 +20,10 @@ import java.util.Map;
  *         22:01.
  */
 @Utility
-public enum MapsUtils {
+public enum MapUtils {
     ;
 
-    MapsUtils(@SuppressWarnings("unused") Never never) {
+    MapUtils(@SuppressWarnings("unused") Never never) {
         neverNeverCalled();
     }
 
@@ -52,5 +53,13 @@ public enum MapsUtils {
         } else {
             return newHashMap(map);
         }
+    }
+
+    public static <K, V, E extends Exception> V getOrThrow(Map<K, V> map, K key, Function<K, E> exceptionProvider) throws E {
+        V value = map.get(key);
+        if (value != null) {
+            return value;
+        }
+        throw exceptionProvider.apply(key);
     }
 }

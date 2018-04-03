@@ -24,11 +24,11 @@ public final class CopyOnModifyMapWrapperWithHasIdValues<K, V extends HasId<K>> 
     }
 
     public static <K, V extends HasId<K>> CopyOnModifyMapWrapperWithHasIdValues<K, V> createCopyOnModifyMapWrapperWithHasIdValues() {
-        return new CopyOnModifyMapWrapperWithHasIdValues<>(ImmutableMap.of(), MapsUtils::merge);
+        return new CopyOnModifyMapWrapperWithHasIdValues<>(ImmutableMap.of(), MapUtils::merge);
     }
 
     public static <K extends Enum<K>, V extends HasId<K>> CopyOnModifyMapWrapperWithHasIdValues<K, V> createEnum(Class<K> clazz) {
-        return new CopyOnModifyMapWrapperWithHasIdValues<>(Maps.immutableEnumMap(new EnumMap<>(clazz)), MapsUtils::mergeEnum);
+        return new CopyOnModifyMapWrapperWithHasIdValues<>(Maps.immutableEnumMap(new EnumMap<>(clazz)), MapUtils::mergeEnum);
     }
 
     public <VV extends V> VV put(VV value) {

@@ -22,11 +22,11 @@ public final class CopyOnModifyMapWrapper<K, V> extends BaseCopyOnModifyMapWrapp
     }
 
     public static <K, V> CopyOnModifyMapWrapper<K, V> createCopyOnModifyMapWrapper() {
-        return new CopyOnModifyMapWrapper<>(ImmutableMap.of(), MapsUtils::merge);
+        return new CopyOnModifyMapWrapper<>(ImmutableMap.of(), MapUtils::merge);
     }
 
 
     public static <K extends Enum<K>, V> CopyOnModifyMapWrapper<K, V> createEnum(Class<K> clazz) {
-        return new CopyOnModifyMapWrapper<>(Maps.immutableEnumMap(new EnumMap<>(clazz)), MapsUtils::mergeEnum);
+        return new CopyOnModifyMapWrapper<>(Maps.immutableEnumMap(new EnumMap<>(clazz)), MapUtils::mergeEnum);
     }
 }
