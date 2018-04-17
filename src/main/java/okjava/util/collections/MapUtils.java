@@ -16,8 +16,8 @@ import java.util.function.Function;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         6/6/2016
- *         22:01.
+ * 6/6/2016
+ * 22:01.
  */
 @Utility
 public enum MapUtils {
@@ -53,6 +53,10 @@ public enum MapUtils {
         } else {
             return newHashMap(map);
         }
+    }
+
+    public static <K, V, E extends Exception> V getOrThrowIllegalState(Map<K, V> map, K key, String message) throws E {
+        return getOrThrow(map, key, k -> new IllegalStateException(message));
     }
 
     public static <K, V, E extends Exception> V getOrThrow(Map<K, V> map, K key, Function<K, E> exceptionProvider) throws E {
