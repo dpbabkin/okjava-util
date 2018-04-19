@@ -19,6 +19,10 @@ public final class Two<A, B> {
         this.b = notNull(b);
     }
 
+    public static <A, B> Two<A, B> two(A a, B b) {
+        return create(a, b);
+    }
+
     public static <A, B> Two<A, B> create(A a, B b) {
         return new Two<>(a, b);
     }
