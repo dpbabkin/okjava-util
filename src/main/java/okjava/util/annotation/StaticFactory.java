@@ -10,7 +10,6 @@ import java.lang.annotation.Target;
  *         11/14/2016
  *         14:12.
  */
-@Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface StaticFactory {
 }
