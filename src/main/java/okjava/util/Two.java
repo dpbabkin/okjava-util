@@ -2,6 +2,8 @@ package okjava.util;
 
 import static okjava.util.NotNull.notNull;
 
+import okjava.util.function.BiSupplier;
+
 import java.util.Objects;
 
 /**
@@ -9,7 +11,7 @@ import java.util.Objects;
  * 10/25/2015
  * 15:28.
  */
-public final class Two<A, B> {
+public final class Two<A, B> implements BiSupplier<A, B> {
 
     private final A a;
     private final B b;
@@ -27,10 +29,12 @@ public final class Two<A, B> {
         return new Two<>(a, b);
     }
 
+    @Override
     public A getA() {
         return a;
     }
 
+    @Override
     public B getB() {
         return b;
     }
