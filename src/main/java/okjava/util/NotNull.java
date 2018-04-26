@@ -51,7 +51,7 @@ public enum NotNull {
     }
 
     public static <T> T notNull(T object) {
-        return notNullForSure(object, NULL_POINTER_EXCEPTION_SUPPLIER_WITH_ASSERT_ERROR);
+        return notNullForSure(object, NULL_POINTER_EXCEPTION_SUPPLIER);
     }
 
 
