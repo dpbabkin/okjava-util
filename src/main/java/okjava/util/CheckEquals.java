@@ -30,25 +30,25 @@ public enum CheckEquals {
         neverNeverCalled();
     }
 
-    public static <O1, O2, E extends Exception> void equals(O1 object1, O2 object2, BiFunction<O1, O2, E> exceptionSupplier) throws E {
+    public static <O1, O2, E extends Exception> void checkEquals(O1 object1, O2 object2, BiFunction<O1, O2, E> exceptionSupplier) throws E {
         if (!object1.equals(object2)) {
             throw exceptionSupplier.apply(object1, object2);
         }
     }
 
-    public static <O1, O2> void equals(O1 object1, O2 object2) {
-        equals(object1, object2, (o1, o2) -> ILLEGAL_STATE_EXCEPTION_FUNCTION.apply(STRING_FORMATTER.apply(o1, o2)));
+    public static <O1, O2> void checkEquals(O1 object1, O2 object2) {
+        checkEquals(object1, object2, (o1, o2) -> ILLEGAL_STATE_EXCEPTION_FUNCTION.apply(STRING_FORMATTER.apply(o1, o2)));
     }
 
     public static <O1, O2> void equalsIllegalState(O1 object1, O2 object2) {
-        equals(object1, object2);
+        checkEquals(object1, object2);
     }
 
     public static <O1, O2> void equalsIllegalArgument(O1 object1, O2 object2) {
-        equals(object1, object2, (o1, o2) -> ILLEGAL_ARGUMENT_EXCEPTION_FUNCTION.apply(STRING_FORMATTER.apply(o1, o2)));
+        checkEquals(object1, object2, (o1, o2) -> ILLEGAL_ARGUMENT_EXCEPTION_FUNCTION.apply(STRING_FORMATTER.apply(o1, o2)));
     }
 
     public static <O1, O2> void assertEquals(O1 object1, O2 object2) {
-        equals(object1, object2, (o1, o2) -> ILLEGAL_ARGUMENT_EXCEPTION_FUNCTION_WITH_ASSERT.apply(STRING_FORMATTER.apply(o1, o2)));
+        checkEquals(object1, object2, (o1, o2) -> ILLEGAL_ARGUMENT_EXCEPTION_FUNCTION_WITH_ASSERT.apply(STRING_FORMATTER.apply(o1, o2)));
     }
 }
