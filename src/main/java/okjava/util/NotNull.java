@@ -1,5 +1,7 @@
 package okjava.util;
 
+import static okjava.util.FunnyFailMessage.getFunnyFailMessage;
+import static okjava.util.FunnyFailMessage.getFunnyFailMessageSupplier;
 import static okjava.util.check.Never.neverNeverCalled;
 
 import okjava.util.annotation.Utility;
@@ -16,7 +18,6 @@ import java.util.function.Supplier;
 public enum NotNull {
     ;
 
-    private static final Supplier<String> MESSAGE_SUPPLIER = NotNull::getFunnyFailMessage;
     private static final Supplier<NullPointerException> NULL_POINTER_EXCEPTION_SUPPLIER = NullPointerException::new;
     private static final Supplier<NullPointerException> NULL_POINTER_EXCEPTION_SUPPLIER_WITH_ASSERT_ERROR = () -> {
         failWithAssert();
@@ -37,7 +38,7 @@ public enum NotNull {
     }
 
     public static <T> T assertNotNull(T object) {
-        return assertNotNull(object, MESSAGE_SUPPLIER);
+        return assertNotNull(object, getFunnyFailMessageSupplier());
     }
 
     public static <T> T assertNotNull(T object, String message) {
@@ -62,15 +63,7 @@ public enum NotNull {
         return object;
     }
 
-
     private static void failWithAssert() {
         assert false : getFunnyFailMessage();
-    }
-
-
-    private static String getFunnyFailMessage() {
-        return "\n I'd like to take this opportunity to remind that my daughter's birthday is on 2nd of December."
-                   + "\n Do not forget to congratulate her. She will be very happy!"
-                   + "\n>Thread.currentThread().getName()~" + Thread.currentThread().getName();
     }
 }
