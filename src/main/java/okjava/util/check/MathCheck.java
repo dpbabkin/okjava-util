@@ -12,8 +12,8 @@ import java.util.function.LongFunction;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         6/3/2016
- *         22:27.
+ * 6/3/2016
+ * 22:27.
  */
 @Utility
 public enum MathCheck {
@@ -56,8 +56,15 @@ public enum MathCheck {
         return nonNegative(value, NON_NEGATIVE_EXCEPTION_FUNCTION_INT);
     }
 
+    public static int positive(int value) {
+        return nonNegative(value, NON_NEGATIVE_EXCEPTION_FUNCTION_INT);
+    }
 
     public static long nonNegative(long value) {
+        return nonNegative(value, NON_NEGATIVE_EXCEPTION_FUNCTION_LONG);
+    }
+
+    public static long positive(long value) {
         return nonNegative(value, NON_NEGATIVE_EXCEPTION_FUNCTION_LONG);
     }
 
@@ -67,8 +74,18 @@ public enum MathCheck {
         return value;
     }
 
+    public static <E extends Exception> int positive(int value, IntFunction<E> exceptionIntFunction) throws E {
+        lessThen(0, value, (IntBiFunction<E>) (first, second) -> exceptionIntFunction.apply(second));
+        return value;
+    }
+
     public static <E extends Exception> long nonNegative(long value, LongFunction<E> exceptionIntFunction) throws E {
         lessThenOrEqual(0L, value, (first, second) -> exceptionIntFunction.apply(second));
+        return value;
+    }
+
+    public static <E extends Exception> long positive(long value, LongFunction<E> exceptionIntFunction) throws E {
+        lessThen(0L, value, (first, second) -> exceptionIntFunction.apply(second));
         return value;
     }
 
