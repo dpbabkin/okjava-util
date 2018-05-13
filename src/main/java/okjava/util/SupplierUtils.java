@@ -5,13 +5,14 @@ import static okjava.util.check.Never.neverNeverCalled;
 import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         6/1/2016
- *         21:39.
+ * 6/1/2016
+ * 21:39.
  */
 @Utility
 public enum SupplierUtils {
@@ -33,5 +34,10 @@ public enum SupplierUtils {
                 return toStringSupplier.get();
             }
         };
+    }
+
+
+    public static <V1, V2> Supplier<V2> map(Supplier<V1> supplier, Function<V1, V2> mapper) {
+        return () -> mapper.apply(supplier.get());
     }
 }
