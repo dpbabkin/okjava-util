@@ -23,7 +23,7 @@ public enum SupplierUtils {
     }
 
     public static <V> Supplier<V> wrapToString(Supplier<V> supplier, Supplier<String> toStringSupplier) {
-        return new Supplier() {
+        return new Supplier<V>() {
             @Override
             public V get() {
                 return supplier.get();
