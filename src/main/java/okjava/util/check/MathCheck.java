@@ -98,22 +98,22 @@ public enum MathCheck {
         return value;
     }
 
-    public static boolean equals(int left, int right) {
-        return equals(left, right, EQUALS_EXCEPTION_FUNCTION_INT);
+    public static boolean equal(int left, int right) {
+        return equal(left, right, EQUALS_EXCEPTION_FUNCTION_INT);
     }
 
-    public static boolean equals(long left, long right) {
-        return equals(left, right, EQUALS_EXCEPTION_FUNCTION_LONG);
+    public static boolean equal(long left, long right) {
+        return equal(left, right, EQUALS_EXCEPTION_FUNCTION_LONG);
     }
 
-    public static <E extends Exception> boolean equals(int left, int right, IntBiFunction<E> exceptionIntFunction) throws E {
+    public static <E extends Exception> boolean equal(int left, int right, IntBiFunction<E> exceptionIntFunction) throws E {
         if (left == right) {
             throw exceptionIntFunction.apply(left, right);
         }
         return true;
     }
 
-    public static <E extends Exception> boolean equals(long left, long right, LongBiFunction<E> exceptionIntFunction) throws E {
+    public static <E extends Exception> boolean equal(long left, long right, LongBiFunction<E> exceptionIntFunction) throws E {
         if (left == right) {
             throw exceptionIntFunction.apply(left, right);
         }
