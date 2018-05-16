@@ -51,6 +51,15 @@ public enum MathCheck {
         throw new IllegalArgumentException("value " + left + " must be less then " + right);
     };
 
+    private static final IntBiFunction<IllegalArgumentException> EQUALS_EXCEPTION_FUNCTION_INT = (IntBiFunction<IllegalArgumentException>) (left, right) -> {
+        throw new IllegalArgumentException("value " + left + " must be equal to " + right);
+    };
+
+
+    private static final LongBiFunction<IllegalArgumentException> EQUALS_EXCEPTION_FUNCTION_LONG = (LongBiFunction<IllegalArgumentException>) (left, right) -> {
+        throw new IllegalArgumentException("value " + left + " must be equal to " + right);
+    };
+
 
     public static int nonNegative(int value) {
         return nonNegative(value, NON_NEGATIVE_EXCEPTION_FUNCTION_INT);
@@ -89,6 +98,27 @@ public enum MathCheck {
         return value;
     }
 
+    public static boolean equals(int left, int right) {
+        return equals(left, right, EQUALS_EXCEPTION_FUNCTION_INT);
+    }
+
+    public static boolean equals(long left, long right) {
+        return equals(left, right, EQUALS_EXCEPTION_FUNCTION_LONG);
+    }
+
+    public static <E extends Exception> boolean equals(int left, int right, IntBiFunction<E> exceptionIntFunction) throws E {
+        if (left == right) {
+            throw exceptionIntFunction.apply(left, right);
+        }
+        return true;
+    }
+
+    public static <E extends Exception> boolean equals(long left, long right, LongBiFunction<E> exceptionIntFunction) throws E {
+        if (left == right) {
+            throw exceptionIntFunction.apply(left, right);
+        }
+        return true;
+    }
 
     public static void lessThen(int left, int right) {
         lessThen(left, right, LESS_THEN_EXCEPTION_FUNCTION_INT);
