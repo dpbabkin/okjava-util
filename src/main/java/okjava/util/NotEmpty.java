@@ -1,5 +1,6 @@
 package okjava.util;
 
+import static okjava.util.NotNull.notNull;
 import static okjava.util.check.Never.neverNeverCalled;
 
 import okjava.util.annotation.Utility;
@@ -28,7 +29,7 @@ public enum NotEmpty {
     }
 
     public static String check(String string) {
-        if (Objects.requireNonNull(string, "null string").length() == 0) {
+        if (notNull(string, "null string").length() == 0) {
             throw new IllegalArgumentException("empty string");
         }
         return string;
