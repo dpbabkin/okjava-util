@@ -8,5 +8,5 @@ package okjava.util.function;
 @FunctionalInterface
 public interface TripleFunction<V1, V2, V3, R> {
 
-    R apply(V1 first, V2 second, V2 third);
+    R apply(V1 first, V2 second, V3 third);
 }
