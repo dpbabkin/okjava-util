@@ -23,42 +23,39 @@ public enum MathCheck {
         neverNeverCalled();
     }
 
+    private static IllegalArgumentException createNewIllegalArgumentException(String message) {
+        return new IllegalArgumentException(message);
+    }
 
-    private static final IntFunction<IllegalArgumentException> NON_NEGATIVE_EXCEPTION_FUNCTION_INT = (IntFunction<IllegalArgumentException>) value -> {
-        throw new IllegalArgumentException("value must be non negative. value=" + value);
-    };
-
-    private static final LongFunction<IllegalArgumentException> NON_NEGATIVE_EXCEPTION_FUNCTION_LONG = (LongFunction<IllegalArgumentException>) value -> {
-        throw new IllegalArgumentException("value must be non negative. value=" + value);
-    };
+    private static final IntFunction<IllegalArgumentException> NON_NEGATIVE_EXCEPTION_FUNCTION_INT =
+        value -> createNewIllegalArgumentException("value must be non negative. value=" + value);
 
 
-    private static final IntBiFunction<IllegalArgumentException> LESS_THEN_OR_EQUALS_EXCEPTION_FUNCTION_INT = (IntBiFunction<IllegalArgumentException>) (left, right) -> {
-        throw new IllegalArgumentException("value " + left + " must be less then or equal to " + right);
-    };
-
-    private static final LongBiFunction<IllegalArgumentException> LESS_THEN_OR_EQUALS_EXCEPTION_FUNCTION_LONG = (LongBiFunction<IllegalArgumentException>) (left, right) -> {
-        throw new IllegalArgumentException("value " + left + " must be less then or equal to " + right);
-    };
+    private static final LongFunction<IllegalArgumentException> NON_NEGATIVE_EXCEPTION_FUNCTION_LONG =
+        value -> createNewIllegalArgumentException("value must be non negative. value=" + value);
 
 
-    private static final IntBiFunction<IllegalArgumentException> LESS_THEN_EXCEPTION_FUNCTION_INT = (IntBiFunction<IllegalArgumentException>) (left, right) -> {
-        throw new IllegalArgumentException("value " + left + " must be less then " + right);
-    };
+    private static final IntBiFunction<IllegalArgumentException> LESS_THEN_OR_EQUALS_EXCEPTION_FUNCTION_INT =
+        (left, right) -> createNewIllegalArgumentException("value " + left + " must be less then or equal to " + right);
 
 
-    private static final LongBiFunction<IllegalArgumentException> LESS_THEN_EXCEPTION_FUNCTION_LONG = (LongBiFunction<IllegalArgumentException>) (left, right) -> {
-        throw new IllegalArgumentException("value " + left + " must be less then " + right);
-    };
-
-    private static final IntBiFunction<IllegalArgumentException> EQUALS_EXCEPTION_FUNCTION_INT = (IntBiFunction<IllegalArgumentException>) (left, right) -> {
-        throw new IllegalArgumentException("value " + left + " must be equal to " + right);
-    };
+    private static final LongBiFunction<IllegalArgumentException> LESS_THEN_OR_EQUALS_EXCEPTION_FUNCTION_LONG =
+        (left, right) -> createNewIllegalArgumentException("value " + left + " must be less then or equal to " + right);
 
 
-    private static final LongBiFunction<IllegalArgumentException> EQUALS_EXCEPTION_FUNCTION_LONG = (LongBiFunction<IllegalArgumentException>) (left, right) -> {
-        throw new IllegalArgumentException("value " + left + " must be equal to " + right);
-    };
+    private static final IntBiFunction<IllegalArgumentException> LESS_THEN_EXCEPTION_FUNCTION_INT =
+        (left, right) -> createNewIllegalArgumentException("value " + left + " must be less then " + right);
+
+
+    private static final LongBiFunction<IllegalArgumentException> LESS_THEN_EXCEPTION_FUNCTION_LONG =
+        (left, right) -> createNewIllegalArgumentException("value " + left + " must be less then " + right);
+
+    private static final IntBiFunction<IllegalArgumentException> EQUALS_EXCEPTION_FUNCTION_INT =
+        (left, right) -> createNewIllegalArgumentException("value " + left + " must be equal to " + right);
+
+
+    private static final LongBiFunction<IllegalArgumentException> EQUALS_EXCEPTION_FUNCTION_LONG =
+        (left, right) -> createNewIllegalArgumentException("value " + left + " must be equal to " + right);
 
 
     public static int nonNegative(int value) {
