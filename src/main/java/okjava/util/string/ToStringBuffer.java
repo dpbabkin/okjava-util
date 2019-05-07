@@ -12,14 +12,17 @@ public class ToStringBuffer {
     private final StringBuilder builder = new StringBuilder();
 
 
-    public static ToStringBuffer object(String name) {
+    public static ToStringBuffer create(String name) {
         return new ToStringBuffer(name);
     }
 
-    public static ToStringBuffer of(Object object) {
-        return object(object.getClass().getSimpleName());
+    public static ToStringBuffer ofClass(Class<?> clazz) {
+        return create(clazz.getSimpleName());
     }
 
+    public static ToStringBuffer of(Object object) {
+        return ofClass(object.getClass());
+    }
 
     private ToStringBuffer(String name) {
         this.builder.append(notNull(name));
