@@ -24,7 +24,7 @@ public enum TimeSequenceIdGeneratorFactory {
         return INSTANCE;
     }
 
-    public static IdGenerator<Long> TimeSequenceIdGenerator() {
+    public static IdGenerator<Long> timeSequenceIdGenerator() {
         return INSTANCE;
     }
 

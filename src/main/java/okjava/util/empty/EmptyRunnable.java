@@ -6,8 +6,8 @@ import okjava.util.annotation.Singleton;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         9/17/2016
- *         14:40.
+ * 9/17/2016
+ * 14:40.
  */
 @Singleton
 public class EmptyRunnable implements Runnable {
@@ -32,11 +32,10 @@ public class EmptyRunnable implements Runnable {
 
     @Override
     public void run() {
-
     }
 
     @Override
     public String toString() {
-        return "EmptyRunnable";
+        return EmptyRunnable.class.getSimpleName();
     }
 }

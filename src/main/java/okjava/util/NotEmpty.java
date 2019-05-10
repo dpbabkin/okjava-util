@@ -29,7 +29,8 @@ public enum NotEmpty {
     }
 
     public static String check(String string) {
-        if (notNull(string, "null string").length() == 0) {
+        notNull(string, "null string");
+        if (string.length() == 0) {
             throw new IllegalArgumentException("empty string");
         }
         return string;
