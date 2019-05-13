@@ -1,6 +1,7 @@
 package okjava.util.e;
 
 import static java.util.Objects.requireNonNull;
+import static okjava.util.NotNull.notNull;
 
 import java.util.function.Consumer;
 
@@ -13,7 +14,12 @@ import java.util.function.Consumer;
 public interface E4Consumer<T, E1 extends Exception, E2 extends Exception, E3 extends Exception, E4 extends Exception> {
 
     static <T> E4Consumer<T, RuntimeException, RuntimeException, RuntimeException, RuntimeException> delegate(Consumer<T> consumer) {
-        requireNonNull(consumer);
+        assert notNull(consumer) != null;
+        return consumer::accept;
+    }
+
+    static <T, E extends Exception> E4Consumer<T, E, RuntimeException, RuntimeException, RuntimeException> delegate(EConsumer<T, E> consumer) {
+        assert notNull(consumer) != null;
         return consumer::accept;
     }
 
