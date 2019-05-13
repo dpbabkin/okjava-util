@@ -27,7 +27,7 @@ public class ToStringBuffer {
 
     private ToStringBuffer(String name) {
         this.builder.append(notNull(name));
-        this.builder.append("{ ");
+        this.builder.append(" { ");
     }
 
     public ToStringBuffer add(String name, Object value) {
