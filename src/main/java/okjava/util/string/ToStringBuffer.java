@@ -1,6 +1,7 @@
 package okjava.util.string;
 
 import static okjava.util.NotNull.notNull;
+import static okjava.util.string.ToStringUtils.nullable;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -30,7 +31,7 @@ public class ToStringBuffer {
     }
 
     public ToStringBuffer add(String name, Object value) {
-        this.builder.append(name).append("=").append(value).append(" ");
+        this.builder.append(name).append("=").append(nullable(value)).append(" ");
         return this;
     }
 
