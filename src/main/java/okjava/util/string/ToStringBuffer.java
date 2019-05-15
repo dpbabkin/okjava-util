@@ -1,7 +1,12 @@
 package okjava.util.string;
 
 import static okjava.util.NotNull.notNull;
+import static okjava.util.string.ToStringUtils.i2s;
+import static okjava.util.string.ToStringUtils.m2s;
 import static okjava.util.string.ToStringUtils.nullable;
+
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -33,6 +38,14 @@ public class ToStringBuffer {
     public ToStringBuffer add(String name, Object value) {
         this.builder.append(name).append("=").append(nullable(value)).append(" ");
         return this;
+    }
+
+    public ToStringBuffer add(String name, Collection<?> collection) {
+        return add(name, i2s(collection));
+    }
+
+    public ToStringBuffer add(String name, Map<?,?> map) {
+        return add(name, m2s(map));
     }
 
     @Override
