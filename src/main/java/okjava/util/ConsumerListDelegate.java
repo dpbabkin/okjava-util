@@ -10,15 +10,15 @@ import java.util.function.Consumer;
  * 5/7/2018
  * 21:34.
  */
-public class ConsumerDelegate<T> implements Consumer<T> {
+public class ConsumerListDelegate<T> implements Consumer<T> {
 
     private final Collection<? extends Consumer<T>> delegates;
 
     public static <T> Consumer<T> create(Collection<? extends Consumer<T>> delegates) {
-        return new ConsumerDelegate<>(delegates);
+        return new ConsumerListDelegate<>(delegates);
     }
 
-    private ConsumerDelegate(Collection<? extends Consumer<T>> delegates) {
+    private ConsumerListDelegate(Collection<? extends Consumer<T>> delegates) {
         this.delegates = ImmutableList.copyOf(delegates);
     }
 
