@@ -8,13 +8,15 @@ import okjava.util.check.Never;
 import okjava.util.e.EFunction;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         7/7/2016
- *         19:31.
+ * 7/7/2016
+ * 19:31.
  */
 @Utility
 public enum ConvertUtils {
@@ -48,5 +50,10 @@ public enum ConvertUtils {
         } catch (DummyException e) {
             return Optional.empty();
         }
+    }
+
+    public static <A, B> List<B> transform(List<A> input, Function<? super A, ? extends B> mapper) {
+
+        return input.stream().map(mapper).collect(Collectors.toUnmodifiableList());
     }
 }
