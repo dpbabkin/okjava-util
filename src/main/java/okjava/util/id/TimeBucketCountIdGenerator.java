@@ -78,13 +78,4 @@ class TimeBucketCountIdGenerator implements IdGenerator<TimeSequenceId> {
         }
         return lock.tryLock();
     }
-
-    private boolean tryLock() {
-        return lock.tryLock();
-    }
-
-    private boolean lock() {
-        lock.lock();
-        return true;
-    }
 }

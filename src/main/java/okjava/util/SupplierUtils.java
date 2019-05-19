@@ -36,7 +36,6 @@ public enum SupplierUtils {
         };
     }
 
-
     public static <V1, V2> Supplier<V2> map(Supplier<V1> supplier, Function<V1, V2> mapper) {
         return () -> mapper.apply(supplier.get());
     }
