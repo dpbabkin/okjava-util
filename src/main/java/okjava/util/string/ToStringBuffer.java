@@ -22,11 +22,11 @@ public class ToStringBuffer {
         return new ToStringBuffer(name);
     }
 
-    public static ToStringBuffer ofClass(Class<?> clazz) {
+    public static <C> ToStringBuffer ofClass(Class<C> clazz) {
         return create(clazz.getSimpleName());
     }
 
-    public static ToStringBuffer of(Object object) {
+    public static <O> ToStringBuffer of(O object) {
         return ofClass(object.getClass());
     }
 
@@ -35,16 +35,16 @@ public class ToStringBuffer {
         this.builder.append(" { ");
     }
 
-    public ToStringBuffer add(String name, Object value) {
+    public <O> ToStringBuffer add(String name, O value) {
         this.builder.append(name).append("=").append(nullable(value)).append(" ");
         return this;
     }
 
-    public ToStringBuffer add(String name, Collection<?> collection) {
+    public <T> ToStringBuffer add(String name, Collection<T> collection) {
         return add(name, i2s(collection));
     }
 
-    public ToStringBuffer add(String name, Map<?,?> map) {
+    public <K,V> ToStringBuffer add(String name, Map<K,V> map) {
         return add(name, m2s(map));
     }
 
