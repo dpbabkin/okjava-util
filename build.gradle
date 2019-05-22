@@ -8,6 +8,8 @@ dependencies {
     implementation group: 'org.slf4j', name: 'slf4j-api', version: '+'
     implementation group: 'com.google.guava', name: 'guava', version: '+'
 
+    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '+'
+
     testImplementation group: 'junit', name: 'junit', version: '+'
     testImplementation group: 'org.hamcrest', name: 'hamcrest-all', version: '+'
     testImplementation group: 'org.slf4j', name: 'slf4j-simple', version: '+'
