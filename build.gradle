@@ -5,16 +5,10 @@ repositories {
 }
 
 dependencies {
-
-    //compile group: 'org.slf4j', name: 'slf4j-api', version: '+'
     implementation group: 'org.slf4j', name: 'slf4j-api', version: '+'
     implementation group: 'com.google.guava', name: 'guava', version: '+'
 
     testImplementation group: 'junit', name: 'junit', version: '+'
     testImplementation group: 'org.hamcrest', name: 'hamcrest-all', version: '+'
     testImplementation group: 'org.slf4j', name: 'slf4j-simple', version: '+'
-
-    // https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12
-    //testCompile group: 'org.slf4j', name: 'slf4j-log4j12', version: '+'
-
 }
