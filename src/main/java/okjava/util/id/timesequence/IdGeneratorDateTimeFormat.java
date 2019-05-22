@@ -15,17 +15,17 @@ import okjava.util.datetime.DateTimeFormat;
 enum IdGeneratorDateTimeFormat {
     ;
 
+    private final static DateTimeFormat FORMATTER = DateTimeFormat.create("yyyyMMdd:HHmmss.SSS");
+
     IdGeneratorDateTimeFormat(@SuppressWarnings("unused") Never never) {
         neverNeverCalled();
     }
-
-    private final static DateTimeFormat FORMATTER = DateTimeFormat.create("yyyyMMdd:HHmmss.SSS");
 
     public static String longToString(long time) {
         return FORMATTER.longToString(time);
     }
 
-    public static String format(long time,long sequence) {
+    public static String format(long time, long sequence) {
         return longToString(time) + "_" + sequence;
     }
 }

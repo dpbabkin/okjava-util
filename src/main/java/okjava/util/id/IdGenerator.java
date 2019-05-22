@@ -12,7 +12,7 @@ public interface IdGenerator<V> extends Supplier<V> {
     V generate();
 
     @Override
-    default V get(){
+    default V get() {
         return generate();
     }
 }

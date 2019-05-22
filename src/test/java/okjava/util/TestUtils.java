@@ -8,8 +8,8 @@ import java.util.logging.Logger;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         6/17/2016
- *         16:31.
+ * 6/17/2016
+ * 16:31.
  */
 public class TestUtils {
     public static void setJULtoConsoleSTDOUT() {

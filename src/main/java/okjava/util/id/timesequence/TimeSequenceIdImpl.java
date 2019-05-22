@@ -12,13 +12,13 @@ final class TimeSequenceIdImpl extends TimeSequenceIdBase implements TimeSequenc
     private final long time;
     private final long sequence;
 
-    static TimeSequenceIdImpl create(long time, long sequence) {
-        return new TimeSequenceIdImpl(time, sequence);
-    }
-
     private TimeSequenceIdImpl(long time, long sequence) {
         this.time = MathCheck.positive(time);
         this.sequence = MathCheck.nonNegative(sequence);
+    }
+
+    static TimeSequenceIdImpl create(long time, long sequence) {
+        return new TimeSequenceIdImpl(time, sequence);
     }
 
     public long getTime() {

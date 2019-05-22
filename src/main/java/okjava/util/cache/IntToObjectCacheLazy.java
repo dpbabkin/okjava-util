@@ -17,18 +17,18 @@ public final class IntToObjectCacheLazy<O> implements IntFunction<O> {
     private final List<O> list = new ArrayList<>();
     private final IntFunction<O> factory;
 
+    @SuppressWarnings("unchecked")
+    private IntToObjectCacheLazy(IntFunction<O> factory, int min) {
+        this.factory = notNull(factory);
+        this.min = nonNegative(min);
+    }
+
     public static <O> IntFunction<O> create(IntFunction<O> factory) {
         return new IntToObjectCacheLazy<>(factory, 0);
     }
 
     public static <O> IntFunction<O> create(IntFunction<O> factory, int min) {
         return new IntToObjectCacheLazy<>(factory, min);
-    }
-
-    @SuppressWarnings("unchecked")
-    private IntToObjectCacheLazy(IntFunction<O> factory, int min) {
-        this.factory = notNull(factory);
-        this.min = nonNegative(min);
     }
 
     @Override
@@ -43,7 +43,7 @@ public final class IntToObjectCacheLazy<O> implements IntFunction<O> {
         if (object == null) {
             synchronized (list) {
                 object = list.get(index);
-                if(object!=null){
+                if (object != null) {
                     return object;
                 }
                 object = factory.apply(value);

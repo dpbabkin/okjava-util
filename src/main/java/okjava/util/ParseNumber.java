@@ -11,8 +11,8 @@ import java.util.function.Function;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         6/4/2016
- *         23:31.
+ * 6/4/2016
+ * 23:31.
  */
 @Utility
 public enum ParseNumber {

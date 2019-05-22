@@ -15,11 +15,14 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 @Singleton
 class TimeBucketCountIdGenerator implements IdGenerator<TimeSequenceId> {
+    private static IdGenerator<TimeSequenceId> INSTANCE = new TimeBucketCountIdGenerator();
     private final ReentrantLock lock = new ReentrantLock();
     private long time = 0;
     private long sequence = 0;
 
-    private static IdGenerator<TimeSequenceId> INSTANCE = new TimeBucketCountIdGenerator();
+    private TimeBucketCountIdGenerator() {
+        calledOnce(this.getClass());
+    }
 
     static IdGenerator<TimeSequenceId> i() {
         return INSTANCE;
@@ -32,11 +35,6 @@ class TimeBucketCountIdGenerator implements IdGenerator<TimeSequenceId> {
     static IdGenerator<TimeSequenceId> create() {
         return INSTANCE;
     }
-
-    private TimeBucketCountIdGenerator() {
-        calledOnce(this.getClass());
-    }
-
 
     private static long millis() {
         return System.currentTimeMillis();
@@ -59,7 +57,7 @@ class TimeBucketCountIdGenerator implements IdGenerator<TimeSequenceId> {
                     } else {
                         sequence = this.sequence++;
                     }
-                    t=this.time;
+                    t = this.time;
                     break;
                 } finally {
                     lock.unlock();

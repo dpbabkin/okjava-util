@@ -14,11 +14,6 @@ import okjava.util.check.Never;
 public enum BitUtils {
     ;
 
-    @SuppressWarnings("unused")
-    BitUtils(@SuppressWarnings("unused") Never never) {
-        neverNeverCalled();
-    }
-
     private static final long[] ARRAY_OF_ONE_BIT = new long[65];
     private static final long[] ARRAY_OF_MASK = new long[65];
 
@@ -28,6 +23,11 @@ public enum BitUtils {
             ARRAY_OF_ONE_BIT[i] = 1L << (i - 1);
             ARRAY_OF_MASK[i] = (ARRAY_OF_ONE_BIT[i] << 1) - 1L;
         }
+    }
+
+    @SuppressWarnings("unused")
+    BitUtils(@SuppressWarnings("unused") Never never) {
+        neverNeverCalled();
     }
 
     public static long rightMask(long number, int bitCount) {

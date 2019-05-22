@@ -7,8 +7,8 @@ import java.util.Map;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         Date: 3/23/14
- *         Time: 10:29 PM
+ * Date: 3/23/14
+ * Time: 10:29 PM
  */
 public final class Util {
 

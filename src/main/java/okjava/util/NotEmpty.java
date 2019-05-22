@@ -13,8 +13,8 @@ import java.util.Objects;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         6/3/2016
- *         22:27.
+ * 6/3/2016
+ * 22:27.
  */
 @Utility
 public enum NotEmpty {

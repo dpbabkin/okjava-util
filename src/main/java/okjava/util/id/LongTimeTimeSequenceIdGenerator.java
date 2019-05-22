@@ -15,6 +15,16 @@ class LongTimeTimeSequenceIdGenerator implements IdGenerator<Long> {
 
 
     private static IdGenerator<Long> INSTANCE = new LongTimeTimeSequenceIdGenerator();
+    private final AtomicLong time = new AtomicLong(joinTimeAndSequence(millis(), 0));
+
+    private LongTimeTimeSequenceIdGenerator() {
+        calledOnce(this.getClass());
+        try {
+            Thread.sleep(1);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
 
     static IdGenerator<Long> i() {
         return INSTANCE;
@@ -26,17 +36,6 @@ class LongTimeTimeSequenceIdGenerator implements IdGenerator<Long> {
 
     static IdGenerator<Long> create() {
         return INSTANCE;
-    }
-
-    private final AtomicLong time = new AtomicLong(joinTimeAndSequence(millis(), 0));
-
-    private LongTimeTimeSequenceIdGenerator() {
-        calledOnce(this.getClass());
-        try {
-            Thread.sleep(1);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
     }
 
     private static long millis() {

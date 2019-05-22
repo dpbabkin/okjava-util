@@ -7,8 +7,8 @@ import java.util.function.Supplier;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         7/2/2016
- *         20:45.
+ * 7/2/2016
+ * 20:45.
  */
 public final class Holder<T> implements Supplier<T>, Consumer<T> {
 
@@ -40,6 +40,11 @@ public final class Holder<T> implements Supplier<T>, Consumer<T> {
     }
 
     @Override
+    public int hashCode() {
+        return t != null ? t.hashCode() : 0;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -47,11 +52,6 @@ public final class Holder<T> implements Supplier<T>, Consumer<T> {
         Holder<?> holder = (Holder<?>) o;
 
         return t != null ? t.equals(holder.t) : holder.t == null;
-    }
-
-    @Override
-    public int hashCode() {
-        return t != null ? t.hashCode() : 0;
     }
 
     @Override

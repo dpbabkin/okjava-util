@@ -20,8 +20,8 @@ import java.util.List;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         6/1/2016
- *         00:53.
+ * 6/1/2016
+ * 00:53.
  */
 public class GuavaCollectorsTest {
 

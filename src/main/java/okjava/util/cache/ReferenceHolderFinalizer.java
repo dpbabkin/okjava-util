@@ -15,8 +15,8 @@ import java.util.concurrent.Executors;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         5/4/2017
- *         20:02.
+ * 5/4/2017
+ * 20:02.
  */
 @Singleton
 final class ReferenceHolderFinalizer<X> {
@@ -27,6 +27,9 @@ final class ReferenceHolderFinalizer<X> {
     private static final Object MUTEX = new Object();
 
     private static ReferenceHolderFinalizer<?> INSTANCE = null;
+    private final Executor executor = Executors.newSingleThreadExecutor(ReferenceHolderFinalizer::newThread);
+    private final ReferenceQueue<X> referenceQueue = new ReferenceQueue<>();
+    private final Map<Reference<?>, Runnable> referenceClearCallBack = new ConcurrentHashMap<>();
 
     private ReferenceHolderFinalizer() {
         calledOnce(ReferenceHolderFinalizer.class);
@@ -44,12 +47,6 @@ final class ReferenceHolderFinalizer<X> {
         }
         return (ReferenceHolderFinalizer<X>) INSTANCE;
     }
-
-    private final Executor executor = Executors.newSingleThreadExecutor(ReferenceHolderFinalizer::newThread);
-
-    private final ReferenceQueue<X> referenceQueue = new ReferenceQueue<>();
-
-    private final Map<Reference<?>, Runnable> referenceClearCallBack = new ConcurrentHashMap<>();
 
     private static Thread newThread(Runnable runnable) {
         Thread thread = new Thread(runnable, NAME + "-worker");

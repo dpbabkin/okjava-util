@@ -11,7 +11,8 @@ import java.util.stream.IntStream;
  * 5/10/2018
  * 08:33.
  */
-@Deprecated // looks like this was raw prototype.
+@Deprecated
+    // looks like this was raw prototype.
 class LittleMoreConcurrentIdGenerator implements Supplier<Long> {
 
     public final static long NOT_ACQUIRE_VALUE = -1;

@@ -11,8 +11,8 @@ import java.util.function.Supplier;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         6/6/2016
- *         22:24.
+ * 6/6/2016
+ * 22:24.
  */
 abstract class BaseCopyOnModifyMapWrapper<K, V> implements Supplier<Map<K, V>> {
 

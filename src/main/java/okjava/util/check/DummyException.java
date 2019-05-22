@@ -6,8 +6,8 @@ import okjava.util.annotation.Singleton;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         7/26/2016
- *         23:11.
+ * 7/26/2016
+ * 23:11.
  */
 @Singleton
 public final class DummyException extends Exception {

@@ -8,8 +8,8 @@ import okjava.util.annotation.Singleton;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         9/17/2016
- *         14:44.
+ * 9/17/2016
+ * 14:44.
  */
 @Singleton
 public final class Dummy {

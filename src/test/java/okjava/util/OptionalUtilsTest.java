@@ -9,8 +9,8 @@ import java.util.Optional;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         6/5/2016
- *         20:15.
+ * 6/5/2016
+ * 20:15.
  */
 public class OptionalUtilsTest {
 

@@ -6,8 +6,8 @@ import java.util.function.Function;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         10/3/2015
- *         01:33.
+ * 10/3/2015
+ * 01:33.
  */
 @FunctionalInterface
 public interface EFunction<T, R, E extends Exception> {

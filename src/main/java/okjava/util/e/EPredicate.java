@@ -6,8 +6,8 @@ import java.util.function.Predicate;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         7/3/2016
- *         22:17.
+ * 7/3/2016
+ * 22:17.
  */
 @FunctionalInterface
 public interface EPredicate<T, E extends Exception> {

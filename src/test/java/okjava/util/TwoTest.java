@@ -7,8 +7,8 @@ import org.junit.Test;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         6/5/2016
- *         00:26.
+ * 6/5/2016
+ * 00:26.
  */
 public class TwoTest {
 
@@ -61,9 +61,7 @@ public class TwoTest {
     @Test
     public void testTwoToString() {
         Two<String, Long> two = Two.create("A", 1L);
-        assertThat(two.toString(), is("Two{a=A, b=1}"));
+        assertThat(two.toString(), is("Two { a=A b=1 }"));
 
     }
-
-
 }

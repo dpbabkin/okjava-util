@@ -11,8 +11,8 @@ import java.util.stream.StreamSupport;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         6/1/2016
- *         21:39.
+ * 6/1/2016
+ * 21:39.
  */
 @Utility
 public enum StreamUtils {

@@ -35,7 +35,6 @@ abstract class BaseIdGeneratorTest {
         assertThat(result.compareTo(result1), is(-1));
     }
 
-
     @Test
     public void test002() {
 
@@ -64,12 +63,9 @@ abstract class BaseIdGeneratorTest {
             threads.add(t);
         }
 
-
         for (Thread t : threads) {
             t.join();
         }
-
-
     }
 
 
@@ -79,11 +75,11 @@ abstract class BaseIdGeneratorTest {
         Set<TimeSequenceId> set = ConcurrentHashMap.newKeySet();
 
         List<Thread> threads = Lists.newArrayList();
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 1_000; i++) {
 
             Thread t = new Thread(() -> {
                 List<TimeSequenceId> list = Lists.newArrayListWithExpectedSize(10_000);
-                for (int j = 0; j < 10_000; j++) {
+                for (int j = 0; j < 1_000; j++) {
                     TimeSequenceId timeSequenceId = getIdGenerator().generate();
                     list.add(timeSequenceId);
                 }
@@ -97,12 +93,9 @@ abstract class BaseIdGeneratorTest {
             threads.add(t);
         }
 
-
         for (Thread t : threads) {
             t.join();
         }
-        assertThat(set.size(), is(10_000 * 1000));
-
-
+        assertThat(set.size(), is(1_000 * 1_000));
     }
 }

@@ -4,8 +4,8 @@ import java.util.function.Consumer;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         11/26/2016
- *         11:06.
+ * 11/26/2016
+ * 11:06.
  */
 @FunctionalInterface
 public interface RuntimeExceptionHandler extends ExceptionHandler<RuntimeException> {

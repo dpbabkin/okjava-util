@@ -19,11 +19,11 @@ import java.util.function.Supplier;
 public enum TimeSequenceIdGeneratorFactory {
     ;
 
+    private static final IdGenerator<Long> INSTANCE = LongTimeTimeSequenceIdGenerator.i();
+
     TimeSequenceIdGeneratorFactory(@SuppressWarnings("unused") Never never) {
         neverNeverCalled();
     }
-
-    private static final IdGenerator<Long> INSTANCE = LongTimeTimeSequenceIdGenerator.i();
 
     public static IdGenerator<Long> i() {
         return INSTANCE;

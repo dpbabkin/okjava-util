@@ -2,13 +2,10 @@ package okjava.util.concurrent;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         11/26/2016
- *         16:27.
+ * 11/26/2016
+ * 16:27.
  */
 public interface PriorityRunnable<P> extends Runnable {
-
-    P getPriority();
-
 
     static PriorityRunnable<Boolean> fromRunnable(Runnable runnable) {
         return fromRunnable(true, runnable);
@@ -27,4 +24,6 @@ public interface PriorityRunnable<P> extends Runnable {
             }
         };
     }
+
+    P getPriority();
 }

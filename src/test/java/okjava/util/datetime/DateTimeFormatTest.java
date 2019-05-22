@@ -3,7 +3,6 @@ package okjava.util.datetime;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-
 import org.junit.Test;
 
 /**
@@ -14,8 +13,7 @@ import org.junit.Test;
 public class DateTimeFormatTest {
 
 
-    private  final DateTimeFormat dateTimeFormat = DateTimeFormat.create("yyyyMMdd HHmmssSSS");
-
+    private final DateTimeFormat dateTimeFormat = DateTimeFormat.create("yyyyMMdd HHmmssSSS");
 
 
     @Test
@@ -30,14 +28,13 @@ public class DateTimeFormatTest {
 
     @Test
     public void testStringToLong() {
-       String time = "20190506 213239371";
+        String time = "20190506 213239371";
 
         long result = dateTimeFormat.stringToLong(time);
 
         assertThat(result, is(result));
 
     }
-
 
 
 }

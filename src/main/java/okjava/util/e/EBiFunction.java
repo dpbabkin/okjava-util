@@ -6,8 +6,8 @@ import java.util.function.BiFunction;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         10/3/2015
- *         01:33.
+ * 10/3/2015
+ * 01:33.
  */
 @FunctionalInterface
 public interface EBiFunction<T, U, R, E extends Exception> {

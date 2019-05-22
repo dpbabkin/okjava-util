@@ -4,8 +4,8 @@ import static java.util.Objects.requireNonNull;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         10/3/2015
- *         01:33.
+ * 10/3/2015
+ * 01:33.
  */
 @FunctionalInterface
 public interface ERunnable<E extends Exception> {

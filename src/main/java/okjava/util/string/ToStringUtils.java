@@ -19,20 +19,18 @@ public enum ToStringUtils {
     ;
 
     private static final String NULL = "null";
-
-    public static String nullable(Object nullable) {
-        return nullable != null ? nullable.toString() : NULL;
-    }
-
     //    public static String eq(Object one, Object two) {
 //        return one + "=" + two;
 //    }
     private static final Function<Object, String> TO_STRING_MAPPER = ToStringUtils::nullable;
     private static final Function<String, String> STRING_TO_STRING_MAPPER = TO_STRING_MAPPER::apply;
     private static final String DEFAULT_SEPARATOR = " ";
-
     ToStringUtils(@SuppressWarnings("unused") Never never) {
         Never.neverNeverCalled();
+    }
+
+    public static String nullable(Object nullable) {
+        return nullable != null ? nullable.toString() : NULL;
     }
 
     @SuppressWarnings("unchecked")

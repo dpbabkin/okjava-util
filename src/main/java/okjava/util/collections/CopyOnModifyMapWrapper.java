@@ -8,8 +8,8 @@ import java.util.Map;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         6/6/2016
- *         22:24.
+ * 6/6/2016
+ * 22:24.
  */
 public final class CopyOnModifyMapWrapper<K, V> extends BaseCopyOnModifyMapWrapper<K, V> {
 

@@ -11,8 +11,8 @@ import java.util.function.Function;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         6/1/2016
- *         22:52.
+ * 6/1/2016
+ * 22:52.
  */
 @Utility
 public enum Clazz {

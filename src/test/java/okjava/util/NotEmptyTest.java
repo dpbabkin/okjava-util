@@ -17,8 +17,8 @@ import java.util.Map;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         6/5/2016
- *         00:11.
+ * 6/5/2016
+ * 00:11.
  */
 public class NotEmptyTest {
 

@@ -10,21 +10,12 @@ import java.util.function.IntFunction;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         1/7/2017
- *         21:53.
+ * 1/7/2017
+ * 21:53.
  */
 public final class IntToObjectCacheImmutableFixed<O> implements IntFunction<O> {
     private final int min;
     private final List<O> list;
-
-    public static <O> IntFunction<O> create(IntFunction<O> factory, int min, int max) {
-        if (min == max) {
-            return i -> {
-                throw new IndexOutOfBoundsException("" + i);
-            };
-        }
-        return new IntToObjectCacheImmutableFixed<>(factory, min, max);
-    }
 
     @SuppressWarnings("unchecked")
     private IntToObjectCacheImmutableFixed(IntFunction<O> factory, int min, int max) {
@@ -37,6 +28,15 @@ public final class IntToObjectCacheImmutableFixed<O> implements IntFunction<O> {
         }
 
         this.list = ImmutableList.copyOf(array);
+    }
+
+    public static <O> IntFunction<O> create(IntFunction<O> factory, int min, int max) {
+        if (min == max) {
+            return i -> {
+                throw new IndexOutOfBoundsException("" + i);
+            };
+        }
+        return new IntToObjectCacheImmutableFixed<>(factory, min, max);
     }
 
     @Override

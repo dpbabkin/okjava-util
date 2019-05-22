@@ -7,8 +7,8 @@ import java.util.function.Supplier;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         10/14/2016
- *         23:46.
+ * 10/14/2016
+ * 23:46.
  */
 public final class ControlObject implements HasStringId, Supplier<String> {
 

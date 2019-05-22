@@ -3,7 +3,6 @@ package okjava.util.bit;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.stringContainsInOrder;
 import static org.hamcrest.core.Is.is;
 
 import okjava.util.datetime.DateTimeFormat;
@@ -28,24 +27,24 @@ public class BitUtilsTest {
         System.out.println(Long.toBinaryString(time).length());
         System.out.println(BitUtils.rightBitCount(time));
 
-        long v=(1L<<42)-1;
+        long v = (1L << 42) - 1;
 
         System.out.println(v);
         System.out.println(Long.toBinaryString(v));
         System.out.println(Long.toBinaryString(v).length());
         System.out.println(DateTimeFormat.create().longToString(v));
 
-        long c=1L<<20;
-        c-=1;
+        long c = 1L << 20;
+        c -= 1;
         System.out.println(c);
         System.out.println(Long.toBinaryString(c));
         System.out.println(Long.toBinaryString(c).length());
 
-        System.out.println(Long.toBinaryString(-23631L>>5));
-        System.out.println(Long.toBinaryString(-236341L>>>5));
+        System.out.println(Long.toBinaryString(-23631L >> 5));
+        System.out.println(Long.toBinaryString(-236341L >>> 5));
         System.out.println(Long.toBinaryString((1 << 20) - 1));
         System.out.println((1 << 20) - 1);
-        System.out.println(1L<<42);
+        System.out.println(1L << 42);
 
 
         System.out.println(Long.toBinaryString(3L << 62));
@@ -86,7 +85,6 @@ public class BitUtilsTest {
             assertThat(result, is(result02));
         }
     }
-
 
 
     @Test

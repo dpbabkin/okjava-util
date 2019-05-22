@@ -8,8 +8,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         11/26/2016
- *         17:13.
+ * 11/26/2016
+ * 17:13.
  */
 class RunnableQueue implements Runnable {
 

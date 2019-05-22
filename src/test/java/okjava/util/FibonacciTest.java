@@ -6,8 +6,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         2/9/2015
- *         21:29.
+ * 2/9/2015
+ * 21:29.
  */
 public class FibonacciTest {
 

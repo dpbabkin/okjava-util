@@ -11,8 +11,8 @@ import java.util.function.BiConsumer;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         9/17/2016
- *         14:40.
+ * 9/17/2016
+ * 14:40.
  */
 @Utility
 public enum EmptyBiConsumer {

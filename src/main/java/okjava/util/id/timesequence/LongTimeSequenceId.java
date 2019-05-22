@@ -18,6 +18,10 @@ final class LongTimeSequenceId extends TimeSequenceIdBase implements TimeSequenc
     // 20 bit sequence
     private final long timeAndSequence;
 
+    private LongTimeSequenceId(long time, long sequence) {
+        this.timeAndSequence = joinTimeAndSequence(time, sequence);
+    }
+
     public static TimeSequenceId fromLong(long raw) {
         return create(fetchTime(raw), fetchSequence(raw));
     }
@@ -25,11 +29,6 @@ final class LongTimeSequenceId extends TimeSequenceIdBase implements TimeSequenc
     public static TimeSequenceId create(long time, long sequence) {
         return new LongTimeSequenceId(time, sequence);
     }
-
-    private LongTimeSequenceId(long time, long sequence) {
-        this.timeAndSequence = joinTimeAndSequence(time, sequence);
-    }
-
 
     @Override
     public long getTime() {
@@ -39,6 +38,14 @@ final class LongTimeSequenceId extends TimeSequenceIdBase implements TimeSequenc
     @Override
     public long getSequence() {
         return fetchSequence(this.timeAndSequence);
+    }
+
+    @Override
+    public int compareTo(@Nonnull TimeSequenceId other) {
+        if (other instanceof LongTimeSequenceId) {
+            return Long.compare(this.timeAndSequence, ((LongTimeSequenceId) other).timeAndSequence);
+        }
+        return super.compareTo(other);
     }
 
     @Override
@@ -53,14 +60,6 @@ final class LongTimeSequenceId extends TimeSequenceIdBase implements TimeSequenc
         if (!(o instanceof TimeSequenceId)) return false;
         TimeSequenceId that = (TimeSequenceId) o;
         return this.getTime() == that.getTime() && this.getSequence() == that.getSequence();
-    }
-
-    @Override
-    public int compareTo(@Nonnull TimeSequenceId other) {
-        if (other instanceof LongTimeSequenceId) {
-            return Long.compare(this.timeAndSequence, ((LongTimeSequenceId) other).timeAndSequence);
-        }
-        return super.compareTo(other);
     }
 
     @Override

@@ -6,8 +6,8 @@ import java.util.function.Supplier;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         7/2/2016
- *         20:45.
+ * 7/2/2016
+ * 20:45.
  */
 public final class Final<T> implements Supplier<T> {
 

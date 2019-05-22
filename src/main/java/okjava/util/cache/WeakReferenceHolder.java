@@ -7,8 +7,8 @@ import java.util.function.Supplier;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         6/18/2017
- *         22:11.
+ * 6/18/2017
+ * 22:11.
  */
 class WeakReferenceHolder<T> extends ReferenceHolder<T> {
 

@@ -9,8 +9,8 @@ import java.util.UUID;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         9/17/2016
- *         14:44.
+ * 9/17/2016
+ * 14:44.
  */
 @Utility
 public enum InitializationControl {

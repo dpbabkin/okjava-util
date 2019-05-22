@@ -7,8 +7,8 @@ import com.google.common.collect.ImmutableBiMap;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         2/9/2015
- *         20:32.
+ * 2/9/2015
+ * 20:32.
  */
 public final class Fibonacci {
 

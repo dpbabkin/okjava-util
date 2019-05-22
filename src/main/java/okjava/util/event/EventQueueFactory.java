@@ -1,6 +1,5 @@
 package okjava.util.event;
 
-import static okjava.util.NotNull.notNull;
 import static okjava.util.check.Once.calledOnce;
 
 import okjava.util.annotation.Singleton;

@@ -1,8 +1,5 @@
 package okjava.util.id;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-
 import okjava.util.id.timesequence.TimeSequenceId;
 
 /**

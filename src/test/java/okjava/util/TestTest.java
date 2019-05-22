@@ -1,7 +1,5 @@
 package okjava.util;
 
-import org.junit.Test;
-
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
  * 5/8/2019

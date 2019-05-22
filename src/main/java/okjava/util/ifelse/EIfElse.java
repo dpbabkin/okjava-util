@@ -17,8 +17,8 @@ import java.util.function.Function;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         7/3/2016
- *         21:51.
+ * 7/3/2016
+ * 21:51.
  * @see okjava.util.ifelse.IfElse
  * @deprecated I do not like this class. Usages of this class prohibited until I like it. Better to use {@link okjava.util.ifelse.IfElse}
  */

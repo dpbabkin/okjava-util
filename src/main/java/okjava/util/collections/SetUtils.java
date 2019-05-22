@@ -11,8 +11,8 @@ import java.util.Set;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         6/6/2016
- *         22:01.
+ * 6/6/2016
+ * 22:01.
  */
 @Utility
 public enum SetUtils {

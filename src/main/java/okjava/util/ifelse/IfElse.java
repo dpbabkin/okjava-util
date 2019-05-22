@@ -16,8 +16,8 @@ import java.util.function.Supplier;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         7/3/2016
- *         21:51.
+ * 7/3/2016
+ * 21:51.
  */
 @Utility
 public enum IfElse {

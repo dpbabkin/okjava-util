@@ -15,8 +15,8 @@ import java.util.stream.Stream;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         6/4/2016
- *         23:43.
+ * 6/4/2016
+ * 23:43.
  */
 @Utility
 public enum OptionalUtils {

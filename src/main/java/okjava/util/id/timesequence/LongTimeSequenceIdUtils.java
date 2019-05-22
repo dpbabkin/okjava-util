@@ -14,15 +14,14 @@ import okjava.util.check.Never;
 @Utility
 public enum LongTimeSequenceIdUtils {
     ;
-    LongTimeSequenceIdUtils(@SuppressWarnings("unused") Never never) {
-        neverNeverCalled();
-    }
 
     private static final long MAX_SEQUENCE = (1L << 20) - 1;// 1048575 = bx11111111111111111111 (20)
     private static final long MAX_TIME = (1L << 42) - 1;// 4398046511103 = bx111111111111111111111111111111111111111111 (42) 2109.05.15 07:35:11.103
     private static final long RESERVED_BITS = (3L << 62);// two highest bits
+    LongTimeSequenceIdUtils(@SuppressWarnings("unused") Never never) {
+        neverNeverCalled();
+    }
     //private static final long SEQUENCE_MASK =
-
 
     public static String formatId(long raw) {
         return IdGeneratorDateTimeFormat.format(fetchTime(raw), fetchSequence(raw));
@@ -49,7 +48,7 @@ public enum LongTimeSequenceIdUtils {
     }
 
     public static long fetchTime(long raw) {
-        assert (raw >>> 20)>0:raw;
+        assert (raw >>> 20) > 0 : raw;
         return raw >>> 20;
     }
 

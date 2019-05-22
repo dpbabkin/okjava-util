@@ -6,8 +6,8 @@ import java.util.function.Supplier;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         2/15/2015
- *         23:58.
+ * 2/15/2015
+ * 23:58.
  */
 @FunctionalInterface
 public interface ESupplier<V, E extends Exception> {

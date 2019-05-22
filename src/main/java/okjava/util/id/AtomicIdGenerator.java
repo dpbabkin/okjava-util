@@ -14,9 +14,12 @@ import java.util.concurrent.atomic.AtomicLong;
 @Singleton
 public class AtomicIdGenerator implements IdGenerator<Long> {
 
+    private final static IdGenerator<Long> INSTANCE = new AtomicIdGenerator();
     private final AtomicLong atomicLong = new AtomicLong(0);
 
-    private final static IdGenerator<Long> INSTANCE = new AtomicIdGenerator();
+    private AtomicIdGenerator() {
+        calledOnce(this.getClass());
+    }
 
     public static IdGenerator<Long> i() {
         return INSTANCE;
@@ -28,10 +31,6 @@ public class AtomicIdGenerator implements IdGenerator<Long> {
 
     public static IdGenerator<Long> atomicIdGenerator() {
         return INSTANCE;
-    }
-
-    private AtomicIdGenerator() {
-        calledOnce(this.getClass());
     }
 
     @Override

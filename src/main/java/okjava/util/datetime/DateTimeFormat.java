@@ -12,10 +12,14 @@ import java.time.format.DateTimeFormatter;
  */
 public class DateTimeFormat {
 
-    private final DateTimeFormatter formatter;
     private static final String DEFAULT_FORMAT = "yyyy.MM.dd HH:mm:ss.SSS";
     private static final DateTimeFormat DEFAULT_INSTANCE = DateTimeFormat.create(DEFAULT_FORMAT);
+    private final DateTimeFormatter formatter;
     //DateTimeFormatter.ofPattern("yyyyMMdd HHmmssSSS");
+
+    private DateTimeFormat(String format) {
+        this.formatter = DateTimeFormatter.ofPattern(format);
+    }
 
     public static DateTimeFormat create() {
         return DEFAULT_INSTANCE;
@@ -23,10 +27,6 @@ public class DateTimeFormat {
 
     public static DateTimeFormat create(String format) {
         return new DateTimeFormat(format);
-    }
-
-    private DateTimeFormat(String format) {
-        this.formatter = DateTimeFormatter.ofPattern(format);
     }
 
     public long stringToLong(String dateTime) {

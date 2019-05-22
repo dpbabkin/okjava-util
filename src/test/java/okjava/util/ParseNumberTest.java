@@ -9,8 +9,8 @@ import java.util.ArrayList;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         6/4/2016
- *         23:48.
+ * 6/4/2016
+ * 23:48.
  */
 public class ParseNumberTest {
 

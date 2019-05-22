@@ -6,8 +6,8 @@ import okjava.util.annotation.Singleton;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         9/15/2015
- *         23:46.
+ * 9/15/2015
+ * 23:46.
  */
 @Singleton
 public final class DebugUtils {

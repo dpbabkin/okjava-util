@@ -12,8 +12,8 @@ import java.util.List;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         6/5/2016
- *         20:23.
+ * 6/5/2016
+ * 20:23.
  */
 public class ToStringUtilsTest {
 

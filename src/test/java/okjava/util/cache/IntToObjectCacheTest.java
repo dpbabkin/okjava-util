@@ -9,8 +9,8 @@ import java.util.function.IntFunction;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         1/10/2017
- *         23:12.
+ * 1/10/2017
+ * 23:12.
  */
 public class IntToObjectCacheTest {
 

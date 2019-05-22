@@ -12,8 +12,8 @@ import java.util.Set;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         6/5/2016
- *         00:20.
+ * 6/5/2016
+ * 00:20.
  */
 public class ClazzTest {
 

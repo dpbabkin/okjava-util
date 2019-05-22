@@ -4,8 +4,8 @@ import static okjava.util.NotNull.notNull;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         10/16/2016
- *         21:55.
+ * 10/16/2016
+ * 21:55.
  */
 public abstract class ObjectDelegate<D> {
 

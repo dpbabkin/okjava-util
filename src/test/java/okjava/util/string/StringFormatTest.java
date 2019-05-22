@@ -12,6 +12,13 @@ import java.util.List;
 public class StringFormatTest {
 
 
+    public void test001() {
+
+        Structure structure = new Structure(12, "test", ImmutableList.of("aaa", "bbb", "ccc", "ddd"));
+
+
+    }
+
     private static class Structure {
         private final int intField;
         private final String stringField;
@@ -34,13 +41,5 @@ public class StringFormatTest {
         public List<String> getListOfStringsField() {
             return listOfStringsField;
         }
-    }
-
-    public void test001() {
-
-        Structure structure = new Structure(12, "test", ImmutableList.of("aaa", "bbb", "ccc", "ddd"));
-
-
-
     }
 }

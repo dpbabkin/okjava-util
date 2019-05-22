@@ -7,6 +7,7 @@ package okjava.util.function;
  */
 public interface BiSupplier<A, B> {
     A getA();
+
     B getB();
 }
 

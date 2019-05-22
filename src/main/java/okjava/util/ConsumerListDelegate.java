@@ -14,12 +14,12 @@ public class ConsumerListDelegate<T> implements Consumer<T> {
 
     private final Collection<? extends Consumer<T>> delegates;
 
-    public static <T> Consumer<T> create(Collection<? extends Consumer<T>> delegates) {
-        return new ConsumerListDelegate<>(delegates);
-    }
-
     private ConsumerListDelegate(Collection<? extends Consumer<T>> delegates) {
         this.delegates = ImmutableList.copyOf(delegates);
+    }
+
+    public static <T> Consumer<T> create(Collection<? extends Consumer<T>> delegates) {
+        return new ConsumerListDelegate<>(delegates);
     }
 
     @Override

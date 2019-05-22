@@ -9,8 +9,8 @@ import java.util.function.Supplier;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         3/27/2017
- *         19:45.
+ * 3/27/2017
+ * 19:45.
  */
 
 @Singleton

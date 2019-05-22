@@ -1,6 +1,5 @@
 package okjava.util.e;
 
-import static java.util.Objects.requireNonNull;
 import static okjava.util.NotNull.notNull;
 
 import java.util.function.Consumer;

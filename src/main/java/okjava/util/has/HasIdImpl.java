@@ -4,8 +4,8 @@ import static java.util.Objects.requireNonNull;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
- *         6/10/2016
- *         18:52.
+ * 6/10/2016
+ * 18:52.
  */
 public class HasIdImpl<ID> implements HasId<ID> {
 

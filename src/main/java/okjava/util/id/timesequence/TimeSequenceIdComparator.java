@@ -4,7 +4,6 @@ import static okjava.util.check.Never.neverNeverCalled;
 
 import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
-import okjava.util.id.timesequence.TimeSequenceId;
 
 import java.util.Comparator;
 
@@ -17,13 +16,12 @@ import java.util.Comparator;
 enum TimeSequenceIdComparator {
     ;
 
-    TimeSequenceIdComparator(@SuppressWarnings("unused") Never never) {
-        neverNeverCalled();
-    }
-
     private static final Comparator<TimeSequenceId> TIME_SEQUENCE_ID_COMPARATOR
         = Comparator.comparingLong(TimeSequenceId::getTime).thenComparing(TimeSequenceId::getSequence);
 
+    TimeSequenceIdComparator(@SuppressWarnings("unused") Never never) {
+        neverNeverCalled();
+    }
 
     public static Comparator<TimeSequenceId> timeSequenceIdComparator() {
         return TIME_SEQUENCE_ID_COMPARATOR;

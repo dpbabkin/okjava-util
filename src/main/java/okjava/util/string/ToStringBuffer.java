@@ -18,6 +18,11 @@ public class ToStringBuffer {
     private final StringBuilder builder = new StringBuilder();
 
 
+    private ToStringBuffer(String name) {
+        this.builder.append(notNull(name));
+        this.builder.append(" { ");
+    }
+
     public static ToStringBuffer create(String name) {
         return new ToStringBuffer(name);
     }
@@ -30,11 +35,6 @@ public class ToStringBuffer {
         return ofClass(object.getClass());
     }
 
-    private ToStringBuffer(String name) {
-        this.builder.append(notNull(name));
-        this.builder.append(" { ");
-    }
-
     public <O> ToStringBuffer add(String name, O value) {
         this.builder.append(name).append("=").append(nullable(value)).append(" ");
         return this;
@@ -44,7 +44,7 @@ public class ToStringBuffer {
         return add(name, i2s(collection));
     }
 
-    public <K,V> ToStringBuffer add(String name, Map<K,V> map) {
+    public <K, V> ToStringBuffer add(String name, Map<K, V> map) {
         return add(name, m2s(map));
     }
 

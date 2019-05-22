@@ -19,12 +19,12 @@ public class WaitForCollection<E, C extends Collection<E>> {
     private final Lock lock = new ReentrantLock();
     private final Condition condition = lock.newCondition();
 
-    public static <E, C extends Collection<E>> WaitForCollection<E, C> create(C collection) {
-        return new WaitForCollection<>(collection);
-    }
-
     private WaitForCollection(C collection) {
         this.collection = notNull(collection);
+    }
+
+    public static <E, C extends Collection<E>> WaitForCollection<E, C> create(C collection) {
+        return new WaitForCollection<>(collection);
     }
 
     public boolean add(E element) {

@@ -16,11 +16,10 @@ public class LongTimeTimeSequenceIdGeneratorTest extends BaseIdGeneratorTest {
     private final IdGenerator<TimeSequenceId> timeBucketCountIdGenerator = new IdGenerator<TimeSequenceId>() {
         @Override
         public TimeSequenceId generate() {
-            long value =LongTimeTimeSequenceIdGenerator.timeSequenceIdGenerator().generate();
+            long value = LongTimeTimeSequenceIdGenerator.timeSequenceIdGenerator().generate();
             return timeSequenceIdFactory().create(fetchTime(value), fetchSequence(value));
         }
-    } ;
-
+    };
 
 
     @Override
