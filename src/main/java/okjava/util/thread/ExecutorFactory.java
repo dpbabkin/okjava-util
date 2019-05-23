@@ -3,6 +3,7 @@ package okjava.util.thread;
 import static java.lang.Math.min;
 import static okjava.util.check.Once.calledOnce;
 
+import okjava.util.RunnableUtils;
 import okjava.util.annotation.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,6 +63,13 @@ public class ExecutorFactory {
 
         return new ThreadPoolExecutor(getCorePoolSize(), getMaximumPoolSize(), getKeepAliveTime(), TimeUnit.MILLISECONDS,
             new LinkedBlockingQueue<>(), daemonThreadFactory);
+    }
+
+    public Executor getWrapToStringRunnableExecutor(String toString, Executor delegate) {
+        return command -> {
+            Runnable newRunnable = RunnableUtils.wrapToString(command, toString);
+            delegate.execute(newRunnable);
+        };
     }
 
     public Executor getExecutor() {

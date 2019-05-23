@@ -34,4 +34,18 @@ public enum RunnableUtils {
             }
         };
     }
+
+    public static Runnable wrapToString(Runnable runnable, String toString) {
+        return new Runnable() {
+            @Override
+            public void run() {
+                runnable.run();
+            }
+
+            @Override
+            public String toString() {
+                return toString;
+            }
+        };
+    }
 }
