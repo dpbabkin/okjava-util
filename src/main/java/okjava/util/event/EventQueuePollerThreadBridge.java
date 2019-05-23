@@ -6,6 +6,7 @@ import okjava.util.logger.LoggerUtils;
 import okjava.util.string.ToStringBuffer;
 import org.slf4j.Logger;
 
+import java.util.concurrent.BlockingQueue;
 import java.util.function.Consumer;
 
 /**
@@ -13,39 +14,34 @@ import java.util.function.Consumer;
  * 5/23/2019
  * 11:04.
  */
-public class EventQueueBridge<E> {
+class EventQueuePollerThreadBridge<E> {
 
     private final Consumer<E> eventConsumer;
-    private final EventQueue<E> eventQueue;
+    private final BlockingQueue<E> eventsQueue;
     private final Thread pollerThread;
     private final Logger LOGGER;
 
-    public static <E> EventQueueBridge<E> create(Consumer<E> eventConsumer, EventQueue<E> eventQueue) {
-        return new EventQueueBridge<>(eventConsumer, eventQueue);
+    static <E> EventQueuePollerThreadBridge<E> create(Consumer<E> eventConsumer, BlockingQueue<E> eventsQueue) {
+        return new EventQueuePollerThreadBridge<>(eventConsumer, eventsQueue);
     }
 
-    private EventQueueBridge(Consumer<E> eventConsumer, EventQueue<E> eventQueue) {
-
-        this.LOGGER = LoggerUtils.createLoggerWithPrefix(EventQueueBridge.class, eventConsumer.toString());
-
+    private EventQueuePollerThreadBridge(Consumer<E> eventConsumer, BlockingQueue<E> eventsQueue) {
+        this.LOGGER = LoggerUtils.createLoggerWithPrefix(EventQueuePollerThreadBridge.class, eventConsumer.toString());
         notNull(eventConsumer);
         this.eventConsumer = event -> {
             LOGGER.info(ToStringBuffer.create("consuming event").add("event", event).toString());
             eventConsumer.accept(event);
         };
-
-        this.eventQueue = notNull(eventQueue);
-        assert eventQueue.isActive() == false : eventQueue;
-        this.pollerThread = new Thread(this::pollEventQueue, EventQueueBridge.class.getSimpleName() + "._." + eventConsumer.toString());
+        this.eventsQueue = notNull(eventsQueue);
+        this.pollerThread = new Thread(this::pollEventQueue, EventQueuePollerThreadBridge.class.getSimpleName() + " @ " + eventConsumer.toString());
     }
 
-    public void start() {
+    EventQueuePollerThreadBridge<E> start() {
         pollerThread.start();
-        eventQueue.setActive(true);
+        return this;
     }
 
-    public void interruptAndJoin(long time) throws InterruptedException {
-        eventQueue.setActive(false);
+    void interruptAndJoin(long time) throws InterruptedException {
         pollerThread.interrupt();
         pollerThread.join(time);
         processLeftover();
@@ -55,8 +51,7 @@ public class EventQueueBridge<E> {
         LOGGER.info("starting");
         for (; ; ) {
             try {
-                E event = eventQueue.take();
-                //LOGGER.info(ToStringBuffer.create("pollEventQueue()").add("event", event).toString());
+                E event = eventsQueue.take();
                 eventConsumer.accept(event);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
@@ -68,12 +63,21 @@ public class EventQueueBridge<E> {
 
     private void processLeftover() {
         for (; ; ) {
-            E event = eventQueue.poll();
+            E event = eventsQueue.poll();
             if (event == null) {
                 return;
             }
             LOGGER.info(ToStringBuffer.create("processing leftover").add("event", event).toString());
             eventConsumer.accept(event);
         }
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuffer.of(this)
+                   .add("eventConsumer", eventConsumer.toString())
+                   .add("pollerThread", pollerThread)
+                   .add("eventsQueue", eventsQueue)
+                   .toString();
     }
 }
