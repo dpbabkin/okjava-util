@@ -8,7 +8,7 @@ import java.util.function.Consumer;
  * 11/25/2016
  * 19:57.
  */
-public interface PriorityExecutorSimple extends Executor, Consumer<Runnable> {
+public interface TwoSideExecutor extends Executor, Consumer<Runnable> {
 
     void executeFirst(Runnable runnable);
 

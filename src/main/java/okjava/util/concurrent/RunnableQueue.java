@@ -16,7 +16,7 @@ class RunnableQueue implements Runnable {
     private final Lock lock = new ReentrantLock();
     private final Queue<? extends Runnable> queue;
 
-    public RunnableQueue(Queue<? extends Runnable> queue) {
+    RunnableQueue(Queue<? extends Runnable> queue) {
         this.queue = notNull(queue);
     }
 

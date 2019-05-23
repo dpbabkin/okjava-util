@@ -9,7 +9,7 @@ import java.util.concurrent.Executor;
  * 11/25/2016
  * 19:49.
  */
-public final class ExecutableTaskQueueConfined implements PriorityExecutorSimple {
+public final class ExecutableTaskQueueConfined implements TwoSideExecutor {
 
     private final TaskQueueConfined taskQueueConfined;
     private final Executor executor;
