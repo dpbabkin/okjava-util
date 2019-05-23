@@ -7,7 +7,7 @@ import java.util.function.Consumer;
  * 4/28/2018
  * 10:57.
  */
-public interface EventQueue<E> extends Consumer<E> {
+interface EventQueueNewInner<E> extends Consumer<E> {
 
     void add(E e);
 
