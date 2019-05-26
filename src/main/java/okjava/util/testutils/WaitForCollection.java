@@ -2,7 +2,10 @@ package okjava.util.testutils;
 
 import static okjava.util.NotNull.notNull;
 
+import com.google.common.collect.Lists;
+
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -23,12 +26,15 @@ public class WaitForCollection<E, C extends Collection<E>> {
         this.collection = notNull(collection);
     }
 
+    public static <E> WaitForCollection<E, List<E>> createWithArrayList() {
+        return new WaitForCollection<>(Lists.newArrayList());
+    }
+
     public static <E, C extends Collection<E>> WaitForCollection<E, C> create(C collection) {
         return new WaitForCollection<>(collection);
     }
 
     public boolean add(E element) {
-        //        return collection.add(element);
         lock.lock();
         try {
             condition.signalAll();
@@ -38,9 +44,9 @@ public class WaitForCollection<E, C extends Collection<E>> {
         }
     }
 
-//    public C getCollection() {
-//        return collection;
-//    }
+    public C getCollection() {
+        return collection;
+    }
 
     public void awaitAppearing(int number) throws InterruptedException {
         assert number >= 0 : number;
