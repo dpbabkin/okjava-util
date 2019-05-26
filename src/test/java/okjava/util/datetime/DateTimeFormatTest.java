@@ -20,7 +20,7 @@ public class DateTimeFormatTest {
     public void testLongToString() {
         long time = 1557178359371L;
 
-        String result = dateTimeFormat.longToString(time);
+        String result = dateTimeFormat.longTimeToString(time);
 
         assertThat(result, is("20190506 213239371"));
 

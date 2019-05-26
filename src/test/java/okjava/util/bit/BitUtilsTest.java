@@ -32,7 +32,7 @@ public class BitUtilsTest {
         System.out.println(v);
         System.out.println(Long.toBinaryString(v));
         System.out.println(Long.toBinaryString(v).length());
-        System.out.println(DateTimeFormat.create().longToString(v));
+        System.out.println(DateTimeFormat.create().longTimeToString(v));
 
         long c = 1L << 20;
         c -= 1;

@@ -17,7 +17,7 @@ public class DateTimeFormatTest {
     public void test001() {
         long time = 1557178359371L;
 
-        String result = IdGeneratorDateTimeFormat.longToString(time);
+        String result = IdGeneratorDateTimeFormat.longTimeToString(time);
 
         assertThat(result, is("20190506:213239.371"));
 
