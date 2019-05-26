@@ -21,11 +21,11 @@ enum IdGeneratorDateTimeFormat {
         neverNeverCalled();
     }
 
-    public static String longToString(long time) {
-        return FORMATTER.longToString(time);
+    public static String longTimeToString(long time) {
+        return FORMATTER.longTimeToString(time);
     }
 
     public static String format(long time, long sequence) {
-        return longToString(time) + "_" + sequence;
+        return longTimeToString(time) + "_" + sequence;
     }
 }

@@ -5,6 +5,10 @@ import static okjava.util.check.Never.neverNeverCalled;
 import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
  * 5/7/2019
@@ -18,6 +22,7 @@ public enum LongTimeSequenceIdUtils {
     private static final long MAX_SEQUENCE = (1L << 20) - 1;// 1048575 = bx11111111111111111111 (20)
     private static final long MAX_TIME = (1L << 42) - 1;// 4398046511103 = bx111111111111111111111111111111111111111111 (42) 2109.05.15 07:35:11.103
     private static final long RESERVED_BITS = (3L << 62);// two highest bits
+
     LongTimeSequenceIdUtils(@SuppressWarnings("unused") Never never) {
         neverNeverCalled();
     }
@@ -25,6 +30,10 @@ public enum LongTimeSequenceIdUtils {
 
     public static String formatId(long raw) {
         return IdGeneratorDateTimeFormat.format(fetchTime(raw), fetchSequence(raw));
+    }
+
+    public static LocalDateTime convertMillisToLocalDateTime(long time) {
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(time), ZoneOffset.UTC);
     }
 
     static boolean ifUnderLimit(long time, long sequence) {

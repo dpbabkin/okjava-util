@@ -1,5 +1,7 @@
 package okjava.util.datetime;
 
+import static okjava.util.id.timesequence.LongTimeSequenceIdUtils.convertMillisToLocalDateTime;
+
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -34,8 +36,8 @@ public class DateTimeFormat {
         return localDateTime.toInstant(ZoneOffset.UTC).toEpochMilli();
     }
 
-    public String longToString(long time) {
-        LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(time), ZoneOffset.UTC);
+    public String longTimeToString(long time) {
+        LocalDateTime dateTime = convertMillisToLocalDateTime(time);
         return dateTime.format(formatter);
     }
 }

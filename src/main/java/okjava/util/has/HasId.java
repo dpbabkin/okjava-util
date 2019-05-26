@@ -7,4 +7,8 @@ package okjava.util.has;
  */
 public interface HasId<ID> {
     ID getId();
+
+    default String getStringId() {
+        return getId().toString();
+    }
 }

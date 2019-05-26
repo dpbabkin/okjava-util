@@ -5,6 +5,7 @@ import static okjava.util.check.Once.calledOnce;
 
 import okjava.util.RunnableUtils;
 import okjava.util.annotation.Singleton;
+import okjava.util.concurrent.ExecutableTaskQueueConfined;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -70,6 +71,10 @@ public class ExecutorFactory {
             Runnable newRunnable = RunnableUtils.wrapToString(command, toString);
             delegate.execute(newRunnable);
         };
+    }
+
+    public Executor getTaskQueueConfinedExecutor() {
+        return ExecutableTaskQueueConfined.create(getExecutor());
     }
 
     public Executor getExecutor() {

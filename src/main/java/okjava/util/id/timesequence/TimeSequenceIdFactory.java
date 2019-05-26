@@ -27,6 +27,10 @@ public class TimeSequenceIdFactory {
         return INSTANCE;
     }
 
+    public TimeSequenceId fromLong(long id) {
+        return LongTimeSequenceId.fromLong(id);
+    }
+
     public TimeSequenceId create(long time, long sequence) {
         if (ifUnderLimit(time, sequence)) {
             return LongTimeSequenceId.create(time, sequence);

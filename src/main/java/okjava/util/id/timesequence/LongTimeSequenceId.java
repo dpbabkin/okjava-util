@@ -22,7 +22,7 @@ final class LongTimeSequenceId extends TimeSequenceIdBase implements TimeSequenc
         this.timeAndSequence = joinTimeAndSequence(time, sequence);
     }
 
-    public static TimeSequenceId fromLong(long raw) {
+    static TimeSequenceId fromLong(long raw) {
         return create(fetchTime(raw), fetchSequence(raw));
     }
 

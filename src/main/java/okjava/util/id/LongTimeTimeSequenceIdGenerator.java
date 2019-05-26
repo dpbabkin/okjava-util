@@ -14,16 +14,23 @@ import java.util.concurrent.atomic.AtomicLong;
 class LongTimeTimeSequenceIdGenerator implements IdGenerator<Long> {
 
 
-    private static IdGenerator<Long> INSTANCE = new LongTimeTimeSequenceIdGenerator();
-    private final AtomicLong time = new AtomicLong(joinTimeAndSequence(millis(), 0));
+    private static IdGenerator<Long> INSTANCE;
 
-    private LongTimeTimeSequenceIdGenerator() {
-        calledOnce(this.getClass());
+    static {
+        INSTANCE = new LongTimeTimeSequenceIdGenerator();
         try {
             Thread.sleep(1);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
+            throw new Error(e.getMessage(), e);
         }
+    }
+
+    private final AtomicLong time = new AtomicLong(joinTimeAndSequence(millis(), 0));
+
+    private LongTimeTimeSequenceIdGenerator() {
+        calledOnce(this.getClass());
+
     }
 
     static IdGenerator<Long> i() {
