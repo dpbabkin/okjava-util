@@ -10,13 +10,14 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Consumer;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
  * 5/16/2019
  * 18:19.
  */
-public class WaitForCollection<E, C extends Collection<E>> {
+public class WaitForCollection<E, C extends Collection<E>> implements Consumer<E> {
 
     private final C collection;
     private final Lock lock = new ReentrantLock();
@@ -83,5 +84,10 @@ public class WaitForCollection<E, C extends Collection<E>> {
                 lock.unlock();
             }
         }
+    }
+
+    @Override
+    public void accept(E e) {
+        add(e);
     }
 }
