@@ -17,5 +17,5 @@ public interface EPredicate<T, E extends Exception> {
         return predicate::test;
     }
 
-    boolean test(T t);
+    boolean test(T t) throws E;
 }

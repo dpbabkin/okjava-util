@@ -4,6 +4,9 @@ import static okjava.util.check.Never.neverNeverCalled;
 
 import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
+import okjava.util.e.EFunction;
+import okjava.util.e.ExceptionHandler;
+import okjava.util.exception.SneakyThrower;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -43,5 +46,25 @@ public enum FunctionUtils {
         return t -> {
             throw supplier.get();
         };
+    }
+
+    public static <V1, V2, E extends Exception> Function<V1, V2> divertExceptionFromEFunction(EFunction<V1, V2, E> eFunction, ExceptionHandler<E> exceptionHandler) {
+
+        Function<V1, V2> result = value -> {
+            try {
+                return eFunction.apply(value);
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Exception e) {
+                try {
+                    exceptionHandler.accept((E) e);
+                } catch (ClassCastException e1) {
+                    //hm... not declared checked exception type thrown.
+                    SneakyThrower.sneakyThrow(e);
+                }
+            }
+            throw new Error("should never happen");
+        };
+        return result;
     }
 }
