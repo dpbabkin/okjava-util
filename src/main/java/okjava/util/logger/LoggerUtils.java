@@ -24,7 +24,7 @@ public enum LoggerUtils {
     }
 
     public static Consumer<String> createNamedLogger(String name, Logger logger) {
-        return ConsumerUtils.map(logger::info, s -> name + " " + s);
+        return ConsumerUtils.map((Consumer<String>) logger::info, s -> name + " " + s);
     }
 
     public static Consumer<String> createLoggerConsumerWithPrefix(Class<?> clazz, String prefix) {

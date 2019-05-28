@@ -8,9 +8,9 @@ import java.util.function.Consumer;
  * 11:06.
  */
 @FunctionalInterface
-public interface RuntimeExceptionHandler extends ExceptionHandler<RuntimeException> {
+public interface RuntimeExceptionHandler<E extends RuntimeException> extends ExceptionHandler<E> {
 
-    static RuntimeExceptionHandler fromConsumer(Consumer<RuntimeException> runtimeExceptionConsumer) {
+    static <E extends RuntimeException> RuntimeExceptionHandler<E> fromConsumer(Consumer<RuntimeException> runtimeExceptionConsumer) {
         return runtimeExceptionConsumer::accept;
     }
 }
