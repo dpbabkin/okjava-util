@@ -55,11 +55,19 @@ public enum MapUtils {
         }
     }
 
-    public static <K, V, E extends Exception> V getOrThrowIllegalState(Map<K, V> map, K key) throws E {
+    public static <K, V> V getOrThrowIllegalArgument(Map<K, V> map, K key) {
+        return getOrThrowIllegalArgument(map, key, key.toString());
+    }
+
+    public static <K, V> V getOrThrowIllegalArgument(Map<K, V> map, K key, String message) {
+        return getOrThrow(map, key, k -> new IllegalArgumentException(message));
+    }
+
+    public static <K, V> V getOrThrowIllegalState(Map<K, V> map, K key) {
         return getOrThrowIllegalState(map, key, key.toString());
     }
 
-    public static <K, V, E extends Exception> V getOrThrowIllegalState(Map<K, V> map, K key, String message) throws E {
+    public static <K, V> V getOrThrowIllegalState(Map<K, V> map, K key, String message) {
         return getOrThrow(map, key, k -> new IllegalStateException(message));
     }
 
