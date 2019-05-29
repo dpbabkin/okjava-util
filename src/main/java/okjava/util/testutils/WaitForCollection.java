@@ -22,6 +22,7 @@ public class WaitForCollection<E, C extends Collection<E>> implements Consumer<E
     private final C collection;
     private final Lock lock = new ReentrantLock();
     private final Condition condition = lock.newCondition();
+    private boolean abort = false;
 
     private WaitForCollection(C collection) {
         this.collection = notNull(collection);
@@ -49,12 +50,22 @@ public class WaitForCollection<E, C extends Collection<E>> implements Consumer<E
         return collection;
     }
 
+    public void abort() {
+        lock.lock();
+        try {
+            abort = true;
+            condition.signalAll();
+        } finally {
+            lock.unlock();
+        }
+    }
+
     public void awaitAppearing(int number) throws InterruptedException {
         assert number >= 0 : number;
         for (; ; ) {
             lock.lock();
             try {
-                if (collection.size() >= number) {
+                if (abort || collection.size() >= number) {
                     return;
                 }
                 condition.await();
@@ -71,6 +82,10 @@ public class WaitForCollection<E, C extends Collection<E>> implements Consumer<E
         for (; ; ) {
             lock.lock();
             try {
+                if (abort) {
+                    return false;
+                }
+
                 if (collection.size() >= number) {
                     return true;
                 }
