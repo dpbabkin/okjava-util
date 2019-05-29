@@ -40,6 +40,11 @@ public class ToStringBuffer {
         return this;
     }
 
+    public <O> ToStringBuffer nl() {
+        this.builder.append(System.lineSeparator());
+        return this;
+    }
+
     public <T> ToStringBuffer add(String name, Collection<T> collection) {
         return add(name, i2s(collection));
     }
