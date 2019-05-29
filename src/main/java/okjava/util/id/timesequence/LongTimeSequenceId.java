@@ -49,6 +49,11 @@ final class LongTimeSequenceId extends TimeSequenceIdBase implements TimeSequenc
     }
 
     @Override
+    public int hashCode() {
+        return (int) (timeAndSequence ^ (timeAndSequence >>> 32));
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o instanceof LongTimeSequenceId) {
@@ -60,10 +65,5 @@ final class LongTimeSequenceId extends TimeSequenceIdBase implements TimeSequenc
         if (!(o instanceof TimeSequenceId)) return false;
         TimeSequenceId that = (TimeSequenceId) o;
         return this.getTime() == that.getTime() && this.getSequence() == that.getSequence();
-    }
-
-    @Override
-    public int hashCode() {
-        return (int) (timeAndSequence ^ (timeAndSequence >>> 32));
     }
 }

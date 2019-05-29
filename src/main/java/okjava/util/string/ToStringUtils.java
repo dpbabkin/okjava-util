@@ -25,6 +25,7 @@ public enum ToStringUtils {
     private static final Function<Object, String> TO_STRING_MAPPER = ToStringUtils::nullable;
     private static final Function<String, String> STRING_TO_STRING_MAPPER = TO_STRING_MAPPER::apply;
     private static final String DEFAULT_SEPARATOR = " ";
+
     ToStringUtils(@SuppressWarnings("unused") Never never) {
         Never.neverNeverCalled();
     }

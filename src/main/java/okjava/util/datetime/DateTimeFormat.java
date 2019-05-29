@@ -2,7 +2,6 @@ package okjava.util.datetime;
 
 import static okjava.util.id.timesequence.LongTimeSequenceIdUtils.convertMillisToLocalDateTime;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;

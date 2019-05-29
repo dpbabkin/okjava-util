@@ -17,8 +17,9 @@ public interface EConsumer<T, E extends Exception> {
         requireNonNull(consumer);
         return consumer::accept;
     }
-    static <T, E extends Exception> EConsumer<T,E> wrapToString(EConsumer<T,E> consumer, Supplier<String> toStringSupplier) {
-        return new EConsumer<T,E>() {
+
+    static <T, E extends Exception> EConsumer<T, E> wrapToString(EConsumer<T, E> consumer, Supplier<String> toStringSupplier) {
+        return new EConsumer<T, E>() {
 
 
             @Override

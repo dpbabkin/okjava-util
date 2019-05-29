@@ -19,14 +19,15 @@ final class QueueBridgeImpl<E> implements QueueBridge<E> {
     private final BlockingQueue<E> eventsQueue;
     private final Object MUTEX = new Object();
     private volatile boolean active = false;
+    private final Consumer<E> incoming = this::consumeEvent;
     private EventQueuePollerThreadBridge<E> eventQueuePollerThreadBridge = null;
-
-    static <E> QueueBridge<E> create(BlockingQueue<E> eventsQueue) {
-        return new QueueBridgeImpl<>(eventsQueue);
-    }
 
     private QueueBridgeImpl(BlockingQueue<E> eventsQueue) {
         this.eventsQueue = notNull(eventsQueue);
+    }
+
+    static <E> QueueBridge<E> create(BlockingQueue<E> eventsQueue) {
+        return new QueueBridgeImpl<>(eventsQueue);
     }
 
     private void consumeEvent(E event) {
@@ -37,8 +38,6 @@ final class QueueBridgeImpl<E> implements QueueBridge<E> {
             throw new NeverHappensError("eventsQueue can not accept element. JVM can not continue with that.");
         }
     }
-
-    private final Consumer<E> incoming = this::consumeEvent;
 
     @Override
     public Consumer<E> getIncomingConsumer() {

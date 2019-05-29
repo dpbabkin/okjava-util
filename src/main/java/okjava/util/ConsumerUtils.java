@@ -53,6 +53,7 @@ public enum ConsumerUtils {
     }
 
 
+    @SuppressWarnings("unchecked")
     public static <V, E extends Exception> Consumer<V> divertExceptionFromEConsumer(EConsumer<V, E> eConsumer, ExceptionHandler<E> exceptionHandler) {
 
         Consumer<V> result = value -> {

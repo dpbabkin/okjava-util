@@ -21,10 +21,6 @@ class EventQueuePollerThreadBridge<E> {
     private final Thread pollerThread;
     private final Logger LOGGER;
 
-    static <E> EventQueuePollerThreadBridge<E> create(Consumer<E> eventConsumer, BlockingQueue<E> eventsQueue) {
-        return new EventQueuePollerThreadBridge<>(eventConsumer, eventsQueue);
-    }
-
     private EventQueuePollerThreadBridge(Consumer<E> eventConsumer, BlockingQueue<E> eventsQueue) {
         this.LOGGER = LoggerUtils.createLoggerWithPrefix(EventQueuePollerThreadBridge.class, eventConsumer.toString());
         notNull(eventConsumer);
@@ -34,6 +30,10 @@ class EventQueuePollerThreadBridge<E> {
         };
         this.eventsQueue = notNull(eventsQueue);
         this.pollerThread = new Thread(this::pollEventQueue, EventQueuePollerThreadBridge.class.getSimpleName() + " @ " + eventConsumer.toString());
+    }
+
+    static <E> EventQueuePollerThreadBridge<E> create(Consumer<E> eventConsumer, BlockingQueue<E> eventsQueue) {
+        return new EventQueuePollerThreadBridge<>(eventConsumer, eventsQueue);
     }
 
     EventQueuePollerThreadBridge<E> start() {

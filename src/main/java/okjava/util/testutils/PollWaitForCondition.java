@@ -17,11 +17,11 @@ import java.util.function.Supplier;
 public enum PollWaitForCondition {
     ;
 
+    private final static long POLL_INTERVAL = 100L;
+
     PollWaitForCondition(@SuppressWarnings("unused") Never never) {
         neverNeverCalled();
     }
-
-    private final static long POLL_INTERVAL = 100L;
 
     public static boolean pollWait(Supplier<Boolean> test, long time, TimeUnit timeUnit) throws InterruptedException {
 

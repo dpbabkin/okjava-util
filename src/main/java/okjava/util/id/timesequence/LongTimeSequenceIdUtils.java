@@ -8,6 +8,7 @@ import okjava.util.check.Never;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.function.Function;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -22,11 +23,15 @@ public enum LongTimeSequenceIdUtils {
     private static final long MAX_SEQUENCE = (1L << 20) - 1;// 1048575 = bx11111111111111111111 (20)
     private static final long MAX_TIME = (1L << 42) - 1;// 4398046511103 = bx111111111111111111111111111111111111111111 (42) 2109.05.15 07:35:11.103
     private static final long RESERVED_BITS = (3L << 62);// two highest bits
+    private final static Function<Long, String> TIME_SEQUENCE_ID_FORMATTER = LongTimeSequenceIdUtils::formatId;
 
     LongTimeSequenceIdUtils(@SuppressWarnings("unused") Never never) {
         neverNeverCalled();
     }
-    //private static final long SEQUENCE_MASK =
+
+    public static Function<Long, String> getTimeSequenceIdFormatter() {
+        return TIME_SEQUENCE_ID_FORMATTER;
+    }
 
     public static String formatId(long raw) {
         return IdGeneratorDateTimeFormat.format(fetchTime(raw), fetchSequence(raw));
