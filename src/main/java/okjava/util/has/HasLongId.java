@@ -5,6 +5,6 @@ package okjava.util.has;
  * 6/1/2016
  * 19:47.
  */
-public interface HasLongId extends HasId<Long> {
+public interface HasLongId extends HasComparableId<Long> {
 
 }

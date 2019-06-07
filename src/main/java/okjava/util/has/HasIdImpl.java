@@ -7,11 +7,15 @@ import static java.util.Objects.requireNonNull;
  * 6/10/2016
  * 18:52.
  */
-public class HasIdImpl<ID> implements HasId<ID> {
+public final class HasIdImpl<ID> implements HasId<ID> {
 
     private final ID id;
 
-    public HasIdImpl(ID id) {
+    public static <ID> HasId<ID> create(ID id) {
+        return new HasIdImpl<>(id);
+    }
+
+    private HasIdImpl(ID id) {
         this.id = requireNonNull(id);
     }
 

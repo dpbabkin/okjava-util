@@ -5,6 +5,6 @@ package okjava.util.has;
  * 6/1/2016
  * 19:47.
  */
-public interface HasStringId extends HasId<String> {
+public interface HasStringId extends HasComparableId<String> {
 
 }
