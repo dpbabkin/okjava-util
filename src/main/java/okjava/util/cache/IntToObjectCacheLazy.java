@@ -3,7 +3,8 @@ package okjava.util.cache;
 import static okjava.util.NotNull.notNull;
 import static okjava.util.check.MathCheck.nonNegative;
 
-import java.util.ArrayList;
+import com.google.common.collect.Lists;
+
 import java.util.List;
 import java.util.function.IntFunction;
 
@@ -13,31 +14,29 @@ import java.util.function.IntFunction;
  * 21:53.
  */
 public final class IntToObjectCacheLazy<O> implements IntFunction<O> {
-    private final int min;
-    private final List<O> list = new ArrayList<>();
+    private final int offset;
+    private final List<O> list = Lists.newCopyOnWriteArrayList();
     private final IntFunction<O> factory;
 
     @SuppressWarnings("unchecked")
-    private IntToObjectCacheLazy(IntFunction<O> factory, int min) {
+    private IntToObjectCacheLazy(IntFunction<O> factory, int offset) {
         this.factory = notNull(factory);
-        this.min = nonNegative(min);
+        this.offset = nonNegative(offset);
     }
 
     public static <O> IntFunction<O> create(IntFunction<O> factory) {
         return new IntToObjectCacheLazy<>(factory, 0);
     }
 
-    public static <O> IntFunction<O> create(IntFunction<O> factory, int min) {
-        return new IntToObjectCacheLazy<>(factory, min);
+    public static <O> IntFunction<O> create(IntFunction<O> factory, int offset) {
+        return new IntToObjectCacheLazy<>(factory, offset);
     }
 
     @Override
     public O apply(int value) {
-        int index = value - min;
+        int index = value - offset;
         while (list.size() < index + 1) {
-            synchronized (list) {
-                list.add(null);
-            }
+            list.add(null);
         }
         O object = list.get(index);
         if (object == null) {

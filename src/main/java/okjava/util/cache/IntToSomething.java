@@ -10,7 +10,7 @@ import java.util.function.IntFunction;
  * 1/11/2017
  * 19:06.
  */
-public class IntToSomething<O> implements IntFunction<O> {
+public final class IntToSomething<O> implements IntFunction<O> {
 
     private final O zero;
     private final O one;

@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -36,8 +38,12 @@ public enum LoggerUtils {
         return LoggerFactory.getLogger(clazz);
     }
 
-    public static Logger createLoggerWithPrefix(Class<?> clazz, String prefix) {
-        return LoggerFactory.getLogger(clazz.getName() + "._." + prefix);
+    public static Logger createLoggerWithPrefix(Class<?> clazz, Object... prefix) {
+        String logPrefix = Stream.of(prefix)
+                               .map(Object::toString)
+                               .collect(Collectors.joining("./.", "._.", ""));
+
+        return LoggerFactory.getLogger(clazz.getName() + logPrefix);
     }
 }
 

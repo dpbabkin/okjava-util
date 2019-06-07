@@ -22,7 +22,7 @@ class EventQueuePollerThreadBridge<E> {
     private final Logger LOGGER;
 
     private EventQueuePollerThreadBridge(Consumer<E> eventConsumer, BlockingQueue<E> eventsQueue) {
-        this.LOGGER = LoggerUtils.createLoggerWithPrefix(EventQueuePollerThreadBridge.class, eventConsumer.toString());
+        this.LOGGER = LoggerUtils.createLoggerWithPrefix(EventQueuePollerThreadBridge.class, eventConsumer);
         notNull(eventConsumer);
         this.eventConsumer = event -> {
             LOGGER.info(ToStringBuffer.create("consuming event").add("event", event).toString());
