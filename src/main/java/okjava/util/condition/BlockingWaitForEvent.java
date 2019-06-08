@@ -21,14 +21,17 @@ import java.util.function.Supplier;
  */
 public final class BlockingWaitForEvent {
 
-    private final ReentrantLock lock = new ReentrantLock();
-    private final Condition condition = lock.newCondition();
     private static final Executor EXECUTOR = ForkJoinPool.commonPool();
-
     private static final long MAX_POLL_INTERVAL = Long.MAX_VALUE;
     private static final long DEFAULT_POLL_INTERVAL = 100;
+    private final ReentrantLock lock = new ReentrantLock();
+    private final Condition condition = lock.newCondition();
     private final long pollInterval;
     private final LongSupplier getInfiniteWaitTime;
+    private final Runnable sendSignalForced = () -> {
+        boolean result = sendSignal(true);
+        assert result;
+    };
 
     private BlockingWaitForEvent(final long pollInterval) {
         this.pollInterval = MathCheck.positive(pollInterval);
@@ -46,11 +49,6 @@ public final class BlockingWaitForEvent {
     public static BlockingWaitForEvent createWithPoll() {
         return new BlockingWaitForEvent(DEFAULT_POLL_INTERVAL);
     }
-
-    private final Runnable sendSignalForced = () -> {
-        boolean result = sendSignal(true);
-        assert result;
-    };
 
     private boolean sendSignal(boolean force) {
         if (force) {
@@ -76,54 +74,6 @@ public final class BlockingWaitForEvent {
 
     public Waiter waiter(Supplier<Boolean> isEventHappened) {
         return new WaiterImpl(isEventHappened);
-    }
-
-    private final class WaiterImpl implements Waiter, Supplier<Boolean> {
-        private final Supplier<Boolean> isEventHappened;
-        private boolean abort = false;
-        private final Supplier<Boolean> abortProvider = this::isAborted;
-
-        private WaiterImpl(Supplier<Boolean> isEventHappened) {
-            this.isEventHappened = notNull(isEventHappened);
-        }
-
-        @Override
-        public void abort() {
-            lock.lock();
-            try {
-                abort = true;
-                condition.signalAll();
-            } finally {
-                lock.unlock();
-            }
-        }
-
-        private boolean isAborted() {
-            lock.lock();
-            try {
-                return abort;
-            } finally {
-                lock.unlock();
-            }
-        }
-
-        @Override
-        public boolean await() throws InterruptedException {
-            return BlockingWaitForEvent.this.await(this.isEventHappened, abortProvider);
-        }
-
-        @Override
-        public boolean await(long time, TimeUnit timeUnit) throws InterruptedException {
-            return BlockingWaitForEvent.this.await(this.isEventHappened, time, timeUnit, abortProvider);
-        }
-
-        /**
-         * @return true if should stop.
-         */
-        @Override
-        public Boolean get() {
-            return abort || isEventHappened.get();
-        }
     }
 
     private boolean await(Supplier<Boolean> isEventHappened, Supplier<Boolean> isAborted) throws InterruptedException {
@@ -173,5 +123,53 @@ public final class BlockingWaitForEvent {
         // return value in [0, pollInterval]
         // zero means run out of time.
         return max(0, min(needToWait, pollInterval));
+    }
+
+    private final class WaiterImpl implements Waiter, Supplier<Boolean> {
+        private final Supplier<Boolean> isEventHappened;
+        private boolean abort = false;
+        private final Supplier<Boolean> abortProvider = this::isAborted;
+
+        private WaiterImpl(Supplier<Boolean> isEventHappened) {
+            this.isEventHappened = notNull(isEventHappened);
+        }
+
+        @Override
+        public void abort() {
+            lock.lock();
+            try {
+                abort = true;
+                condition.signalAll();
+            } finally {
+                lock.unlock();
+            }
+        }
+
+        @Override
+        public boolean await() throws InterruptedException {
+            return BlockingWaitForEvent.this.await(this.isEventHappened, abortProvider);
+        }
+
+        @Override
+        public boolean await(long time, TimeUnit timeUnit) throws InterruptedException {
+            return BlockingWaitForEvent.this.await(this.isEventHappened, time, timeUnit, abortProvider);
+        }
+
+        private boolean isAborted() {
+            lock.lock();
+            try {
+                return abort;
+            } finally {
+                lock.unlock();
+            }
+        }
+
+        /**
+         * @return true if should stop.
+         */
+        @Override
+        public Boolean get() {
+            return abort || isEventHappened.get();
+        }
     }
 }

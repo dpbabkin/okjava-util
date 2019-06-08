@@ -127,9 +127,8 @@ public class BlockingWaitForEventTest {
     }
 
     private static class Counter {
-        private volatile long count = 0;
-
         private final Lock lock = new ReentrantLock();
+        private volatile long count = 0;
 
         private void makeCount(BlockingWaitForEvent waitLock) {
             lock.lock();

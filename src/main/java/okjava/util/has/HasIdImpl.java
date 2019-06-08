@@ -11,12 +11,12 @@ public final class HasIdImpl<ID> implements HasId<ID> {
 
     private final ID id;
 
-    public static <ID> HasId<ID> create(ID id) {
-        return new HasIdImpl<>(id);
-    }
-
     private HasIdImpl(ID id) {
         this.id = requireNonNull(id);
+    }
+
+    public static <ID> HasId<ID> create(ID id) {
+        return new HasIdImpl<>(id);
     }
 
     @Override
