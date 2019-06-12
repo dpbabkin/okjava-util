@@ -42,7 +42,7 @@ public final class BlockingWaitForEvent {
         return new BlockingWaitForEvent(MAX_POLL_INTERVAL);
     }
 
-    public static BlockingWaitForEvent create(long pollInterval) {
+    public static BlockingWaitForEvent createWithPoll(long pollInterval) {
         return new BlockingWaitForEvent(pollInterval);
     }
 

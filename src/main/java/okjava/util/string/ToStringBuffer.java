@@ -1,5 +1,8 @@
 package okjava.util.string;
 
+import okjava.util.has.HasTimeSequenceId;
+import okjava.util.id.timesequence.LongTimeSequenceIdUtils;
+
 import static okjava.util.NotNull.notNull;
 import static okjava.util.string.ToStringUtils.i2s;
 import static okjava.util.string.ToStringUtils.m2s;
@@ -33,6 +36,14 @@ public class ToStringBuffer {
 
     public static <O> ToStringBuffer of(O object) {
         return ofClass(object.getClass());
+    }
+
+    public <O> ToStringBuffer id(long id) {
+        return add("id", id);
+    }
+
+    public <O> ToStringBuffer id(HasTimeSequenceId id) {
+        return add("id", id.getStringId());
     }
 
     public <O> ToStringBuffer add(String name, O value) {

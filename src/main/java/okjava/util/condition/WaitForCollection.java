@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -51,6 +52,10 @@ public class WaitForCollection<E, C extends Collection<E>> implements Consumer<E
 
     public Waiter createWaiter(int number) {
         return block.waiter(() -> collection.size() >= number);
+    }
+
+    public Waiter createWaiter(Function<C, Boolean> tester) {
+        return block.waiter(() -> tester.apply(collection));
     }
 
     @Override
