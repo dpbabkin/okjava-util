@@ -1,7 +1,6 @@
 package okjava.util.string;
 
 import okjava.util.has.HasTimeSequenceId;
-import okjava.util.id.timesequence.LongTimeSequenceIdUtils;
 
 import static okjava.util.NotNull.notNull;
 import static okjava.util.string.ToStringUtils.i2s;
@@ -10,6 +9,7 @@ import static okjava.util.string.ToStringUtils.nullable;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -26,23 +26,23 @@ public class ToStringBuffer {
         this.builder.append(" { ");
     }
 
-    public static ToStringBuffer create(String name) {
+    public static ToStringBuffer string(String name) {
         return new ToStringBuffer(name);
     }
 
     public static <C> ToStringBuffer ofClass(Class<C> clazz) {
-        return create(clazz.getSimpleName());
+        return string(clazz.getSimpleName());
     }
 
     public static <O> ToStringBuffer of(O object) {
         return ofClass(object.getClass());
     }
 
-    public <O> ToStringBuffer id(long id) {
+    public <O> ToStringBuffer timeSequenceId(long id) {
         return add("id", id);
     }
 
-    public <O> ToStringBuffer id(HasTimeSequenceId id) {
+    public <O> ToStringBuffer timeSequenceId(HasTimeSequenceId id) {
         return add("id", id.getStringId());
     }
 
@@ -68,5 +68,9 @@ public class ToStringBuffer {
     public String toString() {
         this.builder.append("}");
         return builder.toString();
+    }
+
+    public <E extends Exception> E toException(Function<String, E> function) {
+        return function.apply(toString());
     }
 }

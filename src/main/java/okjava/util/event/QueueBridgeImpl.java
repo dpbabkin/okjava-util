@@ -32,7 +32,7 @@ final class QueueBridgeImpl<E> implements QueueBridge<E> {
 
     private void consumeEvent(E event) {
         if (active == false) {
-            throw new IllegalArgumentException(ToStringBuffer.create("EventsQueue unactive").add("event", event).toString());
+            throw new IllegalArgumentException(ToStringBuffer.string("EventsQueue unactive").add("event", event).toString());
         }
         if (!eventsQueue.offer(event)) {
             throw new NeverHappensError("eventsQueue can not accept element. JVM can not continue with that.");

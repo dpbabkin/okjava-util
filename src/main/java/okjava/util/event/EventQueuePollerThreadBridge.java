@@ -25,7 +25,7 @@ class EventQueuePollerThreadBridge<E> {
         this.LOGGER = LoggerUtils.createLoggerWithPrefix(EventQueuePollerThreadBridge.class, eventConsumer);
         notNull(eventConsumer);
         this.eventConsumer = event -> {
-            LOGGER.info(ToStringBuffer.create("consuming event").add("event", event).toString());
+            LOGGER.info(ToStringBuffer.string("consuming event").add("event", event).toString());
             eventConsumer.accept(event);
         };
         this.eventsQueue = notNull(eventsQueue);
@@ -67,7 +67,7 @@ class EventQueuePollerThreadBridge<E> {
             if (event == null) {
                 return;
             }
-            LOGGER.info(ToStringBuffer.create("processing leftover").add("event", event).toString());
+            LOGGER.info(ToStringBuffer.string("processing leftover").add("event", event).toString());
             eventConsumer.accept(event);
         }
     }

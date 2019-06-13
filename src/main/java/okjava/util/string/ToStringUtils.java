@@ -41,7 +41,7 @@ public enum ToStringUtils {
 
 
     public static <K, V> String m2s(Map<K, V> map) {
-        ToStringBuffer stringBuffer = ToStringBuffer.create("map");
+        ToStringBuffer stringBuffer = ToStringBuffer.string("map");
         map.forEach((key, value) -> stringBuffer.add(nullable(key), value));
         return stringBuffer.toString();
     }
