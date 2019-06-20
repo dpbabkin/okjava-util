@@ -14,4 +14,12 @@ public interface Waiter {
     boolean await() throws InterruptedException;
 
     boolean await(long time, TimeUnit timeUnit) throws InterruptedException;
+
+    default boolean second() throws InterruptedException {
+        return await(1, TimeUnit.SECONDS);
+    }
+
+    default boolean minute() throws InterruptedException {
+        return await(1, TimeUnit.SECONDS);
+    }
 }
