@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 @FunctionalInterface
 public interface EConsumer<T, E extends Exception> {
 
-    static <T> EConsumer<T, RuntimeException> delegate(Consumer<T> consumer) {
+    static <T,E extends Exception> EConsumer<T, E> delegate(Consumer<T> consumer) {
         requireNonNull(consumer);
         return consumer::accept;
     }

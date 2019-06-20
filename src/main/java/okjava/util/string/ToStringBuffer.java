@@ -10,6 +10,7 @@ import static okjava.util.string.ToStringUtils.nullable;
 import java.util.Collection;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -46,13 +47,17 @@ public class ToStringBuffer {
         return add("id", id.getStringId());
     }
 
-    public <O> ToStringBuffer add(String name, O value) {
-        this.builder.append(name).append("=").append(nullable(value)).append(" ");
+    public <O> ToStringBuffer line() {
+        return line("");
+    }
+
+    public <O> ToStringBuffer line(String line) {
+        this.builder.append(line).append(System.lineSeparator());
         return this;
     }
 
-    public <O> ToStringBuffer nl() {
-        this.builder.append(System.lineSeparator());
+    public <O> ToStringBuffer add(String name, O value) {
+        this.builder.append(name).append("=").append(nullable(value)).append(" ");
         return this;
     }
 
