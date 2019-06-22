@@ -1,9 +1,10 @@
 package okjava.util.id.timesequence;
 
+import okjava.util.id.TimeSequenceIdGeneratorFactory;
+import org.junit.Test;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-
-import org.junit.Test;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -17,11 +18,10 @@ public class DateTimeFormatTest {
     public void test001() {
         long time = 1557178359371L;
 
-        String result = IdGeneratorDateTimeFormat.longTimeToString(time);
+        String result = TimeSequenceIdFormat.longTimeToString(time);
 
         assertThat(result, is("20190506:213239.371"));
 
     }
-
 
 }

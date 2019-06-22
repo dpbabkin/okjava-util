@@ -30,7 +30,7 @@ public enum TimeSequenceIdGeneratorFactory {
     }
 
     public static IdGenerator<String> withStringPrefixAndFormattedId(String prefix) {
-        Function<Long, String> mapper = id -> prefix + LongTimeSequenceIdUtils.formatId(id);
+        Function<Long, String> mapper = id -> prefix + LongTimeSequenceIdUtils.format(id);
         return withMapper(mapper);
     }
 
@@ -42,5 +42,4 @@ public enum TimeSequenceIdGeneratorFactory {
     public static IdGenerator<Long> timeSequenceIdGenerator() {
         return INSTANCE;
     }
-
 }

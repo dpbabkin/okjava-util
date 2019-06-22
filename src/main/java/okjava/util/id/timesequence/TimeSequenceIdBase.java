@@ -26,6 +26,6 @@ abstract class TimeSequenceIdBase implements TimeSequenceId {
     @Override
     public String toString() {
         // format to yyyyMMdd.HHmmss.SSS_sequence
-        return IdGeneratorDateTimeFormat.format(getTime(), getSequence());
+        return TimeSequenceIdFormat.format(getTime(), getSequence());
     }
 }

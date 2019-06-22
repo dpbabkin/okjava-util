@@ -13,7 +13,7 @@ public interface HasTimeSequenceId extends HasLongId {
 
     @Override
     default String getStringId() {
-        return LongTimeSequenceIdUtils.formatId(getId());
+        return LongTimeSequenceIdUtils.format(getId());
     }
 
     default TimeSequenceId getTimeSequence() {

@@ -20,6 +20,6 @@ public interface Waiter {
     }
 
     default boolean minute() throws InterruptedException {
-        return await(1, TimeUnit.SECONDS);
+        return await(1, TimeUnit.MINUTES);
     }
 }
