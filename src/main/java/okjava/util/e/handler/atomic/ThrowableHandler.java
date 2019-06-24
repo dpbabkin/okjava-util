@@ -1,4 +1,4 @@
-package okjava.util.e;
+package okjava.util.e.handler.atomic;
 
 import java.util.function.Consumer;
 
@@ -20,5 +20,16 @@ public interface ThrowableHandler<E extends Throwable> extends Consumer<E> {
 
     static <E extends Error> ErrorHandler<E> toErrorHandler(ThrowableHandler<E> throwableHandler) {
         return throwableHandler::accept;
+    }
+
+    static Consumer<Runnable> createConsumer(ThrowableHandler<Throwable> throwableHandler) {
+        Consumer<Runnable> consumer = runnable -> {
+            try {
+                runnable.run();
+            } catch (Throwable throwable) {
+                throwableHandler.accept(throwable);
+            }
+        };
+        return consumer;
     }
 }

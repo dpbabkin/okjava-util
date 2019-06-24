@@ -6,7 +6,7 @@ import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
 import okjava.util.e.EConsumer;
 import okjava.util.e.EFunction;
-import okjava.util.e.ExceptionHandler;
+import okjava.util.e.handler.atomic.ExceptionHandler;
 import okjava.util.exception.SneakyThrower;
 
 import java.util.function.Consumer;
