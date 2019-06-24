@@ -16,11 +16,11 @@ public interface Handler {
 
     ThrowableHandler<Throwable> getThrowableHandler();
 
-    default Consumer<Runnable> createConsumer() {
-        return createConsumer(this);
+    default Consumer<Runnable> createRunnableConsumerWrapper() {
+        return createRunnableConsumerWrapper(this);
     }
 
-    static Consumer<Runnable> createConsumer(Handler handler) {
+    static Consumer<Runnable> createRunnableConsumerWrapper(Handler handler) {
         Consumer<Runnable> consumer = runnable -> {
             try {
                 runnable.run();
