@@ -1,10 +1,11 @@
 package okjava.util.concurrent;
 
-import static okjava.util.NotNull.notNull;
-
 import java.util.Queue;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
+import static okjava.util.NotNull.notNull;
+import static okjava.util.exception.ExceptionUtils.exceptionStackTraceToString;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -32,7 +33,7 @@ class RunnableQueue implements Runnable {
                     }
                     run.run();
                 } catch (RuntimeException e) {
-                    assert false : e.getMessage();
+                    assert false : e.getMessage() + System.lineSeparator() + exceptionStackTraceToString(e);
                     throw new RunnableQueueRuntimeException("RunnableQueue execution interrupted.", e);
                 } finally {
                     lock.unlock();

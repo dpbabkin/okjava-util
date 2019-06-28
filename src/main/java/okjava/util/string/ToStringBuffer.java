@@ -3,15 +3,14 @@ package okjava.util.string;
 import okjava.util.has.HasTimeSequenceId;
 import okjava.util.id.timesequence.LongTimeSequenceIdUtils;
 
+import java.util.Collection;
+import java.util.Map;
+import java.util.function.Function;
+
 import static okjava.util.NotNull.notNull;
 import static okjava.util.string.ToStringUtils.i2s;
 import static okjava.util.string.ToStringUtils.m2s;
 import static okjava.util.string.ToStringUtils.nullable;
-
-import java.util.Collection;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Stream;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -21,7 +20,7 @@ import java.util.stream.Stream;
 public class ToStringBuffer {
 
     private final StringBuilder builder = new StringBuilder();
-    private static final String SEPARATOR=" ";
+    private static final String SEPARATOR = " ";
 
     private ToStringBuffer(String name) {
         this.builder.append(notNull(name));
@@ -41,11 +40,11 @@ public class ToStringBuffer {
     }
 
     public <O> ToStringBuffer timeSequenceId(long id) {
-        return add("id", LongTimeSequenceIdUtils.format(id));
+        return addTimeSequence("id", id);
     }
 
     public <O> ToStringBuffer timeSequenceId(HasTimeSequenceId id) {
-        return add("id", id.getStringId());
+        return addTimeSequence("id", id.getId());
     }
 
     public <O> ToStringBuffer ln() {
@@ -56,6 +55,10 @@ public class ToStringBuffer {
     public <O> ToStringBuffer line(String line) {
         this.builder.append(line).append(SEPARATOR);
         return this;
+    }
+
+    public <O> ToStringBuffer addTimeSequence(String name, long id) {
+        return add(name, LongTimeSequenceIdUtils.format(id));
     }
 
     public <O> ToStringBuffer add(String name, O value) {
