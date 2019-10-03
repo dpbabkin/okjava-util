@@ -11,15 +11,23 @@ public interface Waiter {
 
     void abort();
 
-    boolean await() throws InterruptedException;
+    Result await_() throws InterruptedException;
 
-    boolean await(long time, TimeUnit timeUnit) throws InterruptedException;
+    Result await_(long time, TimeUnit timeUnit) throws InterruptedException;
 
-    default boolean second() throws InterruptedException {
-        return await(1, TimeUnit.SECONDS);
+    default Result second_() throws InterruptedException {
+        return seconds_(1L);
     }
 
-    default boolean minute() throws InterruptedException {
-        return await(1, TimeUnit.MINUTES);
+    default Result seconds_(long seconds) throws InterruptedException {
+        return await_(seconds, TimeUnit.SECONDS);
+    }
+
+    default Result minute_() throws InterruptedException {
+        return minutes_(1);
+    }
+
+    default Result minutes_(long value) throws InterruptedException {
+        return seconds_(TimeUnit.MINUTES.toSeconds(value));
     }
 }

@@ -146,13 +146,13 @@ public final class BlockingWaitForEvent {
         }
 
         @Override
-        public boolean await() throws InterruptedException {
-            return BlockingWaitForEvent.this.await(this.isEventHappened, abortProvider);
+        public Result await_() throws InterruptedException {
+            return ResultImpl.result(BlockingWaitForEvent.this.await(this.isEventHappened, abortProvider));
         }
 
         @Override
-        public boolean await(long time, TimeUnit timeUnit) throws InterruptedException {
-            return BlockingWaitForEvent.this.await(this.isEventHappened, time, timeUnit, abortProvider);
+        public Result await_(long time, TimeUnit timeUnit) throws InterruptedException {
+            return ResultImpl.result(BlockingWaitForEvent.this.await(this.isEventHappened, time, timeUnit, abortProvider));
         }
 
         private boolean isAborted() {
