@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
  * 22:37.
  */
 @Singleton
-public class ExecutorFactory {
+public  final class ExecutorFactory {
     private static final ExecutorFactory INSTANCE = new ExecutorFactory();
     private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
     private static final long KEEP_ALIVE_TIME = TimeUnit.MINUTES.toMillis(5);

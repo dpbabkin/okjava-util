@@ -11,7 +11,7 @@ import okjava.util.annotation.Singleton;
  * 23:12.
  */
 @Singleton
-public class TimeSequenceIdFactory {
+public  final class TimeSequenceIdFactory {
 
     private static final TimeSequenceIdFactory INSTANCE = new TimeSequenceIdFactory();
 

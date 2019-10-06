@@ -10,7 +10,7 @@ import okjava.util.annotation.Singleton;
  * 14:40.
  */
 @Singleton
-public class EmptyRunnable implements Runnable {
+public  final class EmptyRunnable implements Runnable {
 
     private static EmptyRunnable INSTANCE = new EmptyRunnable();
 

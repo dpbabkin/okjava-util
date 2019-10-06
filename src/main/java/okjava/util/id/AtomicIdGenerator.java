@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * 20:23.
  */
 @Singleton
-public class AtomicIdGenerator implements IdGenerator<Long> {
+public final  class AtomicIdGenerator implements IdGenerator<Long> {
 
     private final static IdGenerator<Long> INSTANCE = new AtomicIdGenerator();
     private final AtomicLong atomicLong = new AtomicLong(0);

@@ -14,7 +14,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * 20:25.
  */
 @Singleton
-class TimeBucketCountIdGenerator implements IdGenerator<TimeSequenceId> {
+final class TimeBucketCountIdGenerator implements IdGenerator<TimeSequenceId> {
     private static IdGenerator<TimeSequenceId> INSTANCE = new TimeBucketCountIdGenerator();
     private final ReentrantLock lock = new ReentrantLock();
     private long time = 0;

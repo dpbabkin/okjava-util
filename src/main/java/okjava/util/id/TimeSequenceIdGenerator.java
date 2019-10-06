@@ -12,7 +12,7 @@ import okjava.util.id.timesequence.TimeSequenceId;
  * 20:25.
  */
 @Singleton
-class TimeSequenceIdGenerator implements IdGenerator<TimeSequenceId> {
+final class TimeSequenceIdGenerator implements IdGenerator<TimeSequenceId> {
 
     private static IdGenerator<TimeSequenceId> INSTANCE = new TimeSequenceIdGenerator();
     private final IdGenerator<Long> idGenerator = AtomicIdGenerator.atomicIdGenerator();
