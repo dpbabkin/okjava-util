@@ -1,7 +1,5 @@
 package okjava.util.condition;
 
-import java.util.function.Supplier;
-
 final class ResultImpl implements Result {
 
     private final boolean result;
