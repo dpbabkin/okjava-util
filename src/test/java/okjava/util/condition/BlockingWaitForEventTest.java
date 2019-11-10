@@ -1,10 +1,6 @@
 package okjava.util.condition;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-
 import com.google.common.collect.Lists;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,6 +8,9 @@ import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Supplier;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -89,12 +88,14 @@ public class BlockingWaitForEventTest {
         for (int i = 0; i < numberOfTakingThread; i++) {
             Thread thread = new Thread(() -> {
                 try {
-                    boolean result = waiter.await();
-                    assertThat("numberOfThreads=" + numberOfThreads +
-                                   " everyThreadCount=" + everyThreadCount +
-                                   " numberOfTakingThread=" + numberOfTakingThread +
-                                   " counter=" + counter.getCount()
-                        , result, is(true));
+                    Result result = waiter.await_();
+                    result.assertTrue(
+                            "numberOfThreads=" + numberOfThreads +
+                                    " everyThreadCount=" + everyThreadCount +
+                                    " numberOfTakingThread=" + numberOfTakingThread +
+                                    " counter=" + counter.getCount()
+                    );
+
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
