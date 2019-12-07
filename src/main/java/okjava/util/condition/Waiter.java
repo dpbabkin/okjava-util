@@ -15,19 +15,19 @@ public interface Waiter {
 
     Result await_(long time, TimeUnit timeUnit) throws InterruptedException;
 
-    default Result second_() throws InterruptedException {
-        return seconds_(1L);
+    default Result second() throws InterruptedException {
+        return seconds(1L);
     }
 
-    default Result seconds_(long seconds) throws InterruptedException {
+    default Result seconds(long seconds) throws InterruptedException {
         return await_(seconds, TimeUnit.SECONDS);
     }
 
-    default Result minute_() throws InterruptedException {
-        return minutes_(1);
+    default Result minute() throws InterruptedException {
+        return minutes(1);
     }
 
-    default Result minutes_(long value) throws InterruptedException {
-        return seconds_(TimeUnit.MINUTES.toSeconds(value));
+    default Result minutes(long value) throws InterruptedException {
+        return seconds(TimeUnit.MINUTES.toSeconds(value));
     }
 }
