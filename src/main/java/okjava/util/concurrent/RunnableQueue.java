@@ -1,5 +1,7 @@
 package okjava.util.concurrent;
 
+import okjava.util.string.ToStringBuffer;
+
 import java.util.Queue;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;

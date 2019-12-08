@@ -6,6 +6,7 @@ import static okjava.util.check.Never.neverNeverCalled;
 
 import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
+import okjava.util.string.ToStringBuffer;
 
 import java.util.function.Supplier;
 
@@ -32,7 +33,6 @@ public enum NotNull {
         return notNullForSure(object, notNull(exceptionSupplier));
     }
 
-
     public static <T> T notNull(T object, String message) {
         return notNullForSure(object, () -> new NullPointerException(String.valueOf(message)));
     }
@@ -55,12 +55,20 @@ public enum NotNull {
         return notNullForSure(object, NULL_POINTER_EXCEPTION_SUPPLIER);
     }
 
-
     private static <T, E extends Exception> T notNullForSure(T object, Supplier<E> exceptionSupplier) throws E {
         if (object == null) {
             throw exceptionSupplier.get();
         }
         return object;
+    }
+
+    public static <T> void checkEquals(T object1,T object2) {
+        if (!object1.equals(object2)) {
+            throw ToStringBuffer.string("checkEquals")
+                    .add("object1",object1)
+                    .add("object2",object2)
+                    .toException(IllegalStateException::new);
+        }
     }
 
     private static void failWithAssert() {
