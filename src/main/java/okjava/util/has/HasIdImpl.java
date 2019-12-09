@@ -45,6 +45,5 @@ public class HasIdImpl<ID> implements HasId<ID> {
         return ToStringBuffer.of(this).
                 add("id", id)
                 .toString();
-        //this.getClass().getSimpleName() + "|id:" + id;
     }
 }

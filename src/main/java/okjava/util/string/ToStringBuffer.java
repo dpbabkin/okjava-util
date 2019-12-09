@@ -61,6 +61,14 @@ public class ToStringBuffer {
         return add(name, LongTimeSequenceIdUtils.format(id));
     }
 
+    public <O> ToStringBuffer addThrowable(Throwable throwable) {
+        return add("throwable.getMessage()", throwable.getMessage());
+    }
+
+    public <O> ToStringBuffer addException(Exception exception) {
+        return add("exception.getMessage()", exception.getMessage());
+    }
+
     public <O> ToStringBuffer add(String name, O value) {
         this.builder.append(name).append("=").append(nullable(value)).append(SEPARATOR);
         return this;
