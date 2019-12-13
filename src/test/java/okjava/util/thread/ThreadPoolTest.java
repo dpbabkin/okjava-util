@@ -9,7 +9,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class ThreadPoolTest {
 
-    @Test //todo remove that test case.
+    /// @Test //todo remove that test case.
     public void test002() throws InterruptedException {
 
         Lock lock = new ReentrantLock();

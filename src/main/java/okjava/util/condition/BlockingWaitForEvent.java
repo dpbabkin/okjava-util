@@ -19,7 +19,7 @@ import java.util.function.Supplier;
  * 6/5/2019
  * 09:38.
  */
-public final class BlockingWaitForEvent {
+public final class BlockingWaitForEvent { // todo implement updatable.
 
     private static final Executor EXECUTOR = ForkJoinPool.commonPool();
     private static final long MAX_POLL_INTERVAL = Long.MAX_VALUE;

@@ -69,6 +69,10 @@ public class ToStringBuffer {
         return add("exception.getMessage()", exception.getMessage());
     }
 
+    public <O> ToStringBuffer addThread() {
+        return add("thread", Thread.currentThread().getName());
+    }
+
     public <O> ToStringBuffer add(String name, O value) {
         this.builder.append(name).append("=").append(nullable(value)).append(SEPARATOR);
         return this;
