@@ -1,4 +1,6 @@
-package okjava.util.poller;
+package okjava.util.poller.poller;
+
+import okjava.util.poller.Updatable;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

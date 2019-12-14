@@ -1,4 +1,4 @@
-package okjava.util.poller;
+package okjava.util.poller.poller;
 
 import java.util.function.Predicate;
 import java.util.function.Supplier;

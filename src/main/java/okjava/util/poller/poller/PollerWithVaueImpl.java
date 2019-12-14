@@ -1,5 +1,6 @@
-package okjava.util.poller;
+package okjava.util.poller.poller;
 
+import okjava.util.string.ToStringBuffer;
 import okjava.util.thread.ExecutorFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,11 +15,8 @@ import java.util.function.Predicate;
 public class PollerWithVaueImpl<V> implements PollerWithValue<V> {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(Poller.class);
-
     private volatile V value;
-
     private final PollerWithSupplier<V> genericPollerDelegate = PollerWithSupplierImpl.create(() -> value);
-    private final Runnable updateGenericPollerDelegate = genericPollerDelegate::onUpdate;
 
     private PollerWithVaueImpl(V value) {
         this.value = value;
@@ -30,13 +28,16 @@ public class PollerWithVaueImpl<V> implements PollerWithValue<V> {
 
     @Override
     public V get() {
-        return value;
+        return genericPollerDelegate.get();
     }
 
     @Override
     public void accept(V value) {
         this.value = value;
-        ExecutorFactory.getInstance().getExecutor().execute(updateGenericPollerDelegate);
+        ExecutorFactory.getInstance().getExecutor().execute(genericPollerDelegate);
+        if (LOGGER.isTraceEnabled()) {
+            LOGGER.trace(ToStringBuffer.string("poller accepted").add("value", value).toString());
+        }
     }
 
     @Override

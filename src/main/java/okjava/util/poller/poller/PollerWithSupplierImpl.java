@@ -1,6 +1,4 @@
-package okjava.util.poller;
-
-import static okjava.util.NotNull.notNull;
+package okjava.util.poller.poller;
 
 import okjava.util.thread.ExecutorFactory;
 import org.slf4j.Logger;
@@ -11,6 +9,8 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+
+import static okjava.util.NotNull.notNull;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -72,7 +72,7 @@ public class PollerWithSupplierImpl<V> implements PollerWithSupplier<V> {
     public V poll(Predicate<V> tester) throws InterruptedException {
         ReentrantLock lock = this.lock;
         V value = get();
-        while (tester.test(value)==false) {
+        while (tester.test(value) == false) {
             lock.lock();
             try {
                 condition.await();

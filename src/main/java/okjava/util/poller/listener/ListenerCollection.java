@@ -1,11 +1,11 @@
-package okjava.util.poller;
+package okjava.util.poller.listener;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
  * 5/26/2019
  * 22:04.
  */
-public interface ListenerRegister<V> extends Updatable {
+public interface ListenerCollection<V> {
 
     void registerListener(Listener<V> listener);
 }

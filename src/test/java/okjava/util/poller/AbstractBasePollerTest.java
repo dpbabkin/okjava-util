@@ -3,22 +3,25 @@ package okjava.util.poller;
 import com.google.common.collect.Queues;
 import okjava.util.condition.BlockingWaitForEvent;
 import okjava.util.condition.WaitForCollection;
+import okjava.util.poller.poller.Poller;
 import org.junit.Test;
 
 import java.util.Queue;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static java.lang.Thread.State.WAITING;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 
-public class PollerTest {
+abstract class AbstractBasePollerTest<P extends Poller<Long>> {
+
+
+    abstract P getPoller();
+
+    abstract void setNewValue(long value);
 
     @Test
     public void test01() throws InterruptedException {
-
-        AtomicReference<Long> reference = new AtomicReference<>(0L);
-        PollerWithSupplier<Long> poller = PollerWithSupplierImpl.create(reference::get);
+        P poller =  getPoller();
         BlockingWaitForEvent block = BlockingWaitForEvent.createWithPoll();
         Thread thread = new Thread(() -> {
             try {
@@ -31,16 +34,14 @@ public class PollerTest {
         thread.start();
 
         block.waiter(() -> thread.getState() == WAITING).second().assertTrue();
-        reference.set(1L);
-        poller.onUpdate();
+        setNewValue(1L);
         block.waiter(() -> thread.isAlive() == false).second().assertTrue();
     }
 
     @Test
     public void test02() throws InterruptedException {
 
-        AtomicReference<Long> reference = new AtomicReference<>(0L);
-        PollerWithSupplier<Long> poller = PollerWithSupplierImpl.create(reference::get);
+        P poller =  getPoller();
         BlockingWaitForEvent block = BlockingWaitForEvent.createWithPoll();
         Thread thread = new Thread(() -> {
             try {
@@ -52,16 +53,14 @@ public class PollerTest {
         });
         thread.start();
         block.waiter(() -> thread.getState() == WAITING).second().assertTrue();
-        reference.set(1L);
-        poller.onUpdate();
+        setNewValue(1L);
         block.waiter(() -> thread.isAlive() == false).second().assertTrue();
     }
 
     @Test
     public void test03() throws InterruptedException {
 
-        AtomicReference<Long> reference = new AtomicReference<>(0L);
-        PollerWithSupplier<Long> poller = PollerWithSupplierImpl.create(reference::get);
+        P poller =  getPoller();
         BlockingWaitForEvent block = BlockingWaitForEvent.createWithPoll();
         WaitForCollection<Long, Queue<Long>> waitForCollection = WaitForCollection.create(Queues.newConcurrentLinkedQueue());
         Thread thread = new Thread(() -> {
@@ -77,18 +76,14 @@ public class PollerTest {
         thread.start();
         block.waiter(() -> thread.getState() == WAITING).second().assertTrue();
 
-        reference.set(1L);
-        poller.onUpdate();
+        setNewValue(1L);
         waitForCollection.createWaiter(1).second().assertTrue();
         assertThat(waitForCollection.getCollection(), contains(1L));
-
-        reference.set(3L);
-        poller.onUpdate();
+        setNewValue(3L);
         waitForCollection.createWaiter(2).second().assertTrue();
         assertThat(waitForCollection.getCollection(), contains(1L, 3L));
 
-        reference.set(5L);
-        poller.onUpdate();
+        setNewValue(5L);
         waitForCollection.createWaiter(3).second().assertTrue();
         assertThat(waitForCollection.getCollection(), contains(1L, 3L, 5L));
 
