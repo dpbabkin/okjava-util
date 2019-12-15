@@ -1,14 +1,14 @@
 package okjava.util;
 
-import static okjava.util.NotNull.notNull;
-import static okjava.util.check.Never.neverNeverCalled;
-
 import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
+
+import static okjava.util.NotNull.notNull;
+import static okjava.util.check.Never.neverNeverCalled;
 
 
 /**
@@ -23,6 +23,8 @@ public enum NotEmpty {
     NotEmpty(@SuppressWarnings("unused") Never never) {
         neverNeverCalled();
     }
+
+    public static String EMPTY = "";
 
     public static String notEmptyString(String string) {
         return check(string);
