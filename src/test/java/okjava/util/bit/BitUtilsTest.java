@@ -86,21 +86,16 @@ public class BitUtilsTest {
         }
     }
 
-
     @Test
     public void testRightBitCount004() {
-        for (long i = 1; i < 10_000_000L; i++) {
+        for (long i = 1; i < 5_000_000L; i++) {
 
             long n = random.nextLong();
             if (n < 0) n *= -1;
-            //int result01 = BitUtils.rightBitCount01(i);
-            //int result02 = BitUtils.rightBitCount02(i);
             int result = BitUtils.rightBitCount01(n);
             assertThat(result, greaterThan(0));
-            //assertThat(result, is(result02));
         }
     }
-
 
     @Test
     public void testRightBitCount003() {

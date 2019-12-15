@@ -1,10 +1,6 @@
 package okjava.util.id;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-
 import com.google.common.collect.Lists;
-
 import okjava.util.id.timesequence.TimeSequenceId;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -13,6 +9,9 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -35,12 +34,12 @@ abstract class BaseIdGeneratorTest {
         assertThat(result.compareTo(result1), is(-1));
     }
 
-    @Test
-    public void test002() {
+
+    private void test002native(int count) {
 
         List<TimeSequenceId> results = Lists.newArrayList();
 
-        for (int i = 0; i < 10_000; i++) {
+        for (int i = 0; i < count; i++) {
             TimeSequenceId timeSequenceId = getIdGenerator().generate();
             LOGGER.info(timeSequenceId.toString());
             results.add(timeSequenceId);
@@ -54,20 +53,25 @@ abstract class BaseIdGeneratorTest {
     }
 
     @Test
+    public void test002() {
+        test002native(100_000);
+    }
+
+    @Test
     public void test003() throws InterruptedException {
 
         List<Thread> threads = Lists.newArrayList();
         for (int i = 0; i < 100; i++) {
-            Thread t = new Thread(this::test002);
-            t.start();
+            Thread t = new Thread(() -> this.test002native(1_000));
             threads.add(t);
         }
+
+        threads.forEach(Thread::start);
 
         for (Thread t : threads) {
             t.join();
         }
     }
-
 
     @Test
     public void test004() throws InterruptedException {

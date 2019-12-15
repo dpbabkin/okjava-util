@@ -86,6 +86,10 @@ public enum LongTimeSequenceIdUtils {
         return raw & MAX_SEQUENCE;
     }
 
+    public static boolean isMaxSequence(long raw) {
+        return fetchSequence(raw) == MAX_SEQUENCE;
+    }
+
     public static long incrementSequence(long raw) {
         assert fetchSequence(raw) < MAX_SEQUENCE;
         return raw + 1;
