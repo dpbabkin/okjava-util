@@ -44,7 +44,7 @@ public class ToStringBuffer {
     }
 
     public <O> ToStringBuffer timeSequenceId(HasTimeSequenceId id) {
-        return addTimeSequence("id", id.getId());
+        return add("id", id.getStringId());
     }
 
     public <O> ToStringBuffer ln() {

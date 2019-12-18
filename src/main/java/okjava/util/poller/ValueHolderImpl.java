@@ -36,7 +36,6 @@ public class ValueHolderImpl<V> implements ValueHolder<V>, Updatable {
         this.updatesupplierListenerCollection = () -> supplierListenerCollection.accept(valueSupplier);
     }
 
-
     private void onUpdateNative() {
         EXECUTOR.execute(poller);
         EXECUTOR.execute(updatesupplierListenerCollection);
