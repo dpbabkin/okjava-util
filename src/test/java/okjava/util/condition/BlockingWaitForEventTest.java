@@ -47,18 +47,36 @@ public class BlockingWaitForEventTest {
         doTest01(BlockingWaitForEvent::create);
     }
 
-    // @Test //takes too long
+    @Test
     public void test001_2() throws InterruptedException {
         doTest02(BlockingWaitForEvent::create);
+    }
+
+    //@Test //takes too long
+    public void test001_3() throws InterruptedException {
+        doTest03(BlockingWaitForEvent::create);
     }
 
     public void doTest01(Supplier<BlockingWaitForEvent> waitLock) throws InterruptedException {
         forkThreads(waitLock.get(), 10, 100, 10);
         forkThreads(waitLock.get(), 10, 100, 10);
         forkThreads(waitLock.get(), 10, 100, 10);
+        forkThreads(waitLock.get(), 10, 100, 10);
     }
 
     public void doTest02(Supplier<BlockingWaitForEvent> waitLock) throws InterruptedException {
+
+        for (int i = 1; i < 10; i++) {
+            for (int j = 1_000; j < 1_010; j++) {
+                for (int k = 1; k < 10; k++) {
+                    forkThreads(waitLock.get(), i, j, k);
+                }
+            }
+        }
+    }
+
+
+    public void doTest03(Supplier<BlockingWaitForEvent> waitLock) throws InterruptedException {
 
         for (int i = 1; i < 40; i++) {
             for (int j = 100; j < 140; j++) {
@@ -74,6 +92,7 @@ public class BlockingWaitForEventTest {
                 .add("numberOfThreads", numberOfThreads)
                 .add("everyThreadCount", everyThreadCount)
                 .add("numberOfTakingThread", numberOfTakingThread)
+                .addTime()
         );
         final long waitForNumber = numberOfThreads * everyThreadCount;
 
@@ -87,7 +106,7 @@ public class BlockingWaitForEventTest {
                 for (int j = 0; j < everyThreadCount; j++) {
 
                     long count = counter.incrementAndGet();
-                    waitLock.update();
+                    waitLock.onUpdate();
                     //System.out.println(ToStringBuffer.string("increment count").addThread().add("count", count));
                 }
             }, "putting-" + i);
@@ -98,7 +117,7 @@ public class BlockingWaitForEventTest {
         for (int i = 0; i < numberOfTakingThread; i++) {
             Thread thread = new Thread(() -> {
                 try {
-                    Result result = waiter.await_(1, TimeUnit.MINUTES);
+                    Result result = waiter.await(1, TimeUnit.MINUTES);
                     //System.out.println(ToStringBuffer.string("taking thread finished").add("therad", Thread.currentThread().getName()));
                     result.assertTrue(
                             "numberOfThreads=" + numberOfThreads +
@@ -137,23 +156,4 @@ public class BlockingWaitForEventTest {
 
         assertThat("numberOfThreads=" + numberOfThreads + " everyThreadCount=" + everyThreadCount, fail, is(false));
     }
-
-//    private static class Counter {
-//        private final Lock lock = new ReentrantLock();
-//        private volatile long count = 0;
-//
-//        private void makeCount(BlockingWaitForEvent waitLock) {
-//            lock.lock();
-//            try {
-//                count++;
-//            } finally {
-//                lock.unlock();
-//            }
-//            waitLock.update();
-//        }
-//
-//        public long getCount() {
-//            return count;
-//        }
-//    }
 }
