@@ -2,7 +2,7 @@ package okjava.util.condition;
 
 final class ResultImpl implements Result {
 
-    private final boolean result;
+    private final Boolean result;
 
     static Result result(boolean result) {
         return new ResultImpl(result);
@@ -13,7 +13,7 @@ final class ResultImpl implements Result {
     }
 
     @Override
-    public boolean get() {
+    public Boolean get() {
         return result;
     }
 }

@@ -6,14 +6,12 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executor;
 
-import static okjava.util.NotNull.notNull;
-
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
  * 5/24/2019
  * 21:14.
  */
-public class ValueListenerCollectionImpl<V> implements ListenerCollection<V> , Listener<V>{
+public class ValueListenerCollectionImpl<V> implements ListenerCollection<V>, Listener<V> {
 
     private final static Executor EXECUTOR = ExecutorFactory.getInstance().getTaskQueueConfinedExecutor();
 
@@ -27,8 +25,11 @@ public class ValueListenerCollectionImpl<V> implements ListenerCollection<V> , L
     }
 
     @Override
-    public void registerListener(Listener<V> listener) {
+    public Runnable registerListener(Listener<V> listener) {
         listeners.add(listener);
+        return () -> {
+            throw new IllegalStateException("not implemented.");
+        };
     }
 
     private void onUpdateInParallel(V value) {

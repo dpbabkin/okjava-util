@@ -1,9 +1,10 @@
 package okjava.util.poller.listener;
 
+import com.google.common.collect.Maps;
+import okjava.util.id.TimeSequenceIdGeneratorFactory;
 import okjava.util.thread.ExecutorFactory;
 
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.function.Supplier;
 
@@ -16,7 +17,7 @@ public class SupplierListenerCollectionImpl<V> implements SupplierListenerCollec
 
     private final static Executor EXECUTOR = ExecutorFactory.getInstance().getTaskQueueConfinedExecutor();
 
-    private final List<SupplierListener<V>> listeners = new CopyOnWriteArrayList<>();
+    private final Map<Long, SupplierListener<V>> listeners = Maps.newConcurrentMap();
 
     public static <V> SupplierListenerCollectionImpl<V> create() {
         return new SupplierListenerCollectionImpl<>();
@@ -26,12 +27,15 @@ public class SupplierListenerCollectionImpl<V> implements SupplierListenerCollec
     }
 
     @Override
-    public void registerListener(SupplierListener<V> listener) {
-        listeners.add(listener);
+    public Runnable registerListener(SupplierListener<V> listener) {
+        final Long id = TimeSequenceIdGeneratorFactory.timeSequenceIdGenerator().generate();
+        listeners.put(id, listener);
+        return () -> listeners.remove(id);
+
     }
 
     private void onUpdateInParallel(Supplier<V> supplier) {
-        listeners.forEach(l -> EXECUTOR.execute(() -> l.accept(supplier)));
+        listeners.values().forEach(l -> EXECUTOR.execute(() -> l.accept(supplier)));
     }
 
     @Override

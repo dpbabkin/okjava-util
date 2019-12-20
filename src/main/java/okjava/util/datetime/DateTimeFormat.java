@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter;
  * 5/6/2019
  * 23:36.
  */
-public class DateTimeFormat {
+final public class DateTimeFormat {
 
     private static final String DEFAULT_FORMAT = "yyyy.MM.dd HH:mm:ss.SSS";
     private static final DateTimeFormat DEFAULT_INSTANCE = DateTimeFormat.create(DEFAULT_FORMAT);

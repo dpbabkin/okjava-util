@@ -7,5 +7,5 @@ package okjava.util.poller.listener;
  */
 public interface ListenerCollection<V> {
 
-    void registerListener(Listener<V> listener);
+    Runnable registerListener(Listener<V> listener);
 }

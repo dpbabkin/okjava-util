@@ -1,5 +1,6 @@
 package okjava.util.string;
 
+import okjava.util.datetime.DateTimeFormat;
 import okjava.util.has.HasTimeSequenceId;
 import okjava.util.id.timesequence.LongTimeSequenceIdUtils;
 
@@ -71,6 +72,10 @@ public class ToStringBuffer {
 
     public <O> ToStringBuffer addThread() {
         return add("thread", Thread.currentThread().getName());
+    }
+
+    public <O> ToStringBuffer addTime() {
+        return add("time", DateTimeFormat.create().longTimeToString(System.currentTimeMillis()));
     }
 
     public <O> ToStringBuffer add(String name, O value) {

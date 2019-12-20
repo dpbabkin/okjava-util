@@ -1,9 +1,5 @@
 package okjava.util.condition;
 
-import static java.lang.Math.max;
-import static java.lang.Math.min;
-import static okjava.util.NotNull.notNull;
-
 import okjava.util.check.MathCheck;
 import okjava.util.poller.Updatable;
 
@@ -15,12 +11,16 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.LongSupplier;
 import java.util.function.Supplier;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+import static okjava.util.NotNull.notNull;
+
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
  * 6/5/2019
  * 09:38.
  */
-public final class BlockingWaitForEvent implements Updatable {
+public final class BlockingWaitForEvent_OLD implements Updatable {
 
     private static final Executor EXECUTOR = ForkJoinPool.commonPool();
     private static final long MAX_POLL_INTERVAL = Long.MAX_VALUE;
@@ -34,21 +34,21 @@ public final class BlockingWaitForEvent implements Updatable {
         assert result;
     };
 
-    private BlockingWaitForEvent(final long pollInterval) {
+    private BlockingWaitForEvent_OLD(final long pollInterval) {
         this.pollInterval = MathCheck.positive(pollInterval);
         this.getInfiniteWaitTime = () -> pollInterval;
     }
 
-    public static BlockingWaitForEvent create() {
-        return new BlockingWaitForEvent(MAX_POLL_INTERVAL);
+    public static BlockingWaitForEvent_OLD create() {
+        return new BlockingWaitForEvent_OLD(MAX_POLL_INTERVAL);
     }
 
-    public static BlockingWaitForEvent createWithPoll(long pollInterval) {
-        return new BlockingWaitForEvent(pollInterval);
+    public static BlockingWaitForEvent_OLD createWithPoll(long pollInterval) {
+        return new BlockingWaitForEvent_OLD(pollInterval);
     }
 
-    public static BlockingWaitForEvent createWithPoll() {
-        return new BlockingWaitForEvent(DEFAULT_POLL_INTERVAL);
+    public static BlockingWaitForEvent_OLD createWithPoll() {
+        return new BlockingWaitForEvent_OLD(DEFAULT_POLL_INTERVAL);
     }
 
     private boolean sendSignal(boolean force) {
@@ -148,12 +148,12 @@ public final class BlockingWaitForEvent implements Updatable {
 
         @Override
         public Result await() throws InterruptedException {
-            return ResultImpl.result(BlockingWaitForEvent.this.await(this.isEventHappened, abortProvider));
+            return ResultImpl.result(BlockingWaitForEvent_OLD.this.await(this.isEventHappened, abortProvider));
         }
 
         @Override
         public Result await(long time, TimeUnit timeUnit) throws InterruptedException {
-            return ResultImpl.result(BlockingWaitForEvent.this.await(this.isEventHappened, time, timeUnit, abortProvider));
+            return ResultImpl.result(BlockingWaitForEvent_OLD.this.await(this.isEventHappened, time, timeUnit, abortProvider));
         }
 
         private boolean isAborted() {

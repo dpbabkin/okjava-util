@@ -42,7 +42,7 @@ public class WaitForCollection<E, C extends Collection<E>> implements Consumer<E
         try {
             return collection.add(element);
         } finally {
-            block.update();
+            block.onUpdate();
         }
     }
 

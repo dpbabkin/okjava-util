@@ -9,10 +9,10 @@ import java.util.function.Supplier;
  */
 public interface SupplierListenerCollection<V> extends ListenerCollection<Supplier<V>> {
 
-    void registerListener(SupplierListener<V> listener);
+    Runnable registerListener(SupplierListener<V> listener);
 
     @Override
-    default void registerListener(Listener<Supplier<V>> listener) {
-        registerListener(listener::accept);
+    default Runnable registerListener(Listener<Supplier<V>> listener) {
+        return registerListener(listener::accept);
     }
 }

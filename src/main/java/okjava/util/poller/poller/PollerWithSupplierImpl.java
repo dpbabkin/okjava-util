@@ -4,7 +4,9 @@ import okjava.util.thread.ExecutorFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Optional;
 import java.util.concurrent.Executor;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Predicate;
@@ -83,4 +85,27 @@ public class PollerWithSupplierImpl<V> implements PollerWithSupplier<V> {
         }
         return value;
     }
+
+    private Optional<V> poll(Predicate<V> tester, Supplier<Long> waitTimeSupplier) throws InterruptedException {
+        ReentrantLock lock = this.lock;
+        V value = get();
+        while (tester.test(value) == false) {
+            lock.lock();
+            try {
+                long waitTime = waitTimeSupplier.get();
+                if (waitTime == 0) {
+                    condition.await();
+                } else {
+                    if (!condition.await(waitTimeSupplier.get(), TimeUnit.MILLISECONDS)) {
+                        return Optional.empty();
+                    }
+                }
+            } finally {
+                lock.unlock();
+            }
+            value = get();
+        }
+        return Optional.of(value);
+    }
+
 }

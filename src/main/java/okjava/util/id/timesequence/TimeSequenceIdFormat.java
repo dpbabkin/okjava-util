@@ -18,7 +18,8 @@ import static okjava.util.id.timesequence.LongTimeSequenceIdUtils.joinTimeAndSeq
 enum TimeSequenceIdFormat {
     ;
 
-    private final static DateTimeFormat FORMATTER = DateTimeFormat.create("yyyyMMdd:HHmmss.SSS");
+    private final static String PATTERN = "yyyyMMdd:HHmmss.SSS";
+    private final static DateTimeFormat FORMATTER = DateTimeFormat.create(PATTERN);
 
     TimeSequenceIdFormat(@SuppressWarnings("unused") Never never) {
         neverNeverCalled();
