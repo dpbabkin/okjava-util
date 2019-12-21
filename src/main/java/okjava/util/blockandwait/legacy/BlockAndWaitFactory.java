@@ -16,7 +16,6 @@ import static okjava.util.check.Never.neverNeverCalled;
  * 09:38.
  */
 @Utility
-@Deprecated //use builder instead.
 public enum BlockAndWaitFactory {
     ;
 

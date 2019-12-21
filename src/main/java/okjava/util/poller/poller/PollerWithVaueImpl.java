@@ -5,6 +5,8 @@ import okjava.util.thread.ExecutorFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
 /**
@@ -43,5 +45,10 @@ public class PollerWithVaueImpl<V> implements PollerWithValue<V> {
     @Override
     public V poll(Predicate<V> tester) throws InterruptedException {
         return pollerDelegate.poll(tester);
+    }
+
+    @Override
+    public Optional<V> poll(Predicate<V> tester, long time, TimeUnit timeUnit) throws InterruptedException {
+        return pollerDelegate.poll(tester, time, timeUnit);
     }
 }

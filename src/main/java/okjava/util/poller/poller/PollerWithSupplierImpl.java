@@ -1,14 +1,12 @@
 package okjava.util.poller.poller;
 
-import okjava.util.thread.ExecutorFactory;
+import okjava.util.blockandwait.BlockAndWaitUpdatable;
+import okjava.util.blockandwait.legacy.BlockAndWaitFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
-import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -19,23 +17,13 @@ import static okjava.util.NotNull.notNull;
  * 6/20/2017
  * 17:41.
  */
-public class PollerWithSupplierImpl<V> implements PollerWithSupplier<V> {
+public class PollerWithSupplierImpl<V> implements PollerWithSupplier<V>{
     //this is good class but I do not see application for that.
 
     private final static Logger LOGGER = LoggerFactory.getLogger(Poller.class);
-    private final ReentrantLock lock = new ReentrantLock();
-    private final Condition condition = lock.newCondition();
-    private static final Executor EXECUTOR  = ExecutorFactory.getInstance().getExecutor();
 
-    private final Runnable signal = () -> {
-        ReentrantLock lock = this.lock;
-        lock.lock();
-        try {
-            condition.signalAll();
-        } finally {
-            lock.unlock();
-        }
-    };
+    private final BlockAndWaitUpdatable blockAndWait = BlockAndWaitFactory.create();
+
     private final Supplier<V> supplier;
 
     private PollerWithSupplierImpl(Supplier<V> supplier) {
@@ -46,66 +34,36 @@ public class PollerWithSupplierImpl<V> implements PollerWithSupplier<V> {
         return new PollerWithSupplierImpl<>(supplier);
     }
 
-    private void notifyUpdate() {
-        ReentrantLock lock = this.lock;
-        if (lock.tryLock()) {
-            try {
-                condition.signalAll();
-            } finally {
-                lock.unlock();
-            }
-        } else {
-            EXECUTOR.execute(signal);
-        }
+    @Override
+    public void onUpdate() {
+        LOGGER.trace("updated with " + get());
+        blockAndWait.onUpdate();
     }
-
     @Override
     public V get() {
         return supplier.get();
     }
 
     @Override
-    public void onUpdate() {
-        LOGGER.trace("updated with " + get());
-        notifyUpdate();
-    }
-
-    @Override
     public V poll(Predicate<V> tester) throws InterruptedException {
-        ReentrantLock lock = this.lock;
-        V value = get();
-        while (tester.test(value) == false) {
-            lock.lock();
-            try {
-                condition.await();
-            } finally {
-                lock.unlock();
-            }
-            value = get();
-        }
+        V value = blockAndWait.await(createSupplierAdapter(tester));
+        assert value != null;
         return value;
     }
 
-    private Optional<V> poll(Predicate<V> tester, Supplier<Long> waitTimeSupplier) throws InterruptedException {
-        ReentrantLock lock = this.lock;
-        V value = get();
-        while (tester.test(value) == false) {
-            lock.lock();
-            try {
-                long waitTime = waitTimeSupplier.get();
-                if (waitTime == 0) {
-                    condition.await();
-                } else {
-                    if (!condition.await(waitTimeSupplier.get(), TimeUnit.MILLISECONDS)) {
-                        return Optional.empty();
-                    }
-                }
-            } finally {
-                lock.unlock();
-            }
-            value = get();
-        }
-        return Optional.of(value);
+    @Override
+    public Optional<V> poll(Predicate<V> tester, long time, TimeUnit timeUnit) throws InterruptedException {
+        return Optional.ofNullable(blockAndWait.await(createSupplierAdapter(tester), time, timeUnit));
     }
 
+    private Supplier<V> createSupplierAdapter(Predicate<V> predicate) {
+        Supplier<V> supplierAdapter = () -> {
+            V value = PollerWithSupplierImpl.this.get();
+            if (predicate.test(value)) {
+                return value;
+            }
+            return null;
+        };
+        return supplierAdapter;
+    }
 }

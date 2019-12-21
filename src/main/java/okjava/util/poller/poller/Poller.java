@@ -1,5 +1,7 @@
 package okjava.util.poller.poller;
 
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -20,4 +22,15 @@ public interface Poller<V> extends Supplier<V> {
     }
 
     V poll(Predicate<V> tester) throws InterruptedException;
+
+    default Optional<V> poll(long time, TimeUnit timeUnit) throws InterruptedException {
+        V oldValue = get();
+        return poll(oldValue, time, timeUnit);
+    }
+
+    default Optional<V> poll(final V oldValue, long time, TimeUnit timeUnit) throws InterruptedException {
+        return poll(v -> !oldValue.equals(v), time, timeUnit);
+    }
+
+    Optional<V> poll(Predicate<V> tester, long time, TimeUnit timeUnit) throws InterruptedException;
 }
