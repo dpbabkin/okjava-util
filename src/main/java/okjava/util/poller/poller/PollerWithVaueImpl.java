@@ -16,7 +16,7 @@ public class PollerWithVaueImpl<V> implements PollerWithValue<V> {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(Poller.class);
     private volatile V value;
-    private final PollerWithSupplier<V> genericPollerDelegate = PollerWithSupplierImpl.create(() -> value);
+    private final PollerWithSupplier<V> pollerDelegate = PollerWithSupplierImpl.create(() -> value);
 
     private PollerWithVaueImpl(V value) {
         this.value = value;
@@ -28,13 +28,13 @@ public class PollerWithVaueImpl<V> implements PollerWithValue<V> {
 
     @Override
     public V get() {
-        return genericPollerDelegate.get();
+        return pollerDelegate.get();
     }
 
     @Override
     public void accept(V value) {
         this.value = value;
-        ExecutorFactory.getInstance().getExecutor().execute(genericPollerDelegate);
+        ExecutorFactory.getInstance().getExecutor().execute(pollerDelegate);
         if (LOGGER.isTraceEnabled()) {
             LOGGER.trace(ToStringBuffer.string("poller accepted").add("value", value).toString());
         }
@@ -42,6 +42,6 @@ public class PollerWithVaueImpl<V> implements PollerWithValue<V> {
 
     @Override
     public V poll(Predicate<V> tester) throws InterruptedException {
-        return genericPollerDelegate.poll(tester);
+        return pollerDelegate.poll(tester);
     }
 }

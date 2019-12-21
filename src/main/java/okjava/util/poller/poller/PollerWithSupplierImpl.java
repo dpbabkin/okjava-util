@@ -25,7 +25,7 @@ public class PollerWithSupplierImpl<V> implements PollerWithSupplier<V> {
     private final static Logger LOGGER = LoggerFactory.getLogger(Poller.class);
     private final ReentrantLock lock = new ReentrantLock();
     private final Condition condition = lock.newCondition();
-    private final Executor executor = ExecutorFactory.getInstance().getExecutor();
+    private static final Executor EXECUTOR  = ExecutorFactory.getInstance().getExecutor();
 
     private final Runnable signal = () -> {
         ReentrantLock lock = this.lock;
@@ -55,7 +55,7 @@ public class PollerWithSupplierImpl<V> implements PollerWithSupplier<V> {
                 lock.unlock();
             }
         } else {
-            executor.execute(signal);
+            EXECUTOR.execute(signal);
         }
     }
 

@@ -14,7 +14,6 @@ import static org.hamcrest.Matchers.contains;
 
 abstract class AbstractBasePollerTest<P extends Poller<Long>> {
 
-
     abstract P getPoller();
 
     abstract void setNewValue(long value);
@@ -37,7 +36,6 @@ abstract class AbstractBasePollerTest<P extends Poller<Long>> {
         thread.start();
         PollerTestUtils.assertValue(poller, 1L);
     }
-
 
     @Test
     public void testValueChanged03() throws InterruptedException {

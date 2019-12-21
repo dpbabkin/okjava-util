@@ -7,27 +7,27 @@ import java.util.concurrent.TimeUnit;
  * 6/6/2019
  * 19:39.
  */
-public interface Waiter {
+public interface Waiter<V> {
 
-    void abort();
+    void cancel();
 
-    Result await() throws InterruptedException;
+    V await() throws InterruptedException;
 
-    Result await(long time, TimeUnit timeUnit) throws InterruptedException;
+    V await(long time, TimeUnit timeUnit) throws InterruptedException;
 
-    default Result second() throws InterruptedException {
+    default V second() throws InterruptedException {
         return seconds(1L);
     }
 
-    default Result seconds(long seconds) throws InterruptedException {
+    default V seconds(long seconds) throws InterruptedException {
         return await(seconds, TimeUnit.SECONDS);
     }
 
-    default Result minute() throws InterruptedException {
+    default V minute() throws InterruptedException {
         return minutes(1L);
     }
 
-    default Result minutes(long value) throws InterruptedException {
+    default V minutes(long value) throws InterruptedException {
         return seconds(TimeUnit.MINUTES.toSeconds(value));
     }
 }

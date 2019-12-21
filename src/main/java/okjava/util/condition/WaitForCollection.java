@@ -50,11 +50,11 @@ public class WaitForCollection<E, C extends Collection<E>> implements Consumer<E
         return collection;
     }
 
-    public Waiter createWaiter(int number) {
+    public ResultWaiter createWaiter(int number) {
         return block.waiter(() -> collection.size() >= number);
     }
 
-    public Waiter createWaiter(Function<C, Boolean> tester) {
+    public ResultWaiter createWaiter(Function<C, Boolean> tester) {
         return block.waiter(() -> tester.apply(collection));
     }
 

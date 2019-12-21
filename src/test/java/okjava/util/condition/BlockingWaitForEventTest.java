@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Supplier;
 
+import static java.lang.Thread.State.TERMINATED;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -43,8 +44,13 @@ public class BlockingWaitForEventTest {
     }
 
     @Test
+    public void test001_0() throws InterruptedException {
+        forkThreads(BlockingWaitForEvent.create(), 1, 1, 1);
+    }
+
+    @Test
     public void test001_1() throws InterruptedException {
-        doTest01(BlockingWaitForEvent::create);
+        doTest01(BlockingWaitForEvent::createWithPoll);
     }
 
     @Test
@@ -87,6 +93,26 @@ public class BlockingWaitForEventTest {
         }
     }
 
+    @Test
+    public void abortTest01() throws InterruptedException {
+        abortTest(BlockingWaitForEvent.create());
+    }
+
+    private void abortTest(BlockingWaitForEvent waitLock) throws InterruptedException {
+        ResultWaiter waiter = waitLock.waiter(() -> false);
+        Thread thread = new Thread(() -> {
+            try {
+                waiter.await(1, TimeUnit.MINUTES);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
+        thread.start();
+        waiter.cancel();
+        thread.join(1_000);
+        assertThat(thread.getState(), is(TERMINATED));
+    }
+
     private void forkThreads(BlockingWaitForEvent waitLock, int numberOfThreads, int everyThreadCount, int numberOfTakingThread) throws InterruptedException {
         System.out.println(ToStringBuffer.string("forkThreads")
                 .add("numberOfThreads", numberOfThreads)
@@ -98,14 +124,14 @@ public class BlockingWaitForEventTest {
 
         //final Counter counter = new Counter();
         final AtomicLong counter = new AtomicLong(0);
-        Waiter waiter = waitLock.waiter(() -> counter.get() == waitForNumber);
+        ResultWaiter waiter = waitLock.waiter(() -> counter.get() == waitForNumber);
 
         List<Thread> puttingThreads = Lists.newArrayList();
         for (int i = 0; i < numberOfThreads; i++) {
             Thread thread = new Thread(() -> {
                 for (int j = 0; j < everyThreadCount; j++) {
 
-                    long count = counter.incrementAndGet();
+                    counter.incrementAndGet();
                     waitLock.onUpdate();
                     //System.out.println(ToStringBuffer.string("increment count").addThread().add("count", count));
                 }
@@ -145,8 +171,8 @@ public class BlockingWaitForEventTest {
                 Thread.currentThread().interrupt();
             }
             assertThat(counter.get(), is(waitForNumber));
-            waiter.abort();
-        });
+            waiter.cancel();
+        }, "finisher thread");
 
         tFinisher.start();
 
