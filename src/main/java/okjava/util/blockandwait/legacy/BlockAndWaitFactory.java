@@ -4,10 +4,8 @@ import okjava.util.annotation.Utility;
 import okjava.util.blockandwait.BlockAndWaitUpdatable;
 import okjava.util.blockandwait.PollerWaitTimeSupplierFactory;
 import okjava.util.blockandwait.SimpleWaitTimeSupplierFactory;
-import okjava.util.blockandwait.general.BlockAndWaitGeneralImpl;
 import okjava.util.check.Never;
 
-import static okjava.util.blockandwait.legacy.BlockAndWaitBuilder.DEFAULT_POLL_INTERVAL;
 import static okjava.util.check.Never.neverNeverCalled;
 
 /**
@@ -28,13 +26,10 @@ public enum BlockAndWaitFactory {
     }
 
     public static BlockAndWaitUpdatable createWithPoll(long pollInterval) {
-        if (pollInterval == BlockAndWaitGeneralImpl.WAIT_FOREVER) {
-            return create();
-        }
         return MainBlockAndWait.create(PollerWaitTimeSupplierFactory.create(pollInterval));
     }
 
     public static BlockAndWaitUpdatable createWithPoll() {
-        return createWithPoll(DEFAULT_POLL_INTERVAL);
+        return MainBlockAndWait.create(PollerWaitTimeSupplierFactory.createDefault());
     }
 }

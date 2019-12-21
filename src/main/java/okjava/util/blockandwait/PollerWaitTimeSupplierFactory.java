@@ -1,5 +1,6 @@
 package okjava.util.blockandwait;
 
+import okjava.util.blockandwait.general.BlockAndWaitGeneralImpl;
 import okjava.util.check.MathCheck;
 
 import java.util.function.LongSupplier;
@@ -7,7 +8,7 @@ import java.util.function.LongSupplier;
 import static java.lang.Math.min;
 
 public class PollerWaitTimeSupplierFactory implements WaitTimeSupplierFactory {
-
+    public static final long DEFAULT_POLL_INTERVAL = 10;
     private final LongSupplier getPollIntervalWaitTime;
 
     private PollerWaitTimeSupplierFactory(long pollInterval) {
@@ -15,7 +16,14 @@ public class PollerWaitTimeSupplierFactory implements WaitTimeSupplierFactory {
         this.getPollIntervalWaitTime = () -> pollInterval;
     }
 
+    public static WaitTimeSupplierFactory createDefault() {
+        return create(DEFAULT_POLL_INTERVAL);
+    }
+
     public static WaitTimeSupplierFactory create(long pollInterval) {
+        if (pollInterval == BlockAndWaitGeneralImpl.WAIT_FOREVER) {
+            return SimpleWaitTimeSupplierFactory.create();
+        }
         return new PollerWaitTimeSupplierFactory(pollInterval);
     }
 

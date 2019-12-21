@@ -29,17 +29,15 @@ public final class BlockingWaitForEvent implements Updatable {
     }
 
     public static BlockingWaitForEvent createWithPoll(long pollInterval) {
-        WaitTimeSupplierFactory waitTimeSupplierFactory =
-                PollerWaitTimeSupplierFactory.create(pollInterval);
-       return createNative(waitTimeSupplierFactory);
+        return createNative(PollerWaitTimeSupplierFactory.create(pollInterval));
     }
 
     public static BlockingWaitForEvent create() {
-        return  createNative(SimpleWaitTimeSupplierFactory.create());
+        return createNative(SimpleWaitTimeSupplierFactory.create());
     }
 
     public static BlockingWaitForEvent createWithPoll() {
-        return createWithPoll(10L);
+        return createNative(PollerWaitTimeSupplierFactory.createDefault());
     }
 
     @Override
