@@ -90,7 +90,7 @@ public enum MathCheck {
     }
 
     public static <E extends Exception> boolean equal(int left, int right, IntBiFunction<E> exceptionIntFunction) throws E {
-        if (left == right) {
+        if (left != right) {
             throw exceptionIntFunction.apply(left, right);
         }
         return true;
