@@ -1,4 +1,4 @@
-package okjava.util.blockandwait.general;
+package okjava.util.blockandwait.core;
 
 import java.util.function.LongSupplier;
 import java.util.function.Supplier;

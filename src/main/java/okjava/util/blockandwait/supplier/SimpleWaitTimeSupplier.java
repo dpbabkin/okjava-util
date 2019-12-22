@@ -1,7 +1,7 @@
-package okjava.util.blockandwait;
+package okjava.util.blockandwait.supplier;
 
 import okjava.util.annotation.Singleton;
-import okjava.util.blockandwait.general.BlockAndWaitGeneralImpl;
+import okjava.util.blockandwait.Constants;
 
 import java.util.function.LongSupplier;
 
@@ -9,21 +9,21 @@ import static java.lang.Math.max;
 import static okjava.util.check.Once.calledOnce;
 
 @Singleton
-public class SimpleWaitTimeSupplierFactory implements WaitTimeSupplierFactory {
+class SimpleWaitTimeSupplier implements WaitTimeSupplier {
 
-    static private final LongSupplier FOREVER_WAIT_TIME_SUPPLIER = () -> BlockAndWaitGeneralImpl.WAIT_FOREVER;
+    private static final LongSupplier FOREVER_WAIT_TIME_SUPPLIER = () -> Constants.WAIT_FOREVER;
 
-    private static WaitTimeSupplierFactory INSTANCE = new SimpleWaitTimeSupplierFactory();
+    private static WaitTimeSupplier INSTANCE = new SimpleWaitTimeSupplier();
 
-    private SimpleWaitTimeSupplierFactory() {
+    private SimpleWaitTimeSupplier() {
         calledOnce(this.getClass());
     }
 
-    public static WaitTimeSupplierFactory waitTimeSupplierFactory() {
+    static WaitTimeSupplier simpleWaitTimeSupplier() {
         return create();
     }
 
-    public static WaitTimeSupplierFactory create() {
+    static WaitTimeSupplier create() {
         return INSTANCE;
     }
 

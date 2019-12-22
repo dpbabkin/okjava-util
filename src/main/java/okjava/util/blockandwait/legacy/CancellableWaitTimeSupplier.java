@@ -1,33 +1,33 @@
 package okjava.util.blockandwait.legacy;
 
-import okjava.util.blockandwait.WaitTimeSupplierFactory;
-import okjava.util.blockandwait.general.BlockAndWaitGeneralImpl;
+import okjava.util.blockandwait.Constants;
+import okjava.util.blockandwait.supplier.WaitTimeSupplier;
 
 import java.util.function.LongSupplier;
 import java.util.function.Supplier;
 
 import static okjava.util.NotNull.notNull;
 
-class CancellableWaitTimeSupplierFactory extends DelegateWaitTimeSupplierFactory implements WaitTimeSupplierFactory {
+class CancellableWaitTimeSupplier extends DelegateWaitTimeSupplier implements WaitTimeSupplier {
 
     final private Supplier<Boolean> isCancelled;
 
-    private CancellableWaitTimeSupplierFactory(WaitTimeSupplierFactory delegate, Supplier<Boolean> isCancelled) {
+    private CancellableWaitTimeSupplier(WaitTimeSupplier delegate, Supplier<Boolean> isCancelled) {
         super(delegate);
         this.isCancelled = notNull(isCancelled);
     }
 
-    static WaitTimeSupplierFactory create(WaitTimeSupplierFactory delegate, Supplier<Boolean> cancelProvider) {
-        return new CancellableWaitTimeSupplierFactory(delegate, cancelProvider);
+    static WaitTimeSupplier create(WaitTimeSupplier delegate, Supplier<Boolean> cancelProvider) {
+        return new CancellableWaitTimeSupplier(delegate, cancelProvider);
     }
 
     @Override
     public LongSupplier infinite() {
         return () -> {
             if (isCancelled.get()) {
-                return BlockAndWaitGeneralImpl.NO_NEED_TO_WAIT;
+                return Constants.NO_NEED_TO_WAIT;
             }
-            return CancellableWaitTimeSupplierFactory.super.infinite().getAsLong();
+            return CancellableWaitTimeSupplier.super.infinite().getAsLong();
         };
     }
 
@@ -35,9 +35,9 @@ class CancellableWaitTimeSupplierFactory extends DelegateWaitTimeSupplierFactory
     public LongSupplier timed(long time) {
         return () -> {
             if (isCancelled.get()) {
-                return BlockAndWaitGeneralImpl.NO_NEED_TO_WAIT;
+                return Constants.NO_NEED_TO_WAIT;
             }
-            return CancellableWaitTimeSupplierFactory.super.timed(time).getAsLong();
+            return CancellableWaitTimeSupplier.super.timed(time).getAsLong();
         };
     }
 

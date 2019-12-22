@@ -1,4 +1,4 @@
-package okjava.util.condition;
+package okjava.util.condition.waiter;
 
 import java.util.function.Supplier;
 

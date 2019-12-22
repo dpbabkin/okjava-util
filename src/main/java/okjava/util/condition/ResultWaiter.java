@@ -1,5 +1,7 @@
 package okjava.util.condition;
 
+import okjava.util.condition.waiter.Waiter;
+
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
  * 6/6/2019

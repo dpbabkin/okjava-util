@@ -1,4 +1,4 @@
-package okjava.util.blockandwait.general;
+package okjava.util.blockandwait.core;
 
 import okjava.util.poller.Updatable;
 

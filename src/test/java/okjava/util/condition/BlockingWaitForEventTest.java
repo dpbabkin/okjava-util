@@ -50,7 +50,7 @@ public class BlockingWaitForEventTest {
 
     @Test
     public void test001_1() throws InterruptedException {
-        doTest01(BlockingWaitForEvent::createWithPoll);
+        doTest01(BlockingWaitForEvent::createWithDefaultPoll);
     }
 
     @Test

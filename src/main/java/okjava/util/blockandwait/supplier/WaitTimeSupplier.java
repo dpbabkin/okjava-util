@@ -1,9 +1,9 @@
-package okjava.util.blockandwait;
+package okjava.util.blockandwait.supplier;
 
 import java.util.concurrent.TimeUnit;
 import java.util.function.LongSupplier;
 
-public interface WaitTimeSupplierFactory {
+public interface WaitTimeSupplier {
 
     LongSupplier infinite();
 

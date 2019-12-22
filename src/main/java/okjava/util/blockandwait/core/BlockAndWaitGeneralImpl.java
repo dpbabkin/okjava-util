@@ -1,4 +1,4 @@
-package okjava.util.blockandwait.general;
+package okjava.util.blockandwait.core;
 
 import okjava.util.thread.ExecutorFactory;
 
@@ -9,6 +9,9 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.LongSupplier;
 import java.util.function.Supplier;
 
+import static okjava.util.blockandwait.Constants.NO_NEED_TO_WAIT;
+import static okjava.util.blockandwait.Constants.WAIT_FOREVER;
+
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
  * 6/5/2019
@@ -16,8 +19,6 @@ import java.util.function.Supplier;
  */
 public final class BlockAndWaitGeneralImpl implements BlockAndWaitGeneralUpdatable {
 
-    public static final long WAIT_FOREVER = Long.MAX_VALUE;
-    public static final long NO_NEED_TO_WAIT = 0L;
     private static final Executor EXECUTOR = ExecutorFactory.getInstance().getExecutor();
 
     private final ReentrantLock lock = new ReentrantLock();

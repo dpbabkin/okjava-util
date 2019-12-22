@@ -1,11 +1,12 @@
 package okjava.util.condition;
 
-import okjava.util.blockandwait.PollerWaitTimeSupplierFactory;
-import okjava.util.blockandwait.SimpleWaitTimeSupplierFactory;
-import okjava.util.blockandwait.WaitTimeSupplierFactory;
+import okjava.util.blockandwait.supplier.WaitTimeSupplier;
+import okjava.util.blockandwait.supplier.WaitTimeSupplierFactory;
+import okjava.util.condition.waiter.Waiter;
+import okjava.util.condition.waiter.WaiterProviderImpl;
+import okjava.util.condition.waiter.WaiterProviderUpdatable;
 import okjava.util.poller.Updatable;
 
-import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 import static okjava.util.NotNull.notNull;
@@ -23,21 +24,21 @@ public final class BlockingWaitForEvent implements Updatable {
         this.waiterProviderUpdatable = notNull(blockAndWaitUpdatable);
     }
 
-    private static BlockingWaitForEvent createNative(WaitTimeSupplierFactory waitTimeSupplierFactory) {
-        WaiterProviderUpdatable waiterProviderUpdatable = WaiterProviderImpl.create(waitTimeSupplierFactory);
+    private static BlockingWaitForEvent createNative(WaitTimeSupplier waitTimeSupplier) {
+        WaiterProviderUpdatable waiterProviderUpdatable = WaiterProviderImpl.create(waitTimeSupplier);
         return new BlockingWaitForEvent(waiterProviderUpdatable);
     }
 
-    public static BlockingWaitForEvent createWithPoll(long pollInterval) {
-        return createNative(PollerWaitTimeSupplierFactory.create(pollInterval));
-    }
-
     public static BlockingWaitForEvent create() {
-        return createNative(SimpleWaitTimeSupplierFactory.create());
+        return createNative(WaitTimeSupplierFactory.create());
     }
 
-    public static BlockingWaitForEvent createWithPoll() {
-        return createNative(PollerWaitTimeSupplierFactory.createDefault());
+    public static BlockingWaitForEvent createWithPoll(long pollInterval) {
+        return createNative(WaitTimeSupplierFactory.createWithPoll(pollInterval));
+    }
+
+    public static BlockingWaitForEvent createWithDefaultPoll() {
+        return createNative(WaitTimeSupplierFactory.createWithDefaultPoll());
     }
 
     @Override
@@ -45,10 +46,10 @@ public final class BlockingWaitForEvent implements Updatable {
         waiterProviderUpdatable.onUpdate();
     }
 
-    private static Object MOCK = new Object();
+    private static Object NOT_NULL_OBJECT = new Object();
 
     public ResultWaiter waiter(Supplier<Boolean> isEventHappened) {
-        Supplier<Object> adapterSupplier = () -> isEventHappened.get() ? MOCK : null;
+        Supplier<Object> adapterSupplier = () -> isEventHappened.get() ? NOT_NULL_OBJECT : null;
         Waiter<Object> delegate = waiterProviderUpdatable.waiter(adapterSupplier);
         return new ResultWaiterDelegate(delegate);
     }
@@ -66,13 +67,13 @@ public final class BlockingWaitForEvent implements Updatable {
         }
 
         @Override
-        public Result await() throws InterruptedException {
-            return ResultImpl.result(delegate.await() != null);
+        public Result await(long time) throws InterruptedException {
+            return createResult(delegate.await(time));
         }
 
-        @Override
-        public Result await(long time, TimeUnit timeUnit) throws InterruptedException {
-            return ResultImpl.result(delegate.await(time, timeUnit) != null);
+        private Result createResult(Object object) {
+            assert object == null || object == NOT_NULL_OBJECT;
+            return ResultImpl.result(object != null);
         }
     }
 }

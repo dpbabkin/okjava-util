@@ -1,7 +1,7 @@
 package okjava.util.poller.poller;
 
 import okjava.util.blockandwait.BlockAndWaitUpdatable;
-import okjava.util.blockandwait.legacy.BlockAndWaitFactory;
+import okjava.util.blockandwait.BlockAndWaitFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

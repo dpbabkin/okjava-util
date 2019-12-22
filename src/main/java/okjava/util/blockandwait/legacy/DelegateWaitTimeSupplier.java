@@ -1,16 +1,16 @@
 package okjava.util.blockandwait.legacy;
 
-import okjava.util.blockandwait.WaitTimeSupplierFactory;
+import okjava.util.blockandwait.supplier.WaitTimeSupplier;
 
 import java.util.function.LongSupplier;
 
 import static okjava.util.NotNull.notNull;
 
-abstract class DelegateWaitTimeSupplierFactory implements WaitTimeSupplierFactory {
+abstract class DelegateWaitTimeSupplier implements WaitTimeSupplier {
 
-    private final WaitTimeSupplierFactory delegate;
+    private final WaitTimeSupplier delegate;
 
-    DelegateWaitTimeSupplierFactory(WaitTimeSupplierFactory delegate) {
+    DelegateWaitTimeSupplier(WaitTimeSupplier delegate) {
         this.delegate = notNull(delegate);
     }
 

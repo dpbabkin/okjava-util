@@ -1,8 +1,9 @@
 package okjava.util.blockandwait.legacy;
 
 import okjava.util.blockandwait.BlockAndWaitUpdatable;
-import okjava.util.blockandwait.general.BlockAndWaitGeneralImpl;
-import okjava.util.blockandwait.general.BlockAndWaitGeneralUpdatable;
+import okjava.util.blockandwait.Constants;
+import okjava.util.blockandwait.core.BlockAndWaitGeneralImpl;
+import okjava.util.blockandwait.core.BlockAndWaitGeneralUpdatable;
 
 import java.util.concurrent.TimeUnit;
 import java.util.function.LongSupplier;
@@ -12,7 +13,6 @@ import static java.lang.Math.max;
 
 abstract class BaseBlockAndWait implements BlockAndWaitUpdatable {
     private final BlockAndWaitGeneralUpdatable blockAndWaitUpdatable = BlockAndWaitGeneralImpl.create();
-    static private final LongSupplier ABORT_WAIT_TIME_SUPPLIER = () -> BlockAndWaitGeneralImpl.NO_NEED_TO_WAIT;
 
     private volatile boolean abort = false;
 
@@ -40,7 +40,7 @@ abstract class BaseBlockAndWait implements BlockAndWaitUpdatable {
     private LongSupplier wrapAbort(LongSupplier delegate) {
         return () -> {
             if (abort) {
-                return BlockAndWaitGeneralImpl.NO_NEED_TO_WAIT;
+                return Constants.NO_NEED_TO_WAIT;
             }
             return delegate.getAsLong();
         };

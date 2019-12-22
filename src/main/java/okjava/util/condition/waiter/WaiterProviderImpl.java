@@ -1,11 +1,11 @@
-package okjava.util.condition;
+package okjava.util.condition.waiter;
 
-import okjava.util.blockandwait.WaitTimeSupplierFactory;
-import okjava.util.blockandwait.general.BlockAndWaitGeneralImpl;
-import okjava.util.blockandwait.general.BlockAndWaitGeneralUpdatable;
+import okjava.util.blockandwait.Constants;
+import okjava.util.blockandwait.supplier.WaitTimeSupplier;
+import okjava.util.blockandwait.core.BlockAndWaitGeneralImpl;
+import okjava.util.blockandwait.core.BlockAndWaitGeneralUpdatable;
 import okjava.util.poller.Updatable;
 
-import java.util.concurrent.TimeUnit;
 import java.util.function.LongSupplier;
 import java.util.function.Supplier;
 
@@ -18,14 +18,14 @@ import static okjava.util.NotNull.notNull;
  */
 public final class WaiterProviderImpl implements Updatable, WaiterProviderUpdatable {
     private final BlockAndWaitGeneralUpdatable blockAndWaitUpdatable = BlockAndWaitGeneralImpl.create();
-    private final WaitTimeSupplierFactory waitTimeSupplierFactory;
+    private final WaitTimeSupplier waitTimeSupplier;
 
-    private WaiterProviderImpl(WaitTimeSupplierFactory waitTimeSupplierFactory) {
-        this.waitTimeSupplierFactory = notNull(waitTimeSupplierFactory);
+    private WaiterProviderImpl(WaitTimeSupplier waitTimeSupplier) {
+        this.waitTimeSupplier = notNull(waitTimeSupplier);
     }
 
-    public static WaiterProviderUpdatable create(WaitTimeSupplierFactory waitTimeSupplierFactory) {
-        return new WaiterProviderImpl(waitTimeSupplierFactory);
+    public static WaiterProviderUpdatable create(WaitTimeSupplier waitTimeSupplier) {
+        return new WaiterProviderImpl(waitTimeSupplier);
     }
 
     @Override
@@ -53,23 +53,12 @@ public final class WaiterProviderImpl implements Updatable, WaiterProviderUpdata
         }
 
         @Override
-        public V await() throws InterruptedException {
+        public V await(long time) throws InterruptedException {
             LongSupplier longSupplier = () -> {
                 if (cancelled) {
-                    return BlockAndWaitGeneralImpl.NO_NEED_TO_WAIT;
+                    return Constants.NO_NEED_TO_WAIT;
                 }
-                return waitTimeSupplierFactory.infinite().getAsLong();
-            };
-            return blockAndWaitUpdatable.await(isEventHappened, longSupplier);
-        }
-
-        @Override
-        public V await(long time, TimeUnit timeUnit) throws InterruptedException {
-            LongSupplier longSupplier = () -> {
-                if (cancelled) {
-                    return BlockAndWaitGeneralImpl.NO_NEED_TO_WAIT;
-                }
-                return waitTimeSupplierFactory.timed(time, timeUnit).getAsLong();
+                return waitTimeSupplier.timed(time).getAsLong();
             };
             return blockAndWaitUpdatable.await(isEventHappened, longSupplier);
         }

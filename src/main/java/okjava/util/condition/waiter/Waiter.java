@@ -1,4 +1,6 @@
-package okjava.util.condition;
+package okjava.util.condition.waiter;
+
+import okjava.util.blockandwait.Constants;
 
 import java.util.concurrent.TimeUnit;
 
@@ -11,9 +13,15 @@ public interface Waiter<V> {
 
     void cancel();
 
-    V await() throws InterruptedException;
+    V await(long time) throws InterruptedException;
 
-    V await(long time, TimeUnit timeUnit) throws InterruptedException;
+    default V await() throws InterruptedException {
+        return await(Constants.WAIT_FOREVER);
+    }
+
+    default V await(long time, TimeUnit timeUnit) throws InterruptedException {
+        return await(timeUnit.toMillis(time));
+    }
 
     default V second() throws InterruptedException {
         return seconds(1L);

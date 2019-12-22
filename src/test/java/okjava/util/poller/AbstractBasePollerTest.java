@@ -42,7 +42,7 @@ abstract class AbstractBasePollerTest<P extends Poller<Long>> {
         P poller = getPoller();
         PollerTestUtils.assertValue(poller, 0L);
 
-        BlockingWaitForEvent block = BlockingWaitForEvent.createWithPoll();
+        BlockingWaitForEvent block = BlockingWaitForEvent.createWithDefaultPoll();
         Thread thread = new Thread(() -> {
             try {
                 poller.poll();
@@ -64,7 +64,7 @@ abstract class AbstractBasePollerTest<P extends Poller<Long>> {
     public void test03() throws InterruptedException {
 
         P poller = getPoller();
-        BlockingWaitForEvent block = BlockingWaitForEvent.createWithPoll();
+        BlockingWaitForEvent block = BlockingWaitForEvent.createWithDefaultPoll();
         WaitForCollection<Long, Queue<Long>> waitForCollection = WaitForCollection.create(Queues.newConcurrentLinkedQueue());
         Thread thread = new Thread(() -> {
             try {
