@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 
 import static okjava.util.NotNull.notNull;
 
-public class ValueHolderImpl<V> implements ValueHolder<V>, Updatable {
+class UpdatableValueHolderImpl<V> implements UpdatableValueHolder<V> {
 
     private final PollerWithSupplier<V> poller;
     private final SupplierListenerCollection<V> supplierListenerCollection;
@@ -24,11 +24,11 @@ public class ValueHolderImpl<V> implements ValueHolder<V>, Updatable {
 
     private static final Executor EXECUTOR = ExecutorFactory.getInstance().getExecutor();
 
-    public static <V> ValueHolderImpl<V> create(Supplier<V> valueSupplier) {
-        return new ValueHolderImpl<>(valueSupplier);
+    static <V> UpdatableValueHolder<V> create(Supplier<V> valueSupplier) {
+        return new UpdatableValueHolderImpl<>(valueSupplier);
     }
 
-    private ValueHolderImpl(Supplier<V> valueSupplier) {
+    private UpdatableValueHolderImpl(Supplier<V> valueSupplier) {
         this.valueSupplier = notNull(valueSupplier);
         this.poller = PollerWithSupplierImpl.create(valueSupplier);
         SupplierListenerCollectionImpl<V> supplierListenerCollection = SupplierListenerCollectionImpl.create();

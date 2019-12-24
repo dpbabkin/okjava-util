@@ -1,7 +1,6 @@
 package okjava.util.poller;
 
 import okjava.util.poller.poller.Poller;
-import okjava.util.poller.poller.PollerWithSupplier;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -12,7 +11,7 @@ public class PollerFromValueHolderTest extends AbstractBasePollerTest<Poller<Lon
     private final Runnable onUpdate;
 
     public PollerFromValueHolderTest() {
-        ValueHolderImpl<Long> valueHolder = ValueHolderImpl.create(reference::get);
+        UpdatableValueHolder<Long> valueHolder = ValueHolderFactory.create(reference::get);
         this.poller = valueHolder.getPoller();
         onUpdate = valueHolder;
     }
