@@ -4,6 +4,7 @@ import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
 import okjava.util.poller.poller.Poller;
 
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import static okjava.util.check.Never.neverNeverCalled;
@@ -21,19 +22,20 @@ public class PollerTestUtils {
         neverNeverCalled();
     }
 
-    public static <V> void assertValue(Poller<V> poller, final V expectedValue) throws InterruptedException {
-        assertValue(poller, expectedValue, DEFAULT_WAIT_TIME, DEFAULT_TIME_UNIT);
+    public static <V> void waitAssertValue(Poller<V> poller, final V expectedValue) throws InterruptedException {
+        waitAssertValue(poller, expectedValue, DEFAULT_WAIT_TIME, DEFAULT_TIME_UNIT);
     }
 
-    public static <V> void assertValue(Poller<V> poller, final V expectedValue, long time, TimeUnit timeUnit) throws InterruptedException {
-        assertThat(poller.poll(v -> v.equals(expectedValue), time, timeUnit).isPresent(), is(true));
+    public static <V> void waitAssertValue(Poller<V> poller, final V expectedValue, long time, TimeUnit timeUnit) throws InterruptedException {
+        Optional<V> value = poller.poll(v -> v.equals(expectedValue), time, timeUnit);
+        assertThat(value.isPresent(), is(true));
     }
 
-    public static <V> void assertValue(ValueHolder<V> valueHolder, final V expectedValue) throws InterruptedException {
-        assertValue(valueHolder, expectedValue, DEFAULT_WAIT_TIME, DEFAULT_TIME_UNIT);
+    public static <V> void waitAssertValue(ValueHolder<V> valueHolder, final V expectedValue) throws InterruptedException {
+        waitAssertValue(valueHolder, expectedValue, DEFAULT_WAIT_TIME, DEFAULT_TIME_UNIT);
     }
 
-    public static <V> void assertValue(ValueHolder<V> valueHolder, final V expectedValue, long time, TimeUnit timeUnit) throws InterruptedException {
-        assertValue(valueHolder.getPoller(), expectedValue, time, timeUnit);
+    public static <V> void waitAssertValue(ValueHolder<V> valueHolder, final V expectedValue, long time, TimeUnit timeUnit) throws InterruptedException {
+        waitAssertValue(valueHolder.getPoller(), expectedValue, time, timeUnit);
     }
 }
