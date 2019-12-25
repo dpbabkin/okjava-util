@@ -2,6 +2,7 @@ package okjava.util.collections;
 
 import static okjava.util.check.Never.neverNeverCalled;
 
+import com.google.common.collect.ImmutableList;
 import okjava.util.annotation.Utility;
 import okjava.util.check.DummyException;
 import okjava.util.check.Never;
@@ -43,7 +44,6 @@ public enum ConvertUtils {
         return output;
     }
 
-
     public static <I, O, C extends Collection<O>> Optional<C> transform(Iterable<? extends I> input, C output, Function<I, Optional<O>> itemResolver) {
         try {
             return Optional.of(ConvertUtils.transform(input, output, itemResolver, i -> DummyException.create()));
@@ -53,7 +53,6 @@ public enum ConvertUtils {
     }
 
     public static <A, B> List<B> transform(List<A> input, Function<? super A, ? extends B> mapper) {
-
-        return input.stream().map(mapper).collect(Collectors.toUnmodifiableList());
+        return input.stream().map(mapper).collect(ImmutableList.toImmutableList());
     }
 }
