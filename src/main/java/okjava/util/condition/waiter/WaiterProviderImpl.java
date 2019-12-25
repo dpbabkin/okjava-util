@@ -1,9 +1,9 @@
 package okjava.util.condition.waiter;
 
 import okjava.util.blockandwait.Constants;
-import okjava.util.blockandwait.supplier.WaitTimeSupplier;
 import okjava.util.blockandwait.core.BlockAndWaitGeneralImpl;
 import okjava.util.blockandwait.core.BlockAndWaitGeneralUpdatable;
+import okjava.util.blockandwait.supplier.WaitTimeSupplier;
 import okjava.util.poller.Updatable;
 
 import java.util.function.LongSupplier;
@@ -54,13 +54,14 @@ public final class WaiterProviderImpl implements Updatable, WaiterProviderUpdata
 
         @Override
         public V await(long time) throws InterruptedException {
-            LongSupplier longSupplier = () -> {
+            LongSupplier delegate = waitTimeSupplier.timed(time);
+            LongSupplier cancelledLongSupplier = () -> {
                 if (cancelled) {
                     return Constants.NO_NEED_TO_WAIT;
                 }
-                return waitTimeSupplier.timed(time).getAsLong();
+                return delegate.getAsLong();
             };
-            return blockAndWaitUpdatable.await(isEventHappened, longSupplier);
+            return blockAndWaitUpdatable.await(isEventHappened, cancelledLongSupplier);
         }
     }
 }
