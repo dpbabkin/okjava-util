@@ -7,7 +7,6 @@ import okjava.util.poller.poller.Poller;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-import static okjava.util.WaitTestUtils.DEFAULT_TIME_UNIT;
 import static okjava.util.WaitTestUtils.DEFAULT_WAIT_TIME;
 import static okjava.util.check.Never.neverNeverCalled;
 import static org.hamcrest.CoreMatchers.is;
@@ -22,7 +21,7 @@ public class PollerTestUtils {
     }
 
     public static <V> void waitAssertValue(Poller<V> poller, final V expectedValue) throws InterruptedException {
-        waitAssertValue(poller, expectedValue, DEFAULT_WAIT_TIME, DEFAULT_TIME_UNIT);
+        waitAssertValue(poller, expectedValue, DEFAULT_WAIT_TIME);
     }
 
     public static <V> void waitAssertValue(Poller<V> poller, final V expectedValue, long time, TimeUnit timeUnit) throws InterruptedException {
@@ -31,11 +30,13 @@ public class PollerTestUtils {
 
     public static <V> void waitAssertValue(Poller<V> poller, final V expectedValue, long time) throws InterruptedException {
         Optional<V> value = poller.poll(v -> v.equals(expectedValue), time);
-        assertThat(value.isPresent(), is(true));
+        if (value.isEmpty()) {
+            assertThat(poller.get(), is(expectedValue));
+        }
     }
 
     public static <V> void waitAssertValue(ValueHolder<V> valueHolder, final V expectedValue) throws InterruptedException {
-        waitAssertValue(valueHolder, expectedValue, DEFAULT_WAIT_TIME, DEFAULT_TIME_UNIT);
+        waitAssertValue(valueHolder, expectedValue, DEFAULT_WAIT_TIME);
     }
 
     public static <V> void waitAssertValue(ValueHolder<V> valueHolder, final V expectedValue, long time, TimeUnit timeUnit) throws InterruptedException {
