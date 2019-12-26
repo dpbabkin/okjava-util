@@ -1,7 +1,5 @@
 package okjava.util.logger;
 
-import static okjava.util.check.Never.neverNeverCalled;
-
 import okjava.util.ConsumerUtils;
 import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
@@ -9,8 +7,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static okjava.util.check.Never.neverNeverCalled;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -26,7 +27,7 @@ public enum LoggerUtils {
     }
 
     public static Consumer<String> createNamedLogger(String name, Logger logger) {
-        return ConsumerUtils.map((Consumer<String>) logger::info, s -> name + " " + s);
+        return ConsumerUtils.map(logger::info, (Function<String, String>) s -> name + " " + s);
     }
 
     public static Consumer<String> createLoggerConsumerWithPrefix(Class<?> clazz, String prefix) {
@@ -40,8 +41,8 @@ public enum LoggerUtils {
 
     public static Logger createLoggerWithPrefix(Class<?> clazz, Object... prefix) {
         String logPrefix = Stream.of(prefix)
-                               .map(Object::toString)
-                               .collect(Collectors.joining("./.", "._.", ""));
+                .map(Object::toString)
+                .collect(Collectors.joining("./.", "._.", ""));
 
         return LoggerFactory.getLogger(clazz.getName() + logPrefix);
     }

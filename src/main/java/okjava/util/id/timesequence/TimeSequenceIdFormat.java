@@ -33,7 +33,7 @@ enum TimeSequenceIdFormat {
         return longTimeToString(time) + "_" + sequence;
     }
 
-    public static long parse(String id) {
+    static long parse(String id) {
         String[] split = id.split("_");
         //assert split.length == 2 : id;
         if (split.length != 2) {
