@@ -3,10 +3,12 @@ package okjava.util.condition;
 import static okjava.util.NotNull.notNull;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Queues;
 import com.google.common.collect.Sets;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -28,6 +30,10 @@ public class WaitForCollection<E, C extends Collection<E>> implements Consumer<E
 
     public static <E> WaitForCollection<E, List<E>> createWithArrayList() {
         return new WaitForCollection<>(Lists.newArrayList());
+    }
+
+    public static <E> WaitForCollection<E, Queue<E>> createWithConcurrentLinkedQueue() {
+        return new WaitForCollection<>(Queues.newConcurrentLinkedQueue());
     }
 
     public static <E> WaitForCollection<E, Set<E>> createWithHashSet() {
