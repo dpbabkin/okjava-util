@@ -15,11 +15,6 @@ abstract class DelegateWaitTimeSupplier implements WaitTimeSupplier {
     }
 
     @Override
-    public LongSupplier infinite() {
-        return delegate.infinite();
-    }
-
-    @Override
     public LongSupplier timed(long time) {
         return delegate.timed(time);
     }

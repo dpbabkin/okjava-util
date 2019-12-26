@@ -48,7 +48,7 @@ public class PollerWithVaueImpl<V> implements PollerWithValue<V> {
     }
 
     @Override
-    public Optional<V> poll(Predicate<V> tester, long time, TimeUnit timeUnit) throws InterruptedException {
-        return pollerDelegate.poll(tester, time, timeUnit);
+    public Optional<V> poll(Predicate<V> tester, long time) throws InterruptedException {
+        return pollerDelegate.poll(tester, time);
     }
 }

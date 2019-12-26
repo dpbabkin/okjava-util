@@ -22,8 +22,8 @@ class PollerDelegate<V> implements Poller<V> {
     }
 
     @Override
-    public Optional<V> poll(Predicate<V> tester, long time, TimeUnit timeUnit) throws InterruptedException {
-        return delegate.poll(tester, time, timeUnit);
+    public Optional<V> poll(Predicate<V> tester, long time) throws InterruptedException {
+        return delegate.poll(tester, time);
     }
 
     @Override

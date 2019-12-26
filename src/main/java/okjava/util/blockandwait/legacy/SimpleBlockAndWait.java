@@ -4,13 +4,13 @@ import okjava.util.blockandwait.Constants;
 
 import java.util.function.LongSupplier;
 
-final class SimpleBlockAndWait extends BaseBlockAndWait {
+final class SimpleBlockAndWait extends AbstractBlockAndWait {
     static private final LongSupplier FOREVER_WAIT_TIME_SUPPLIER = () -> Constants.WAIT_FOREVER;
 
     private SimpleBlockAndWait() {
     }
 
-    static BaseBlockAndWait create() {
+    static AbstractBlockAndWait create() {
         return new SimpleBlockAndWait();
     }
 

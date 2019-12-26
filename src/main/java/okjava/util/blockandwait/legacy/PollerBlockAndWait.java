@@ -6,7 +6,7 @@ import java.util.function.LongSupplier;
 
 import static java.lang.Math.min;
 
-final class PollerBlockAndWait extends BaseBlockAndWait {
+final class PollerBlockAndWait extends AbstractBlockAndWait {
     private final LongSupplier getPollIntervalWaitTime;
 
     private PollerBlockAndWait(long pollInterval) {
@@ -14,7 +14,7 @@ final class PollerBlockAndWait extends BaseBlockAndWait {
         this.getPollIntervalWaitTime = () -> pollInterval;
     }
 
-    static BaseBlockAndWait create(long pollInterval) {
+    static AbstractBlockAndWait create(long pollInterval) {
         return new PollerBlockAndWait(pollInterval);
     }
 

@@ -1,10 +1,9 @@
 package okjava.util.blockandwait;
 
-import okjava.util.blockandwait.supplier.WaitTimeSupplier;
 import okjava.util.blockandwait.core.BlockAndWaitGeneralImpl;
 import okjava.util.blockandwait.core.BlockAndWaitGeneralUpdatable;
+import okjava.util.blockandwait.supplier.WaitTimeSupplier;
 
-import java.util.concurrent.TimeUnit;
 import java.util.function.LongSupplier;
 import java.util.function.Supplier;
 
@@ -32,8 +31,11 @@ final class BlockAndWaitImpl implements BlockAndWaitUpdatable {
     }
 
     @Override
-    public <V> V await(Supplier<V> isEventHappened, long time, TimeUnit timeUnit) throws InterruptedException {
-        return doAwait(isEventHappened, waitTimeSupplier.timed(time, timeUnit));
+    public <V> V await(Supplier<V> isEventHappened, long time) throws InterruptedException {
+        if (time == Constants.WAIT_FOREVER) {
+            return doAwait(isEventHappened, waitTimeSupplier.infinite());
+        }
+        return doAwait(isEventHappened, waitTimeSupplier.timed(time));
     }
 
     private <V> V doAwait(Supplier<V> isEventHappened, LongSupplier needToWaitProvider) throws InterruptedException {

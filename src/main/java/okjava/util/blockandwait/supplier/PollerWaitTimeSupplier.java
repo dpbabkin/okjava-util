@@ -22,12 +22,10 @@ class PollerWaitTimeSupplier implements WaitTimeSupplier {
     }
 
     @Override
-    public LongSupplier infinite() {
-        return getPollIntervalWaitTime;
-    }
-
-    @Override
     public LongSupplier timed(long time) {
+        if (time == Constants.WAIT_FOREVER) {
+            return getPollIntervalWaitTime;
+        }
         final LongSupplier longSupplier = SimpleWaitTimeSupplier.create().timed(time);
         return () -> min(longSupplier.getAsLong(), getPollIntervalWaitTime.getAsLong());
     }

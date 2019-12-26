@@ -22,16 +22,6 @@ class CancellableWaitTimeSupplier extends DelegateWaitTimeSupplier implements Wa
     }
 
     @Override
-    public LongSupplier infinite() {
-        return () -> {
-            if (isCancelled.get()) {
-                return Constants.NO_NEED_TO_WAIT;
-            }
-            return CancellableWaitTimeSupplier.super.infinite().getAsLong();
-        };
-    }
-
-    @Override
     public LongSupplier timed(long time) {
         return () -> {
             if (isCancelled.get()) {
@@ -40,13 +30,4 @@ class CancellableWaitTimeSupplier extends DelegateWaitTimeSupplier implements Wa
             return CancellableWaitTimeSupplier.super.timed(time).getAsLong();
         };
     }
-
-//    private LongSupplier wrapAbort(LongSupplier delegate) {
-//        return () -> {
-//            if (isCancelled.get() == true) {
-//                return BlockAndWaitGeneralImpl.NO_NEED_TO_WAIT;
-//            }
-//            return delegate.getAsLong();
-//        };
-//    }
 }

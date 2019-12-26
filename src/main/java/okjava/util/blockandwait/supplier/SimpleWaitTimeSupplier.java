@@ -28,12 +28,10 @@ class SimpleWaitTimeSupplier implements WaitTimeSupplier {
     }
 
     @Override
-    public LongSupplier infinite() {
-        return FOREVER_WAIT_TIME_SUPPLIER;
-    }
-
-    @Override
     public LongSupplier timed(long time) {
+        if(time==Constants.WAIT_FOREVER){
+            return FOREVER_WAIT_TIME_SUPPLIER;
+        }
         return createWaitTimeSupplier(time);
     }
 

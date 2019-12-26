@@ -1,17 +1,29 @@
 package okjava.util;
 
+import okjava.util.annotation.Utility;
+import okjava.util.check.Never;
+
 import java.io.OutputStream;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static okjava.util.check.Never.neverNeverCalled;
+
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
  * 6/17/2016
  * 16:31.
  */
-public class TestUtils {
+@Utility
+public enum TestUtils {
+    ;
+
+    TestUtils(@SuppressWarnings("unused") Never never) {
+        neverNeverCalled();
+    }
+
     public static void setJULtoConsoleSTDOUT() {
         Handler ch = new ConsoleHandler() {
             @Override

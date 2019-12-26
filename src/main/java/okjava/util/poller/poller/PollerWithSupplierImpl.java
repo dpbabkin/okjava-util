@@ -1,12 +1,11 @@
 package okjava.util.poller.poller;
 
-import okjava.util.blockandwait.BlockAndWaitUpdatable;
 import okjava.util.blockandwait.BlockAndWaitFactory;
+import okjava.util.blockandwait.BlockAndWaitUpdatable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -17,8 +16,7 @@ import static okjava.util.NotNull.notNull;
  * 6/20/2017
  * 17:41.
  */
-public class PollerWithSupplierImpl<V> implements PollerWithSupplier<V>{
-    //this is good class but I do not see application for that.
+public class PollerWithSupplierImpl<V> implements PollerWithSupplier<V> {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(Poller.class);
 
@@ -36,9 +34,10 @@ public class PollerWithSupplierImpl<V> implements PollerWithSupplier<V>{
 
     @Override
     public void onUpdate() {
-        LOGGER.trace("updated with " + get());
+        LOGGER.atTrace().log("poller updated with {}", get());
         blockAndWait.onUpdate();
     }
+
     @Override
     public V get() {
         return supplier.get();
@@ -52,10 +51,13 @@ public class PollerWithSupplierImpl<V> implements PollerWithSupplier<V>{
     }
 
     @Override
-    public Optional<V> poll(Predicate<V> tester, long time, TimeUnit timeUnit) throws InterruptedException {
-        return Optional.ofNullable(blockAndWait.await(createSupplierAdapter(tester), time, timeUnit));
+    public Optional<V> poll(Predicate<V> tester, long time) throws InterruptedException {
+        return Optional.ofNullable(blockAndWait.await(createSupplierAdapter(tester), time));
     }
 
+    /**
+     * Purpose of this adapter is to abey contract of BlockAndWaitUpdatable to return null on ase of fail, or Object in case of success.
+     */
     private Supplier<V> createSupplierAdapter(Predicate<V> predicate) {
         Supplier<V> supplierAdapter = () -> {
             V value = PollerWithSupplierImpl.this.get();

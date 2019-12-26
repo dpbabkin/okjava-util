@@ -1,11 +1,15 @@
 package okjava.util.blockandwait.supplier;
 
+import okjava.util.blockandwait.Constants;
+
 import java.util.concurrent.TimeUnit;
 import java.util.function.LongSupplier;
 
 public interface WaitTimeSupplier {
 
-    LongSupplier infinite();
+    default LongSupplier infinite() {
+        return timed(Constants.WAIT_FOREVER);
+    }
 
     LongSupplier timed(long time);
 

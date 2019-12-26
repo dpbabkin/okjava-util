@@ -12,6 +12,10 @@ import java.util.function.Supplier;
  */
 public interface Poller<V> extends Supplier<V> {
 
+    V poll(Predicate<V> tester) throws InterruptedException;
+
+    Optional<V> poll(Predicate<V> tester, long time) throws InterruptedException;
+
     default V poll() throws InterruptedException {
         V oldValue = get();
         return poll(oldValue);
@@ -21,16 +25,24 @@ public interface Poller<V> extends Supplier<V> {
         return poll(v -> !oldValue.equals(v));
     }
 
-    V poll(Predicate<V> tester) throws InterruptedException;
-
     default Optional<V> poll(long time, TimeUnit timeUnit) throws InterruptedException {
+        return poll(timeUnit.toMillis(time));
+    }
+
+    default Optional<V> poll(long time) throws InterruptedException {
         V oldValue = get();
-        return poll(oldValue, time, timeUnit);
+        return poll(oldValue, time);
     }
 
     default Optional<V> poll(final V oldValue, long time, TimeUnit timeUnit) throws InterruptedException {
-        return poll(v -> !oldValue.equals(v), time, timeUnit);
+        return poll(oldValue, timeUnit.toMillis(time));
     }
 
-    Optional<V> poll(Predicate<V> tester, long time, TimeUnit timeUnit) throws InterruptedException;
+    default Optional<V> poll(final V oldValue, long time) throws InterruptedException {
+        return poll(v -> !oldValue.equals(v), time);
+    }
+
+    default Optional<V> poll(Predicate<V> tester, long time, TimeUnit timeUnit) throws InterruptedException {
+        return poll(tester, timeUnit.toMillis(time));
+    }
 }

@@ -11,12 +11,12 @@ import java.util.function.Supplier;
 
 import static java.lang.Math.max;
 
-abstract class BaseBlockAndWait implements BlockAndWaitUpdatable {
+abstract class AbstractBlockAndWait implements BlockAndWaitUpdatable {
     private final BlockAndWaitGeneralUpdatable blockAndWaitUpdatable = BlockAndWaitGeneralImpl.create();
 
     private volatile boolean abort = false;
 
-    BaseBlockAndWait() {
+    AbstractBlockAndWait() {
     }
 
     public void onUpdate() {
@@ -24,13 +24,11 @@ abstract class BaseBlockAndWait implements BlockAndWaitUpdatable {
     }
 
     @Override
-    public <V> V await(Supplier<V> isEventHappened) throws InterruptedException {
-        return doAwait(isEventHappened, getInfiniteWaitSupplier());
-    }
-
-    @Override
-    public <V> V await(Supplier<V> isEventHappened, long time, TimeUnit timeUnit) throws InterruptedException {
-        return doAwait(isEventHappened, createWaitTimeSupplier(timeUnit.toMillis(time)));
+    public <V> V await(Supplier<V> isEventHappened, long time) throws InterruptedException {
+        if(time == Constants.WAIT_FOREVER){
+            return doAwait(isEventHappened, getInfiniteWaitSupplier());
+        }
+        return doAwait(isEventHappened, createWaitTimeSupplier(time));
     }
 
     private <V> V doAwait(Supplier<V> isEventHappened, LongSupplier needToWaitProvider) throws InterruptedException {
