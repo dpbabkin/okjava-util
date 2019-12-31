@@ -1,8 +1,5 @@
 package okjava.util.thread;
 
-import static java.lang.Math.min;
-import static okjava.util.check.Once.calledOnce;
-
 import okjava.util.RunnableUtils;
 import okjava.util.annotation.Singleton;
 import okjava.util.concurrent.ExecutableTaskQueueConfined;
@@ -10,10 +7,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+
+import static java.lang.Math.min;
+import static okjava.util.check.Once.calledOnce;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -21,13 +22,18 @@ import java.util.concurrent.TimeUnit;
  * 22:37.
  */
 @Singleton
-public  final class ExecutorFactory {
+public final class ExecutorFactory {
     private static final ExecutorFactory INSTANCE = new ExecutorFactory();
     private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
     private static final long KEEP_ALIVE_TIME = TimeUnit.MINUTES.toMillis(5);
     private static final int MIN_CORE_POOL_SIZE = 3;
-    private static final Executor FORK_JOIN_POOL_EXECUTOR = ForkJoinPool.commonPool();
+    private static final OkExecutor FORK_JOIN_POOL_EXECUTOR = OkExecutorImpl.create(ForkJoinPool.commonPool());
 
+    private static final OkExecutor LOW_PRIORITY = wrapOK(Executors.newSingleThreadExecutor(r -> {
+        Thread thread = new Thread(r);
+        thread.setPriority(Thread.MIN_PRIORITY);
+        return thread;
+    }));
 
     private ExecutorFactory() {
         calledOnce(this.getClass());
@@ -63,7 +69,7 @@ public  final class ExecutorFactory {
         DaemonThreadFactory daemonThreadFactory = DaemonThreadFactory.create(name, exceptionHandler);
 
         return new ThreadPoolExecutor(getCorePoolSize(), getMaximumPoolSize(), getKeepAliveTime(), TimeUnit.MILLISECONDS,
-            new LinkedBlockingQueue<>(), daemonThreadFactory);
+                new LinkedBlockingQueue<>(), daemonThreadFactory);
     }
 
     public Executor getWrapToStringRunnableExecutor(String toString, Executor delegate) {
@@ -73,11 +79,23 @@ public  final class ExecutorFactory {
         };
     }
 
-    public Executor getTaskQueueConfinedExecutor() {
-        return ExecutableTaskQueueConfined.create(getExecutor());
+    public OkExecutor getLowPriority() {
+        return LOW_PRIORITY;
     }
 
-    public Executor getExecutor() {
+    public OkExecutor getTaskQueueConfinedExecutor() {
+        return getTaskQueueConfinedExecutor(getExecutor());
+    }
+
+    public OkExecutor getTaskQueueConfinedExecutor(Executor executor) {
+        return wrapOK(ExecutableTaskQueueConfined.create(executor));
+    }
+
+    public static OkExecutor wrapOK(Executor executor) {
+        return OkExecutorImpl.create(executor);
+    }
+
+    public OkExecutor getExecutor() {
         return FORK_JOIN_POOL_EXECUTOR;
     }
 }

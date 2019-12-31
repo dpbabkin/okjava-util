@@ -7,6 +7,7 @@ import okjava.util.id.timesequence.LongTimeSequenceIdUtils;
 import java.util.Collection;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static okjava.util.NotNull.notNull;
 import static okjava.util.string.ToStringUtils.i2s;
@@ -95,6 +96,10 @@ public class ToStringBuffer {
     public String toString() {
         this.builder.append("}");
         return builder.toString();
+    }
+
+    public Supplier<String> toSupplier() {
+        return this::toString;
     }
 
     public <E extends Exception> E toException(Function<String, E> function) {
