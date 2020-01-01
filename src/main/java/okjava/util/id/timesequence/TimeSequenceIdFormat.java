@@ -20,6 +20,7 @@ enum TimeSequenceIdFormat {
 
     private final static String PATTERN = "yyyyMMdd:HHmmss.SSS";
     private final static DateTimeFormat FORMATTER = DateTimeFormat.create(PATTERN);
+    private final static String SEPARATOR = "_";
 
     TimeSequenceIdFormat(@SuppressWarnings("unused") Never never) {
         neverNeverCalled();
@@ -30,12 +31,11 @@ enum TimeSequenceIdFormat {
     }
 
     static String format(long time, long sequence) {
-        return longTimeToString(time) + "_" + sequence;
+        return longTimeToString(time) + SEPARATOR + sequence;
     }
 
     static long parse(String id) {
-        String[] split = id.split("_");
-        //assert split.length == 2 : id;
+        String[] split = id.split(SEPARATOR);
         if (split.length != 2) {
             throw new IllegalArgumentException(id);
         }

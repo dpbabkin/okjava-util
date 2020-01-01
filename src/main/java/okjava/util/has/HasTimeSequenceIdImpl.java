@@ -1,11 +1,17 @@
 package okjava.util.has;
 
+import okjava.util.check.MathCheck;
 import okjava.util.id.TimeSequenceIdGeneratorFactory;
 import okjava.util.string.ToStringBuffer;
 
 public class HasTimeSequenceIdImpl extends HasIdImpl<Long> implements HasTimeSequenceId {
+
+    public HasTimeSequenceIdImpl(long id) {
+        super(MathCheck.positive(id));
+    }
+
     public HasTimeSequenceIdImpl() {
-        super(TimeSequenceIdGeneratorFactory.timeSequenceIdGenerator().generate());
+        this(TimeSequenceIdGeneratorFactory.timeSequenceIdGenerator().generate());
     }
 
     @Override

@@ -15,8 +15,8 @@ final public class DateTimeFormat {
 
     private static final String DEFAULT_FORMAT = "yyyy.MM.dd HH:mm:ss.SSS";
     private static final DateTimeFormat DEFAULT_INSTANCE = DateTimeFormat.create(DEFAULT_FORMAT);
+
     private final DateTimeFormatter formatter;
-    //DateTimeFormatter.ofPattern("yyyyMMdd HHmmssSSS");
 
     private DateTimeFormat(String format) {
         this.formatter = DateTimeFormatter.ofPattern(format);
