@@ -1,10 +1,12 @@
 package okjava.util.string;
 
+import com.google.common.collect.ImmutableList;
 import okjava.util.datetime.DateTimeFormat;
 import okjava.util.has.HasTimeSequenceId;
 import okjava.util.id.timesequence.LongTimeSequenceIdUtils;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -64,7 +66,34 @@ public class ToStringBuffer {
     }
 
     public <O> ToStringBuffer addThrowable(Throwable throwable) {
-        return add("throwable.getMessage()", throwable.getMessage());
+        String type = getType(throwable);
+        return add(type, ToStringBuffer.string(throwable.getMessage()).add("class", throwable.getClass().getName()));
+        //return add(type + ".getClass()", throwable.getClass().getName()).
+        //        add(type + ".getMessage()", throwable.getMessage());
+    }
+
+    private final static List<Class<? extends Throwable>> exceptionTypes = ImmutableList.of(RuntimeException.class, java.lang.Error.class, Exception.class, Throwable.class);
+
+    private static String getType(Throwable throwable) {
+        return exceptionTypes.stream()
+                .filter(c -> c.isAssignableFrom(throwable.getClass()))
+                .findFirst()
+                .orElseThrow(() -> new java.lang.Error("fatal. Throwable, must be assignable at least from Throwable."))
+                .getName();
+    }
+
+    private static String getType_OLD(Throwable throwable) {
+
+        if (throwable instanceof RuntimeException) {
+            return RuntimeException.class.getSimpleName();
+        }
+        if (throwable instanceof java.lang.Error) {
+            return java.lang.Error.class.getSimpleName();
+        }
+        if (throwable instanceof Exception) {
+            return Exception.class.getSimpleName();
+        }
+        return Throwable.class.getSimpleName();
     }
 
     public <O> ToStringBuffer addException(Exception exception) {

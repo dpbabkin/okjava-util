@@ -15,7 +15,7 @@ import java.util.function.Supplier;
  */
 public class SupplierListenerCollectionImpl<V> implements SupplierListenerCollection<V>, SupplierListener<V> {
 
-    private final static Executor EXECUTOR = ExecutorFactory.getInstance().getTaskQueueConfinedExecutor();
+    private final static Executor EXECUTOR = ExecutorFactory.getInstance().getExecutor();
 
     private final Map<Long, SupplierListener<V>> listeners = Maps.newConcurrentMap();
 

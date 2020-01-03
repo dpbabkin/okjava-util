@@ -1,13 +1,10 @@
 package okjava.util.concurrent;
 
-import okjava.util.string.ToStringBuffer;
-
 import java.util.Queue;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import static okjava.util.NotNull.notNull;
-import static okjava.util.exception.ExceptionUtils.exceptionStackTraceToString;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -35,7 +32,7 @@ class RunnableQueue implements Runnable {
                     }
                     run.run();
                 } catch (RuntimeException e) {
-                    assert false : e.getMessage() + System.lineSeparator() + exceptionStackTraceToString(e);
+                    proceedAssert(e);
                     throw new RunnableQueueRuntimeException("RunnableQueue execution interrupted.", e);
                 } finally {
                     lock.unlock();
@@ -43,10 +40,24 @@ class RunnableQueue implements Runnable {
             } else {
                 break;
             }
-            if (i++ > 10_000_000) {
-                assert false : "live lock";
-            }
+            i++;
+            assert i < 10_000_000 : "live lock : " + i;
         }
         while (!queue.isEmpty());
+    }
+
+    private static void proceedAssert(RuntimeException e) {
+        if (isAssertEnabled()) {
+            throw new java.lang.AssertionError("RuntimeException in RunnableQueue", e);
+        }
+    }
+
+    private static boolean isAssertEnabled() {
+        try {
+            assert false : "fake";
+            return false;
+        } catch (java.lang.AssertionError assertionError) {
+            return true;
+        }
     }
 }
