@@ -1,7 +1,5 @@
 package okjava.util.id;
 
-import static okjava.util.check.Never.neverNeverCalled;
-
 import okjava.util.SupplierUtils;
 import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
@@ -9,6 +7,8 @@ import okjava.util.id.timesequence.LongTimeSequenceIdUtils;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
+
+import static okjava.util.check.Never.neverNeverCalled;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -33,6 +33,12 @@ public enum TimeSequenceIdGeneratorFactory {
         Function<Long, String> mapper = id -> prefix + LongTimeSequenceIdUtils.format(id);
         return withMapper(mapper);
     }
+
+    public static IdGenerator<String> withFormattedId() {
+        Function<Long, String> mapper = LongTimeSequenceIdUtils::format;
+        return withMapper(mapper);
+    }
+
 
     public static <F> IdGenerator<F> withMapper(Function<Long, F> mapper) {
         Supplier<F> supplier = SupplierUtils.map(timeSequenceIdGenerator(), mapper);

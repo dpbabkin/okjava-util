@@ -24,6 +24,7 @@ import static okjava.util.check.Once.calledOnce;
 @Singleton
 public final class ExecutorFactory {
     private static final ExecutorFactory INSTANCE = new ExecutorFactory();
+
     private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
     private static final long KEEP_ALIVE_TIME = TimeUnit.MINUTES.toMillis(5);
     private static final int MIN_CORE_POOL_SIZE = 3;
@@ -32,6 +33,7 @@ public final class ExecutorFactory {
     private static final OkExecutor LOW_PRIORITY = wrapOK(Executors.newSingleThreadExecutor(r -> {
         Thread thread = new Thread(r);
         thread.setPriority(Thread.MIN_PRIORITY);
+        thread.setDaemon(true);
         return thread;
     }));
 
