@@ -31,7 +31,7 @@ public final class ExecutorFactory {
     private static final OkExecutor FORK_JOIN_POOL_EXECUTOR = OkExecutorImpl.create(ForkJoinPool.commonPool());
 
     private static final OkExecutor LOW_PRIORITY = wrapOK(Executors.newSingleThreadExecutor(r -> {
-        Thread thread = new Thread(r);
+        Thread thread = new Thread(r, "Low-priority");
         thread.setPriority(Thread.MIN_PRIORITY);
         thread.setDaemon(true);
         return thread;
