@@ -1,6 +1,9 @@
 package okjava.util.poller;
 
-import java.util.function.Consumer;
+import okjava.util.Two;
 
-public interface ConsumerValueHolder<V> extends ValueHolder<V>, Consumer<V> {
+import java.util.function.Function;
+
+public interface ConsumerValueHolder<V> extends ValueHolder<V>, Function<V, V> {
+    Two<V,V> mutate(Function<V, V> mutator);
 }
