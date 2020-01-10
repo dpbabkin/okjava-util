@@ -53,6 +53,7 @@ class ConsumerValueHolderImpl<V> implements ConsumerValueHolder<V> {
             V oldValue = this.value.get();
             V newValue = mutator.apply(oldValue);
             if (this.value.compareAndSet(oldValue, newValue)) {
+                EXECUTOR.execute(valueHolder);
                 return Two.create(oldValue, newValue);
             }
         }
