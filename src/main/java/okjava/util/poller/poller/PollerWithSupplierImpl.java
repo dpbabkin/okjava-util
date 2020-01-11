@@ -58,14 +58,33 @@ public class PollerWithSupplierImpl<V> implements PollerWithSupplier<V> {
     /**
      * Purpose of this adapter is to abey contract of BlockAndWaitUpdatable to return null on ase of fail, or Object in case of success.
      */
-    private Supplier<V> createSupplierAdapter(Predicate<V> predicate) {
-        Supplier<V> supplierAdapter = () -> {
+
+    private final class SupplierAdapter implements Supplier<V> {
+        private final Predicate<V> predicate;
+
+        private SupplierAdapter(Predicate<V> predicate) {
+            this.predicate = predicate;
+        }
+
+        @Override
+        public V get() {
             V value = PollerWithSupplierImpl.this.get();
             if (predicate.test(value)) {
                 return value;
             }
             return null;
-        };
-        return supplierAdapter;
+        }
+    }
+
+    private Supplier<V> createSupplierAdapter(Predicate<V> predicate) {
+        return new SupplierAdapter(predicate);
+//        Supplier<V> supplierAdapter = () -> {
+//            V value = PollerWithSupplierImpl.this.get();
+//            if (predicate.test(value)) {
+//                return value;
+//            }
+//            return null;
+//        };
+//        return supplierAdapter;
     }
 }

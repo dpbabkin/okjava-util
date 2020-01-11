@@ -26,11 +26,6 @@ final class BlockAndWaitImpl implements BlockAndWaitUpdatable {
     }
 
     @Override
-    public <V> V await(Supplier<V> isEventHappened) throws InterruptedException {
-        return doAwait(isEventHappened, waitTimeSupplier.infinite());
-    }
-
-    @Override
     public <V> V await(Supplier<V> isEventHappened, long time) throws InterruptedException {
         if (time == Constants.WAIT_FOREVER) {
             return doAwait(isEventHappened, waitTimeSupplier.infinite());

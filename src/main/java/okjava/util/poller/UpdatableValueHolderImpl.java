@@ -1,5 +1,6 @@
 package okjava.util.poller;
 
+import okjava.util.poller.listener.SupplierListener;
 import okjava.util.poller.listener.SupplierListenerCollection;
 import okjava.util.poller.listener.SupplierListenerCollectionImpl;
 import okjava.util.poller.poller.Poller;
@@ -16,11 +17,10 @@ class UpdatableValueHolderImpl<V> implements UpdatableValueHolder<V> {
 
     private final PollerWithSupplier<V> poller;
     private final SupplierListenerCollection<V> supplierListenerCollection;
-    //private final SupplierListener<V> supplierListener;
-    private final Runnable updatesupplierListenerCollection;
 
+    private final Runnable supplierListenerCollectionUpdater;
     private final Supplier<V> valueSupplier;
-    private final Runnable updateAll = this::onUpdateNative;
+    private final Runnable updateAll = new AllUpdater();
 
     private static final Executor EXECUTOR = ExecutorFactory.getInstance().getExecutor();
 
@@ -33,12 +33,12 @@ class UpdatableValueHolderImpl<V> implements UpdatableValueHolder<V> {
         this.poller = PollerWithSupplierImpl.create(valueSupplier);
         SupplierListenerCollectionImpl<V> supplierListenerCollection = SupplierListenerCollectionImpl.create();
         this.supplierListenerCollection = supplierListenerCollection;
-        this.updatesupplierListenerCollection = () -> supplierListenerCollection.accept(valueSupplier);
+        this.supplierListenerCollectionUpdater = new SupplierListenerCollectionUpdater<>(supplierListenerCollection, valueSupplier);
     }
 
     private void onUpdateNative() {
         EXECUTOR.execute(poller);
-        EXECUTOR.execute(updatesupplierListenerCollection);
+        EXECUTOR.execute(supplierListenerCollectionUpdater);
     }
 
     @Override
@@ -59,5 +59,29 @@ class UpdatableValueHolderImpl<V> implements UpdatableValueHolder<V> {
     @Override
     public V get() {
         return valueSupplier.get();
+    }
+
+
+    private final static class SupplierListenerCollectionUpdater<V> implements Runnable {
+        private final SupplierListener<V> supplierListener;
+        private final Supplier<V> valueSupplier;
+
+        private SupplierListenerCollectionUpdater(SupplierListener<V> supplierListener, Supplier<V> valueSupplier) {
+            this.supplierListener = supplierListener;
+            this.valueSupplier = valueSupplier;
+        }
+
+        @Override
+        public void run() {
+            this.supplierListener.accept(this.valueSupplier);
+        }
+    }
+
+    private final class AllUpdater implements Runnable {
+
+        @Override
+        public void run() {
+            UpdatableValueHolderImpl.this.onUpdateNative();
+        }
     }
 }

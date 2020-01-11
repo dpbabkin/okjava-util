@@ -23,10 +23,15 @@ public final class BlockAndWaitGeneralImpl implements BlockAndWaitGeneralUpdatab
 
     private final ReentrantLock lock = new ReentrantLock();
     private final Condition condition = lock.newCondition();
-    private final Runnable sendSignalForced = () -> {
-        boolean result = sendSignal(true);
-        assert result;
-    };
+    private final Runnable sendSignalForced = new SignalSender();
+
+    private class SignalSender implements Runnable {
+        @Override
+        public void run() {
+            boolean result = BlockAndWaitGeneralImpl.this.sendSignal(true);
+            assert result;
+        }
+    }
 
     private BlockAndWaitGeneralImpl() {
     }
