@@ -17,23 +17,23 @@ import static org.hamcrest.Matchers.is;
 public class LongTimeSequenceIdUtilsTest {
 
     private static final long TIME_LONG = 1557178359371L;
-    private static final long ID = 1654529297522622464L; // "20200101:123456.789_0"
+    private static final long ID = 1654529297522622464L; // "20200101:123456.789'0"
 
     @Test
     public void test001() {
         String result = TimeSequenceIdFormatter.timeSequenceIdFormatter().format(ID);
-        assertThat(result, is("20200101:123456.789_0"));
+        assertThat(result, is("20200101:123456.789'0"));
     }
 
     @Test
     public void test002() {
         String result = TimeSequenceIdFormatter.timeSequenceIdFormatter().format(TIME_LONG, 5);
-        assertThat(result, is("20190506:213239.371_5"));
+        assertThat(result, is("20190506:213239.371'5"));
     }
 
     @Test
     public void test003() {
-        String id = "20190506:213239.371_5";
+        String id = "20190506:213239.371'5";
 
         long result = TimeSequenceIdParser.timeSequenceIdParser().parse(id);
         assertThat(LongTimeSequenceIdUtils.fetchTime(result), is(TIME_LONG));

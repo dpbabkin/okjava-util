@@ -17,7 +17,7 @@ enum TimeSequenceIdFormatConstants {
 
      final static String PATTERN = "yyyyMMdd:HHmmss.SSS";
      final static DateTimeFormat FORMATTER = DateTimeFormat.create(PATTERN);
-     final static String SEPARATOR = "_";
+     final static String SEPARATOR = "'";
 
     TimeSequenceIdFormatConstants(@SuppressWarnings("unused") Never never) {
         neverNeverCalled();
