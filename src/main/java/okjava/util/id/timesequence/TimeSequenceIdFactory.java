@@ -11,7 +11,7 @@ import okjava.util.annotation.Singleton;
  * 23:12.
  */
 @Singleton
-public  final class TimeSequenceIdFactory {
+public final class TimeSequenceIdFactory {
 
     private static final TimeSequenceIdFactory INSTANCE = new TimeSequenceIdFactory();
 
@@ -28,12 +28,12 @@ public  final class TimeSequenceIdFactory {
     }
 
     public TimeSequenceId fromLong(long id) {
-        return LongTimeSequenceId.fromLong(id);
+        return LongTimeSequenceIdImpl.fromLong(id);
     }
 
     public TimeSequenceId create(long time, long sequence) {
         if (ifUnderLimit(time, sequence)) {
-            return LongTimeSequenceId.create(time, sequence);
+            return LongTimeSequenceIdImpl.create(time, sequence);
         }
         return TimeSequenceIdImpl.create(time, sequence);
     }

@@ -39,7 +39,7 @@ public class LongTimeSequenceIdUtilsTest {
 
     @Test
     public void test004() {
-        long id = TimeSequenceIdGeneratorFactory.timeSequenceIdGenerator().generate();
+        long id = TimeSequenceIdGeneratorFactory.longTimeSequenceIdGenerator().generate();
 
         String formattedString = LongTimeSequenceIdUtils.format(id);
         long newId = TimeSequenceIdFormat.parse(formattedString);

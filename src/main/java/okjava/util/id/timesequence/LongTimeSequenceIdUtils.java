@@ -20,8 +20,8 @@ import static okjava.util.check.Never.neverNeverCalled;
 public enum LongTimeSequenceIdUtils {
     ;
 
-    private static final long MAX_SEQUENCE = (1L << 20) - 1;// 1048575 = bx11111111111111111111 (20)
-    private static final long MAX_TIME = (1L << 42) - 1;// 4398046511103 = bx111111111111111111111111111111111111111111 (42) 2109.05.15 07:35:11.103
+    private static final long MAX_SEQUENCE = (1L << 20) - 1;// 1_048_575 = bx11111111111111111111 (20)
+    private static final long MAX_TIME = (1L << 42) - 1;// 4_398_046_511_103 = bx111111111111111111111111111111111111111111 (42) 2109.05.15 07:35:11.103
     private static final long RESERVED_BITS = (3L << 62);// two highest bits
     private final static Function<Long, String> TIME_SEQUENCE_ID_FORMATTER = LongTimeSequenceIdUtils::format;
 
@@ -46,7 +46,7 @@ public enum LongTimeSequenceIdUtils {
     }
 
     public static String format(TimeSequenceId timeSequenceId) {
-        return format(timeSequenceId.getTime(), timeSequenceId.getSequence());
+        return timeSequenceId.toString();//format(timeSequenceId.getTime(), timeSequenceId.getSequence());
     }
 
     public static LocalDateTime convertMillisToLocalDateTime(long time) {
@@ -87,11 +87,12 @@ public enum LongTimeSequenceIdUtils {
     }
 
     public static boolean isMaxSequence(long raw) {
-        return fetchSequence(raw) == MAX_SEQUENCE;
+        assert fetchSequence(raw) <= MAX_SEQUENCE : raw;
+        return fetchSequence(raw) >= MAX_SEQUENCE;
     }
 
     public static long incrementSequence(long raw) {
-        assert fetchSequence(raw) < MAX_SEQUENCE;
+        assert fetchSequence(raw) < MAX_SEQUENCE : raw;
         return raw + 1;
     }
 

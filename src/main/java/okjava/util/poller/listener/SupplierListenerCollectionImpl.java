@@ -28,7 +28,7 @@ public class SupplierListenerCollectionImpl<V> implements SupplierListenerCollec
 
     @Override
     public Runnable registerListener(SupplierListener<V> listener) {
-        final Long id = TimeSequenceIdGeneratorFactory.timeSequenceIdGenerator().generate();
+        final Long id = TimeSequenceIdGeneratorFactory.longTimeSequenceIdGenerator().generate();
         listeners.put(id, listener);
         return () -> listeners.remove(id);
 

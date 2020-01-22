@@ -7,7 +7,7 @@ import okjava.util.check.MathCheck;
  * 5/6/2019
  * 20:25.
  */
-final class TimeSequenceIdImpl extends TimeSequenceIdBase implements TimeSequenceId {
+final class TimeSequenceIdImpl extends TimeSequenceIdBase {
 
     private final long time;
     private final long sequence;

@@ -12,6 +12,7 @@ import okjava.util.id.timesequence.TimeSequenceId;
  * 20:25.
  */
 @Singleton
+@Deprecated // use long Generator instead. this one doesn't update counter.
 final class TimeSequenceIdGenerator implements IdGenerator<TimeSequenceId> {
 
     private static IdGenerator<TimeSequenceId> INSTANCE = new TimeSequenceIdGenerator();
@@ -45,6 +46,5 @@ final class TimeSequenceIdGenerator implements IdGenerator<TimeSequenceId> {
             long id = idGenerator.generate();
             return timeSequenceIdFactory().create(millis(), id);
         }
-
     }
 }

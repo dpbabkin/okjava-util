@@ -11,7 +11,7 @@ public class HasTimeSequenceIdImpl extends HasIdImpl<Long> implements HasTimeSeq
     }
 
     public HasTimeSequenceIdImpl() {
-        this(TimeSequenceIdGeneratorFactory.timeSequenceIdGenerator().generate());
+        this(TimeSequenceIdGeneratorFactory.longTimeSequenceIdGenerator().generate());
     }
 
     @Override

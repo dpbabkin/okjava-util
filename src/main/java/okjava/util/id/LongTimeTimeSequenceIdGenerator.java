@@ -35,7 +35,6 @@ class LongTimeTimeSequenceIdGenerator implements IdGenerator<Long> {
 
     private LongTimeTimeSequenceIdGenerator() {
         calledOnce(this.getClass());
-
     }
 
     static IdGenerator<Long> i() {
@@ -53,7 +52,6 @@ class LongTimeTimeSequenceIdGenerator implements IdGenerator<Long> {
     private static long millis() {
         return System.currentTimeMillis();
     }
-
 
     public Long generate() {
         long newValue;
@@ -79,9 +77,11 @@ class LongTimeTimeSequenceIdGenerator implements IdGenerator<Long> {
         }
         if (repeatCount >= 1_000) {
             LOGGER.error(ToStringBuffer.string("RepeatCountReached").add("repeatCount=", repeatCount).toString());
-        }
-        if (repeatCount >= 1_000_000) {
             assert false : ToStringBuffer.string("RepeatCountReached").add("repeatCount=", repeatCount).toString();
+        }
+
+        if (repeatCount >= 1_000_000) {
+            throw ToStringBuffer.string("RepeatCountReached").add("repeatCount=", repeatCount).toException(IllegalStateException::new);
         }
 
         return newValue;
