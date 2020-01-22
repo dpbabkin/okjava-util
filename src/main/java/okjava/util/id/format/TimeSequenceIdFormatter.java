@@ -1,6 +1,7 @@
 package okjava.util.id.format;
 
 import okjava.util.annotation.Singleton;
+import okjava.util.id.LongTimeSequenceId;
 import okjava.util.id.timesequence.TimeSequenceId;
 
 import java.util.function.Function;
@@ -35,7 +36,7 @@ public final class TimeSequenceIdFormatter {
     }
 
     private final Function<Long, String> formatter = this::format;
-    private final Function<TimeSequenceId, String> timeSequenceIdFormatter = this::format;
+    private final Function<LongTimeSequenceId, String> timeSequenceIdFormatter = this::format;
 
     private static String longTimeToString(long time) {
         return TimeSequenceIdFormatConstants.FORMATTER.longTimeToString(time);
@@ -57,7 +58,7 @@ public final class TimeSequenceIdFormatter {
         return formatter;
     }
 
-    public Function<TimeSequenceId, String> getTimeSequenceIdFormatter(){
+    public Function<LongTimeSequenceId, String> getTimeSequenceIdFormatter(){
         return timeSequenceIdFormatter;
     }
 }

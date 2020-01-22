@@ -1,10 +1,11 @@
 package okjava.util.id.timesequence;
 
-import static okjava.util.check.Once.calledOnce;
-import static okjava.util.id.LongTimeSequenceIdUtils.ifUnderLimit;
-
 import okjava.util.annotation.Singleton;
 import okjava.util.id.LongTimeSequenceId;
+import okjava.util.string.ToStringBuffer;
+
+import static okjava.util.check.Once.calledOnce;
+import static okjava.util.id.LongTimeSequenceIdUtils.ifUnderLimit;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -30,6 +31,13 @@ public final class TimeSequenceIdFactory {
 
     public LongTimeSequenceId fromLong(long id) {
         return LongTimeSequenceIdImpl.fromLong(id);
+    }
+
+    public LongTimeSequenceId createLongTimeSequence(long time, long sequence) {
+        if (ifUnderLimit(time, sequence)) {
+            return LongTimeSequenceIdImpl.create(time, sequence);
+        }
+        throw ToStringBuffer.string("createLongTimeSequence").add("time", time).add("sequence", sequence).toException(IllegalArgumentException::new);
     }
 
     public TimeSequenceId create(long time, long sequence) {
