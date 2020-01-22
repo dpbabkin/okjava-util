@@ -1,7 +1,5 @@
 package okjava.util.datetime;
 
-import static okjava.util.id.timesequence.LongTimeSequenceIdUtils.convertMillisToLocalDateTime;
-
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -11,8 +9,7 @@ import java.time.format.DateTimeFormatter;
  * 5/6/2019
  * 23:36.
  */
-final public class DateTimeFormat {
-
+public final class DateTimeFormat {
     private static final String DEFAULT_FORMAT = "yyyy.MM.dd HH:mm:ss.SSS";
     private static final DateTimeFormat DEFAULT_INSTANCE = DateTimeFormat.create(DEFAULT_FORMAT);
 
@@ -36,7 +33,7 @@ final public class DateTimeFormat {
     }
 
     public String longTimeToString(long time) {
-        LocalDateTime dateTime = convertMillisToLocalDateTime(time);
+        LocalDateTime dateTime = DateTimeFormatUtils.convertMillisToLocalDateTime(time);
         return dateTime.format(formatter);
     }
 }

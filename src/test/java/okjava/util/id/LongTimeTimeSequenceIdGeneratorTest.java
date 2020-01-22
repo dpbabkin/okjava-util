@@ -1,7 +1,7 @@
 package okjava.util.id;
 
-import static okjava.util.id.timesequence.LongTimeSequenceIdUtils.fetchSequence;
-import static okjava.util.id.timesequence.LongTimeSequenceIdUtils.fetchTime;
+import static okjava.util.id.LongTimeSequenceIdUtils.fetchSequence;
+import static okjava.util.id.LongTimeSequenceIdUtils.fetchTime;
 import static okjava.util.id.timesequence.TimeSequenceIdFactory.timeSequenceIdFactory;
 
 import okjava.util.id.timesequence.TimeSequenceId;

@@ -1,9 +1,10 @@
 package okjava.util.id.timesequence;
 
 import static okjava.util.check.Once.calledOnce;
-import static okjava.util.id.timesequence.LongTimeSequenceIdUtils.ifUnderLimit;
+import static okjava.util.id.LongTimeSequenceIdUtils.ifUnderLimit;
 
 import okjava.util.annotation.Singleton;
+import okjava.util.id.LongTimeSequenceId;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -27,7 +28,7 @@ public final class TimeSequenceIdFactory {
         return INSTANCE;
     }
 
-    public TimeSequenceId fromLong(long id) {
+    public LongTimeSequenceId fromLong(long id) {
         return LongTimeSequenceIdImpl.fromLong(id);
     }
 

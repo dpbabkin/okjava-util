@@ -2,8 +2,8 @@ package okjava.util.string;
 
 import com.google.common.collect.ImmutableList;
 import okjava.util.datetime.DateTimeFormat;
-import okjava.util.has.HasTimeSequenceId;
-import okjava.util.id.timesequence.LongTimeSequenceIdUtils;
+import okjava.util.has.HasLongTimeSequenceId;
+import okjava.util.id.format.TimeSequenceIdFormatter;
 
 import java.util.Collection;
 import java.util.List;
@@ -47,7 +47,7 @@ public class ToStringBuffer {
         return addTimeSequence("id", id);
     }
 
-    public <O> ToStringBuffer timeSequenceId(HasTimeSequenceId id) {
+    public <O> ToStringBuffer timeSequenceId(HasLongTimeSequenceId id) {
         return add("id", id.getStringId());
     }
 
@@ -62,7 +62,7 @@ public class ToStringBuffer {
     }
 
     public <O> ToStringBuffer addTimeSequence(String name, long id) {
-        return add(name, LongTimeSequenceIdUtils.format(id));
+        return add(name, TimeSequenceIdFormatter.timeSequenceIdFormatter().format(id));
     }
 
     public <O> ToStringBuffer addThrowable(Throwable throwable) {

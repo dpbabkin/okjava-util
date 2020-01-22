@@ -3,14 +3,13 @@ package okjava.util.id;
 import okjava.util.SupplierUtils;
 import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
-import okjava.util.id.timesequence.LongTimeSequenceIdUtils;
-import okjava.util.id.timesequence.TimeSequenceId;
 import okjava.util.id.timesequence.TimeSequenceIdFactory;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static okjava.util.check.Never.neverNeverCalled;
+import static okjava.util.id.format.TimeSequenceIdFormatter.timeSequenceIdFormatter;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -21,19 +20,19 @@ import static okjava.util.check.Never.neverNeverCalled;
 public enum TimeSequenceIdGeneratorFactory {
     ;
 
-    //private static final IdGenerator<Long> INSTANCE = LongTimeTimeSequenceIdGenerator.i();
+    private static final IdGenerator<LongTimeSequenceId> TIME_SEQUENCE_ID_ID_GENERATOR = withMapper(l -> TimeSequenceIdFactory.timeSequenceIdFactory().fromLong(l));
 
     TimeSequenceIdGeneratorFactory(@SuppressWarnings("unused") Never never) {
         neverNeverCalled();
     }
 
     public static IdGenerator<String> withStringPrefixAndFormattedId(String prefix) {
-        Function<Long, String> mapper = id -> prefix + LongTimeSequenceIdUtils.format(id);
+        Function<Long, String> mapper = id -> prefix + timeSequenceIdFormatter().format(id);
         return withMapper(mapper);
     }
 
     public static IdGenerator<String> withFormattedId() {
-        Function<Long, String> mapper = LongTimeSequenceIdUtils::format;
+        Function<Long, String> mapper = timeSequenceIdFormatter().getFormatter();
         return withMapper(mapper);
     }
 
@@ -46,9 +45,8 @@ public enum TimeSequenceIdGeneratorFactory {
         return LongTimeTimeSequenceIdGenerator.timeSequenceIdGenerator();
     }
 
-    private static final IdGenerator<TimeSequenceId> TIME_SEQUENCE_ID_ID_GENERATOR = withMapper(l -> TimeSequenceIdFactory.timeSequenceIdFactory().fromLong(l));
 
-    public static IdGenerator<TimeSequenceId> timeSequenceIdGenerator() {
+    public static IdGenerator<LongTimeSequenceId> timeSequenceIdGenerator() {
         return TIME_SEQUENCE_ID_ID_GENERATOR;
     }
 }

@@ -7,9 +7,9 @@ import org.slf4j.Logger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static okjava.util.check.Once.calledOnce;
-import static okjava.util.id.timesequence.LongTimeSequenceIdUtils.incrementSequence;
-import static okjava.util.id.timesequence.LongTimeSequenceIdUtils.isMaxSequence;
-import static okjava.util.id.timesequence.LongTimeSequenceIdUtils.joinTimeAndSequence;
+import static okjava.util.id.LongTimeSequenceIdUtils.incrementSequence;
+import static okjava.util.id.LongTimeSequenceIdUtils.isMaxSequence;
+import static okjava.util.id.LongTimeSequenceIdUtils.joinTimeAndSequence;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

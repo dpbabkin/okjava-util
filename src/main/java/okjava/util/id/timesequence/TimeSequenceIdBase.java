@@ -1,6 +1,8 @@
 package okjava.util.id.timesequence;
 
 
+import okjava.util.id.format.TimeSequenceIdFormatter;
+
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
  * 5/6/2019
@@ -26,6 +28,6 @@ abstract class TimeSequenceIdBase implements TimeSequenceId {
     @Override
     public String toString() {
         // format to yyyyMMdd.HHmmss.SSS_sequence
-        return TimeSequenceIdFormat.format(getTime(), getSequence());
+        return TimeSequenceIdFormatter.timeSequenceIdFormatter().format(getTime(), getSequence());
     }
 }

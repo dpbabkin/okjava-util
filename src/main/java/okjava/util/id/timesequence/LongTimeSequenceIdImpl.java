@@ -4,9 +4,9 @@ import okjava.util.id.LongTimeSequenceId;
 
 import javax.annotation.Nonnull;
 
-import static okjava.util.id.timesequence.LongTimeSequenceIdUtils.fetchSequence;
-import static okjava.util.id.timesequence.LongTimeSequenceIdUtils.fetchTime;
-import static okjava.util.id.timesequence.LongTimeSequenceIdUtils.joinTimeAndSequence;
+import static okjava.util.id.LongTimeSequenceIdUtils.fetchSequence;
+import static okjava.util.id.LongTimeSequenceIdUtils.fetchTime;
+import static okjava.util.id.LongTimeSequenceIdUtils.joinTimeAndSequence;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -24,11 +24,11 @@ final class LongTimeSequenceIdImpl extends TimeSequenceIdBase implements LongTim
         this.timeAndSequence = joinTimeAndSequence(time, sequence);
     }
 
-    static TimeSequenceId fromLong(long raw) {
+    static LongTimeSequenceId fromLong(long raw) {
         return create(fetchTime(raw), fetchSequence(raw));
     }
 
-    public static TimeSequenceId create(long time, long sequence) {
+    static LongTimeSequenceId create(long time, long sequence) {
         return new LongTimeSequenceIdImpl(time, sequence);
     }
 

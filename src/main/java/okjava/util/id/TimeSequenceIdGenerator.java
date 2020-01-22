@@ -1,10 +1,10 @@
 package okjava.util.id;
 
-import static okjava.util.check.Once.calledOnce;
-import static okjava.util.id.timesequence.TimeSequenceIdFactory.timeSequenceIdFactory;
-
 import okjava.util.annotation.Singleton;
 import okjava.util.id.timesequence.TimeSequenceId;
+
+import static okjava.util.check.Once.calledOnce;
+import static okjava.util.id.timesequence.TimeSequenceIdFactory.timeSequenceIdFactory;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -39,8 +39,7 @@ final class TimeSequenceIdGenerator implements IdGenerator<TimeSequenceId> {
     }
 
     public TimeSequenceId generate() {
-        int hashCode = Thread.currentThread().hashCode();
-        if ((hashCode & 1) == 1) {
+        if ((Thread.currentThread().hashCode() & 1) == 1) {
             return timeSequenceIdFactory().create(millis(), idGenerator.generate());
         } else {
             long id = idGenerator.generate();

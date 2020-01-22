@@ -1,6 +1,7 @@
 package okjava.util.thread;
 
 import okjava.util.id.TimeSequenceIdGeneratorFactory;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.concurrent.ForkJoinPool;
@@ -11,7 +12,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class ThreadPoolTest {
 
-    @Test //todo remove that test case.
+    //@Test //todo remove that test case.
+    @Ignore
     public void test002() throws InterruptedException {
 
         Lock lock = new ReentrantLock();

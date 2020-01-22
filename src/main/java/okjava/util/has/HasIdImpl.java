@@ -3,6 +3,7 @@ package okjava.util.has;
 import okjava.util.string.ToStringBuffer;
 
 import static java.util.Objects.requireNonNull;
+import static okjava.util.NotNull.notNull;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -14,7 +15,7 @@ public class HasIdImpl<ID> implements HasId<ID> {
     private final ID id;
 
     HasIdImpl(ID id) {
-        this.id = requireNonNull(id);
+        this.id = notNull(id);
     }
 
     //public static <ID> HasId<ID> create(ID id) {

@@ -1,7 +1,9 @@
-package okjava.util.id.timesequence;
+package okjava.util.id;
 
 import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
+import okjava.util.id.timesequence.TimeSequenceId;
+import okjava.util.id.timesequence.TimeSequenceIdFactory;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -23,41 +25,12 @@ public enum LongTimeSequenceIdUtils {
     private static final long MAX_SEQUENCE = (1L << 20) - 1;// 1_048_575 = bx11111111111111111111 (20)
     private static final long MAX_TIME = (1L << 42) - 1;// 4_398_046_511_103 = bx111111111111111111111111111111111111111111 (42) 2109.05.15 07:35:11.103
     private static final long RESERVED_BITS = (3L << 62);// two highest bits
-    private final static Function<Long, String> TIME_SEQUENCE_ID_FORMATTER = LongTimeSequenceIdUtils::format;
 
     LongTimeSequenceIdUtils(@SuppressWarnings("unused") Never never) {
         neverNeverCalled();
     }
 
-    public static Function<Long, String> getTimeSequenceIdFormatter() {
-        return TIME_SEQUENCE_ID_FORMATTER;
-    }
-
-    public static String format(long time, long sequence) {
-        return TimeSequenceIdFormat.format(time, sequence);
-    }
-
-    public static long parse(String id) {
-        return TimeSequenceIdFormat.parse(id);
-    }
-
-    public static String format(long id) {
-        return format(fetchTime(id), fetchSequence(id));
-    }
-
-    public static String format(TimeSequenceId timeSequenceId) {
-        return timeSequenceId.toString();//format(timeSequenceId.getTime(), timeSequenceId.getSequence());
-    }
-
-    public static LocalDateTime convertMillisToLocalDateTime(long time) {
-        return LocalDateTime.ofInstant(Instant.ofEpochMilli(time), ZoneOffset.UTC);
-    }
-
-    public static TimeSequenceId parseToTimeSequenceId(String id) {
-        return TimeSequenceIdFactory.timeSequenceIdFactory().fromLong(parse(id));
-    }
-
-    static boolean ifUnderLimit(long time, long sequence) {
+    public static boolean ifUnderLimit(long time, long sequence) {
         return time <= MAX_TIME && sequence <= MAX_SEQUENCE;
     }
 
