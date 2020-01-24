@@ -17,7 +17,7 @@ public interface HasLongTimeSequenceId extends HasId<LongTimeSequenceId> {
         return getTimeSequence().toString();
     }
 
-    default LocalDateTime getCreationTime() {
+    default LocalDateTime getCreationLocalDateTime() {
         return DateTimeFormatUtils.convertMillisToLocalDateTime(getTimeSequence().getTime());
     }
 

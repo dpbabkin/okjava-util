@@ -31,9 +31,10 @@ public enum TimeSequenceIdGeneratorFactory {
         return withMapper(mapper);
     }
 
+    private static final IdGenerator<String> timeSequenceIdFormatter = withMapper(timeSequenceIdFormatter().getFormatter());
+
     public static IdGenerator<String> withFormattedId() {
-        Function<Long, String> mapper = timeSequenceIdFormatter().getFormatter();
-        return withMapper(mapper);
+        return timeSequenceIdFormatter;
     }
 
     public static <F> IdGenerator<F> withMapper(Function<Long, F> mapper) {
@@ -44,7 +45,6 @@ public enum TimeSequenceIdGeneratorFactory {
     public static IdGenerator<Long> longTimeSequenceIdGenerator() {
         return LongTimeTimeSequenceIdGenerator.timeSequenceIdGenerator();
     }
-
 
     public static IdGenerator<LongTimeSequenceId> timeSequenceIdGenerator() {
         return TIME_SEQUENCE_ID_ID_GENERATOR;
