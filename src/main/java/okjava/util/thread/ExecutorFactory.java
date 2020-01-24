@@ -1,6 +1,5 @@
 package okjava.util.thread;
 
-import okjava.util.RunnableUtils;
 import okjava.util.annotation.Singleton;
 import okjava.util.concurrent.ExecutableTaskQueueConfined;
 import org.slf4j.Logger;
@@ -9,11 +8,14 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ForkJoinWorkerThread;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.RecursiveAction;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.Math.min;
+import static okjava.util.NotNull.notNull;
 import static okjava.util.check.Once.calledOnce;
 
 /**
@@ -28,7 +30,24 @@ public final class ExecutorFactory {
     private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
     private static final long KEEP_ALIVE_TIME = TimeUnit.MINUTES.toMillis(5);
     private static final int MIN_CORE_POOL_SIZE = 3;
-    private static final OkExecutor FORK_JOIN_POOL_EXECUTOR = OkExecutorImpl.create(ForkJoinPool.commonPool());
+    private static final OkExecutor FORK_JOIN_POOL_EXECUTOR = OkExecutorImpl.create(new ExecutorImpl());
+
+    private final static class ExecutorImpl implements Executor {
+
+        @Override
+        public void execute(Runnable command) {
+            execInForkJoinPoll(command);
+        }
+
+        private void execInForkJoinPoll(Runnable runnable) {
+            Thread t = Thread.currentThread();
+            if (t instanceof ForkJoinWorkerThread) {
+                ((ForkJoinWorkerThread) t).getPool().execute(runnable);
+            } else {
+                ForkJoinPool.commonPool().execute(runnable);
+            }
+        }
+    }
 
     private static final OkExecutor LOW_PRIORITY = wrapOK(Executors.newSingleThreadExecutor(r -> {
         Thread thread = new Thread(r, "Low-priority");
@@ -100,4 +119,20 @@ public final class ExecutorFactory {
     public OkExecutor getExecutor() {
         return FORK_JOIN_POOL_EXECUTOR;
     }
+
+
+    private final static class RecursiveActionImpl extends RecursiveAction {
+
+        private final Runnable runnable;
+
+        private RecursiveActionImpl(Runnable runnable) {
+            this.runnable = notNull(runnable);
+        }
+
+        @Override
+        protected void compute() {
+            throw new UnsupportedOperationException("not implemented //code generation template");
+        }
+    }
+
 }

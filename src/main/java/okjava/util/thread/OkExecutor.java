@@ -1,7 +1,5 @@
 package okjava.util.thread;
 
-import okjava.util.RunnableUtils;
-
 import java.util.concurrent.Executor;
 import java.util.function.Supplier;
 

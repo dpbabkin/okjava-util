@@ -4,7 +4,7 @@ import java.util.concurrent.Executor;
 
 import static okjava.util.NotNull.notNull;
 
-class OkExecutorImpl implements OkExecutor {
+public class OkExecutorImpl implements OkExecutor {
 
     private final Executor executorDelegate;
 
