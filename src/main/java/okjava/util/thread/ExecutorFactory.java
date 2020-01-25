@@ -131,8 +131,7 @@ public final class ExecutorFactory {
 
         @Override
         protected void compute() {
-            throw new UnsupportedOperationException("not implemented //code generation template");
+            runnable.run();
         }
     }
-
 }
