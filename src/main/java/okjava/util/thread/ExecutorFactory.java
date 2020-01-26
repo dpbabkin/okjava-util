@@ -11,6 +11,7 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinWorkerThread;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.RecursiveAction;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -30,23 +31,33 @@ public final class ExecutorFactory {
     private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
     private static final long KEEP_ALIVE_TIME = TimeUnit.MINUTES.toMillis(5);
     private static final int MIN_CORE_POOL_SIZE = 3;
-    private static final OkExecutor FORK_JOIN_POOL_EXECUTOR = OkExecutorImpl.create(new ExecutorImpl());
+    private static final OkExecutor OK_EXECUTOR = OkExecutorImpl.create(new ExecutorImpl());
+
+    static {
+        if (Thread.getDefaultUncaughtExceptionHandler() == null) {
+            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(ExecutorFactory.class));
+        }
+    }
 
     private final static class ExecutorImpl implements Executor {
 
         @Override
         public void execute(Runnable command) {
-            execInForkJoinPoll(command);
+            findPoll().execute(notNull(command));
         }
+    }
 
-        private void execInForkJoinPoll(Runnable runnable) {
-            Thread t = Thread.currentThread();
-            if (t instanceof ForkJoinWorkerThread) {
-                ((ForkJoinWorkerThread) t).getPool().execute(runnable);
-            } else {
-                ForkJoinPool.commonPool().execute(runnable);
-            }
+    private static Executor findPoll() {
+        Thread t = Thread.currentThread();
+        if (t instanceof ForkJoinWorkerThread) {
+            return ((ForkJoinWorkerThread) t).getPool();
+        } else {
+            return getDefaultPoll();
         }
+    }
+
+    private static Executor getDefaultPoll() {
+        return ForkJoinPool.commonPool();
     }
 
     private static final OkExecutor LOW_PRIORITY = wrapOK(Executors.newSingleThreadExecutor(r -> {
@@ -55,6 +66,13 @@ public final class ExecutorFactory {
         thread.setDaemon(true);
         return thread;
     }));
+
+    private static final ScheduledExecutorService SCHEDULED_EXECUTOR_SERVICE = Executors.newScheduledThreadPool(1, runnable -> {
+        Thread thread = new Thread(runnable, "Scheduled");
+        thread.setDaemon(true);
+        thread.setPriority(Thread.MIN_PRIORITY);
+        return thread;
+    });
 
     private ExecutorFactory() {
         calledOnce(this.getClass());
@@ -86,9 +104,7 @@ public final class ExecutorFactory {
 
     public ThreadPoolExecutor createCashing(final String name, final Logger logger, Class clazz) {
         ExceptionHandler exceptionHandler = new ExceptionHandler(logger, clazz.getName());
-
         DaemonThreadFactory daemonThreadFactory = DaemonThreadFactory.create(name, exceptionHandler);
-
         return new ThreadPoolExecutor(getCorePoolSize(), getMaximumPoolSize(), getKeepAliveTime(), TimeUnit.MILLISECONDS,
                 new LinkedBlockingQueue<>(), daemonThreadFactory);
     }
@@ -104,6 +120,10 @@ public final class ExecutorFactory {
         return LOW_PRIORITY;
     }
 
+    public ScheduledExecutorService getScheduledExecutorService() {
+        return SCHEDULED_EXECUTOR_SERVICE;
+    }
+
     public OkExecutor getTaskQueueConfinedExecutor() {
         return getTaskQueueConfinedExecutor(getExecutor());
     }
@@ -117,21 +137,20 @@ public final class ExecutorFactory {
     }
 
     public OkExecutor getExecutor() {
-        return FORK_JOIN_POOL_EXECUTOR;
+        return OK_EXECUTOR;
     }
-
-
-    private final static class RecursiveActionImpl extends RecursiveAction {
-
-        private final Runnable runnable;
-
-        private RecursiveActionImpl(Runnable runnable) {
-            this.runnable = notNull(runnable);
-        }
-
-        @Override
-        protected void compute() {
-            runnable.run();
-        }
-    }
+//
+//    private final static class RecursiveActionImpl extends RecursiveAction {
+//
+//        private final Runnable runnable;
+//
+//        private RecursiveActionImpl(Runnable runnable) {
+//            this.runnable = notNull(runnable);
+//        }
+//
+//        @Override
+//        protected void compute() {
+//            runnable.run();
+//        }
+//    }
 }

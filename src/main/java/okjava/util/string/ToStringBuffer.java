@@ -56,8 +56,8 @@ public class ToStringBuffer {
         return this;
     }
 
-    public <O> ToStringBuffer line(String line) {
-        this.builder.append(line).append(SEPARATOR);
+    public <O> ToStringBuffer addRaw(String line) {
+        this.builder.append(line);
         return this;
     }
 
@@ -101,7 +101,11 @@ public class ToStringBuffer {
     }
 
     public <O> ToStringBuffer addThread() {
-        return add("thread", Thread.currentThread().getName());
+        return addThread(Thread.currentThread());
+    }
+
+    public <O> ToStringBuffer addThread(Thread t) {
+        return add("thread", t.getName());
     }
 
     public <O> ToStringBuffer addTime() {

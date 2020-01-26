@@ -30,7 +30,6 @@ public enum ConsumerUtils {
     public static <V> Consumer<V> wrapToString(Consumer<V> consumer, Supplier<String> toStringSupplier) {
         return new Consumer<V>() {
 
-
             @Override
             public void accept(V v) {
                 consumer.accept(v);

@@ -1,5 +1,8 @@
 package okjava.util.concurrent;
 
+import okjava.util.AssertUtils;
+import okjava.util.string.ToStringBuffer;
+
 import java.util.Queue;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -22,7 +25,7 @@ class RunnableQueue implements Runnable {
 
     @Override
     public void run() {
-        int i = 0;
+        int repeatCount = 0;
         do {
             if (lock.tryLock()) {
                 try {
@@ -32,32 +35,19 @@ class RunnableQueue implements Runnable {
                     }
                     run.run();
                 } catch (RuntimeException e) {
-                    proceedAssert(e);
-                    throw new RunnableQueueRuntimeException("RunnableQueue execution interrupted.", e);
+                    AssertUtils.throwAfterAssert("RuntimeException in RunnableQueue", e, RunnableQueueRuntimeException::new);
                 } finally {
                     lock.unlock();
                 }
             } else {
                 break;
             }
-            i++;
-            assert i < 10_000_000 : "live lock : " + i;
+            repeatCount++;
+            if (repeatCount >= 10_000_000) {
+                throw ToStringBuffer.string("RepeatCountReached").add("repeatCount=", repeatCount).toException(IllegalStateException::new);
+            }
+            assert repeatCount < 1_000_000 : "live lock : " + repeatCount;
         }
         while (!queue.isEmpty());
-    }
-
-    private static void proceedAssert(RuntimeException e) {
-        if (isAssertEnabled()) {
-            throw new java.lang.AssertionError("RuntimeException in RunnableQueue", e);
-        }
-    }
-
-    private static boolean isAssertEnabled() {
-        try {
-            assert false : "fake";
-            return false;
-        } catch (java.lang.AssertionError assertionError) {
-            return true;
-        }
     }
 }
