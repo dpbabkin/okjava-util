@@ -5,12 +5,12 @@ import okjava.util.concurrent.ExecutableTaskQueueConfined;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinWorkerThread;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.RecursiveAction;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -36,6 +36,13 @@ public final class ExecutorFactory {
     static {
         if (Thread.getDefaultUncaughtExceptionHandler() == null) {
             Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(ExecutorFactory.class));
+        }
+
+        try {
+            Class<?> clazz =  Class.forName("okjava.util.thread.impl.ThreadsFactory");
+            ThreadsFactory threadsFactory = (ThreadsFactory)clazz.getMethod("create").invoke(null);
+        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            //sad.// todo...
         }
     }
 
