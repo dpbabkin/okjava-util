@@ -7,16 +7,12 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.ForkJoinWorkerThread;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.Math.min;
-import static okjava.util.NotNull.notNull;
 import static okjava.util.check.Once.calledOnce;
 
 /**
@@ -31,7 +27,7 @@ public final class ExecutorFactory {
     private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
     private static final long KEEP_ALIVE_TIME = TimeUnit.MINUTES.toMillis(5);
     private static final int MIN_CORE_POOL_SIZE = 3;
-    private static final OkExecutor OK_EXECUTOR = OkExecutorImpl.create(new ExecutorImpl());
+    private static final OkExecutor OK_EXECUTOR = OkExecutorImpl.create(ExecutorFactory3Impl.create().createExecutor());
 
     static {
         if (Thread.getDefaultUncaughtExceptionHandler() == null) {
@@ -39,47 +35,16 @@ public final class ExecutorFactory {
         }
 
         try {
-            Class<?> clazz =  Class.forName("okjava.util.thread.impl.ThreadsFactory");
-            ThreadsFactory threadsFactory = (ThreadsFactory)clazz.getMethod("create").invoke(null);
+            Class<?> clazz = Class.forName("okjava.util.thread.impl.ThreadsFactory");
+            ThreadsFactory threadsFactory = (ThreadsFactory) clazz.getMethod("create").invoke(null);
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             //sad.// todo...
         }
     }
 
-    private final static class ExecutorImpl implements Executor {
+    private static final OkExecutor LOW_PRIORITY = wrapOK(ExecutorFactory3Impl.create().createLowPriorityExecutor());
 
-        @Override
-        public void execute(Runnable command) {
-            findPoll().execute(notNull(command));
-        }
-    }
-
-    private static Executor findPoll() {
-        Thread t = Thread.currentThread();
-        if (t instanceof ForkJoinWorkerThread) {
-            return ((ForkJoinWorkerThread) t).getPool();
-        } else {
-            return getDefaultPoll();
-        }
-    }
-
-    private static Executor getDefaultPoll() {
-        return ForkJoinPool.commonPool();
-    }
-
-    private static final OkExecutor LOW_PRIORITY = wrapOK(Executors.newSingleThreadExecutor(r -> {
-        Thread thread = new Thread(r, "Low-priority");
-        thread.setPriority(Thread.MIN_PRIORITY);
-        thread.setDaemon(true);
-        return thread;
-    }));
-
-    private static final ScheduledExecutorService SCHEDULED_EXECUTOR_SERVICE = Executors.newScheduledThreadPool(1, runnable -> {
-        Thread thread = new Thread(runnable, "Scheduled");
-        thread.setDaemon(true);
-        thread.setPriority(Thread.MIN_PRIORITY);
-        return thread;
-    });
+    private static final ScheduledExecutorService SCHEDULED_EXECUTOR_SERVICE = ExecutorFactory3Impl.create().createScheduledExecutor();
 
     private ExecutorFactory() {
         calledOnce(this.getClass());
@@ -146,18 +111,4 @@ public final class ExecutorFactory {
     public OkExecutor getExecutor() {
         return OK_EXECUTOR;
     }
-//
-//    private final static class RecursiveActionImpl extends RecursiveAction {
-//
-//        private final Runnable runnable;
-//
-//        private RecursiveActionImpl(Runnable runnable) {
-//            this.runnable = notNull(runnable);
-//        }
-//
-//        @Override
-//        protected void compute() {
-//            runnable.run();
-//        }
-//    }
 }

@@ -1,13 +1,13 @@
 package okjava.util.thread;
 
-import static okjava.util.empty.EmptyConsumer.emptyConsumer;
-
 import okjava.util.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.function.Consumer;
 import java.util.stream.Stream;
+
+import static okjava.util.empty.EmptyConsumer.emptyConsumer;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -26,6 +26,10 @@ public final class ExceptionHandler implements Thread.UncaughtExceptionHandler {
     private final Consumer<String> callback;
     private final String className;
     private final Thread.UncaughtExceptionHandler delegate;
+
+    public ExceptionHandler() {
+        this(ExceptionHandler.class);
+    }
 
     public ExceptionHandler(Class<?> clazz) {
         this(LoggerFactory.getLogger(clazz), emptyConsumer(), clazz.getName(), DEFAULT_UNCAUGHT_EXCEPTION_HANDLER);
