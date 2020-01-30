@@ -132,7 +132,17 @@ public class ToStringBuffer {
     }
 
     public Supplier<String> toSupplier() {
-        return this::toString;
+        return new Supplier<>() {
+            @Override
+            public String get() {
+                return this.toString();
+            }
+
+            @Override
+            public String toString() {
+                return ToStringBuffer.this.toString();
+            }
+        };
     }
 
     public <E extends Exception> E toException(Function<String, E> function) {

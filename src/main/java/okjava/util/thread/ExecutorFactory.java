@@ -2,6 +2,8 @@ package okjava.util.thread;
 
 import okjava.util.annotation.Singleton;
 import okjava.util.concurrent.ExecutableTaskQueueConfined;
+import okjava.util.logger.LoggerUtils;
+import okjava.util.string.ToStringBuffer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,29 +24,27 @@ import static okjava.util.check.Once.calledOnce;
  */
 @Singleton
 public final class ExecutorFactory {
+    private static final Logger LOGGER = LoggerUtils.createLogger(ExecutorFactory.class);
+
     private static final ExecutorFactory INSTANCE = new ExecutorFactory();
 
     private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
     private static final long KEEP_ALIVE_TIME = TimeUnit.MINUTES.toMillis(5);
     private static final int MIN_CORE_POOL_SIZE = 3;
-    private static final OkExecutor OK_EXECUTOR = OkExecutorImpl.create(ExecutorFactory3Impl.create().createExecutor());
 
-    static {
-        if (Thread.getDefaultUncaughtExceptionHandler() == null) {
-            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(ExecutorFactory.class));
-        }
+    private final PoolFactory poolFactory = PoolFactoryResolver.resolvePollFactory();
 
-        try {
-            Class<?> clazz = Class.forName("okjava.util.thread.impl.ThreadsFactory");
-            ThreadsFactory threadsFactory = (ThreadsFactory) clazz.getMethod("create").invoke(null);
-        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            //sad.// todo...
-        }
-    }
+    private final String POOL_FACTORY_CLASS_NAME="okjava.util.thread.impl.PoolFactory";
+//
+//    static {
+//        if (Thread.getDefaultUncaughtExceptionHandler() == null) {
+//            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(ExecutorFactory.class));
+//        }
+//    }
 
-    private static final OkExecutor LOW_PRIORITY = wrapOK(ExecutorFactory3Impl.create().createLowPriorityExecutor());
-
-    private static final ScheduledExecutorService SCHEDULED_EXECUTOR_SERVICE = ExecutorFactory3Impl.create().createScheduledExecutor();
+    private  final OkExecutor OK_EXECUTOR = OkExecutorImpl.create(this.poolFactory.createExecutor());
+    private  final OkExecutor LOW_PRIORITY = wrapOK(this.poolFactory.createLowPriorityExecutor());
+    private  final ScheduledExecutorService SCHEDULED_EXECUTOR_SERVICE = this.poolFactory.createScheduledExecutor();
 
     private ExecutorFactory() {
         calledOnce(this.getClass());
@@ -104,7 +104,7 @@ public final class ExecutorFactory {
         return wrapOK(ExecutableTaskQueueConfined.create(executor));
     }
 
-    public static OkExecutor wrapOK(Executor executor) {
+    private static OkExecutor wrapOK(Executor executor) {
         return OkExecutorImpl.create(executor);
     }
 

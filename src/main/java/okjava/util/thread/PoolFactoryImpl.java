@@ -11,17 +11,17 @@ import java.util.concurrent.ScheduledExecutorService;
 import static okjava.util.check.Once.calledOnce;
 
 @Singleton
-class ExecutorFactory3Impl implements ExecutorFactory3 {
+class PoolFactoryImpl implements PoolFactory {
 
-    private static ExecutorFactory3 INSTANCE = new ExecutorFactory3Impl();
+    private static PoolFactory INSTANCE = new PoolFactoryImpl();
 
     private final ExceptionHandler exceptionHandler = new ExceptionHandler();
 
-    private ExecutorFactory3Impl() {
+    private PoolFactoryImpl() {
         calledOnce(this.getClass());
     }
 
-    public static ExecutorFactory3 create() {
+    public static PoolFactory create() {
         return INSTANCE;
     }
 
