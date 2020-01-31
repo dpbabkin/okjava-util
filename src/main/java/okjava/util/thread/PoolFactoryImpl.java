@@ -47,7 +47,7 @@ class PoolFactoryImpl implements PoolFactory {
 
     @Override
     public ScheduledExecutorService createScheduledExecutor() {
-        return Executors.newScheduledThreadPool(1, runnable -> creteThread(runnable, "Scheduled"));
+        return Executors.newSingleThreadScheduledExecutor(runnable -> creteThread(runnable, "Scheduled"));
     }
 
     private Thread creteThread(Runnable runnable, String name) {
