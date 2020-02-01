@@ -54,8 +54,7 @@ public class ToStringBuffer {
     }
 
     public <O> ToStringBuffer ln() {
-        this.builder.append(System.lineSeparator());
-        return this;
+        return addRaw(System.lineSeparator());
     }
 
     public <O> ToStringBuffer addRaw(String line) {
@@ -67,7 +66,13 @@ public class ToStringBuffer {
         return add(name, TimeSequenceIdFormatter.timeSequenceIdFormatter().format(id));
     }
 
+    private Throwable throwable = null;
+
     public <O> ToStringBuffer addThrowable(Throwable throwable) {
+        if (this.throwable != null) {
+            ToStringBuffer.string("throwable already set.").addThrowable(this.throwable).toException(IllegalStateException::new);
+        }
+        this.throwable = throwable;
         String type = getType(throwable);
         return add(type, ToStringBuffer.string(throwable.getMessage()).add("class", throwable.getClass().getName()));
         //return add(type + ".getClass()", throwable.getClass().getName()).
@@ -100,6 +105,13 @@ public class ToStringBuffer {
         return add("time", DateTimeFormat.create().longTimeToString(System.currentTimeMillis()));
     }
 
+    public <O> ToStringBuffer addNotNull(String name, O value) {
+        if (value != null) {
+            return add(name, value);
+        }
+        return this;
+    }
+
     public <O> ToStringBuffer add(String name, O value) {
         this.builder.append(name).append("=").append(nullable(value)).append(SEPARATOR);
         return this;
@@ -113,18 +125,31 @@ public class ToStringBuffer {
         return add(name, m2s(map));
     }
 
+    private String toString = null;
+
     @Override
     public String toString() {
-        this.builder.append("}");
-        return builder.toString();
+        if (toString == null) {
+            this.builder.append("}");
+            toString = builder.toString();
+        }
+        return toString;
     }
 
-    public void toError(Logger logger) {
-        toLogger(logger.atError());
+    public ToStringBuffer assertFalse() {
+        assert false : this.toString();
+        return this;
     }
 
-    public void toError(Logger logger, Throwable throwable) {
-        addThrowable(throwable).toLogger(logger.atError());
+    public ToStringBuffer toError(Logger logger, Throwable throwable) {
+        return addThrowable(throwable).toError(logger);
+    }
+
+    public ToStringBuffer toError(Logger logger) {
+        if (this.throwable != null) {
+            return toLogger(logger.atError(), throwable);
+        }
+        return toLogger(logger.atError(), throwable);
     }
 
     public void toWarning(Logger logger) {
@@ -143,8 +168,14 @@ public class ToStringBuffer {
         toLogger(logger.atTrace());
     }
 
-    private void toLogger(LoggingEventBuilder loggingEventBuilder) {
+    private ToStringBuffer toLogger(LoggingEventBuilder loggingEventBuilder) {
         loggingEventBuilder.log(this.toString());
+        return this;
+    }
+
+    private ToStringBuffer toLogger(LoggingEventBuilder loggingEventBuilder, Throwable throwable) {
+        loggingEventBuilder.log(this.toString(), throwable);
+        return this;
     }
 
     public Supplier<String> toSupplier() {

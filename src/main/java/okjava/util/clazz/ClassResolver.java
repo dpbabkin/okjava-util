@@ -26,29 +26,33 @@ public class ClassResolver<T> {
     public static <T> T resolve(String fullClassName, Supplier<T> defaultProvider, Class<T> clazz) {
         try {
             Class<?> resolvedClazz = Class.forName(fullClassName);
+            ToStringBuffer.string("class resolved")
+                    .add("fullClassName", fullClassName)
+                    .add("resolvedClazz", resolvedClazz)
+                    .toDebug(LOGGER);
             if (clazz.isAssignableFrom(resolvedClazz)) {
                 Object object = resolvedClazz.getMethod("create").invoke(null);
                 T result = clazz.cast(object);
-                ToStringBuffer.string("Resolver")
-                        .add("fullClassName", fullClassName)
+                ToStringBuffer.string("object instance resolved")
                         .add("object", result)
+                        .add("fullClassName", fullClassName)
+                        .add("resolvedClazz", resolvedClazz)
                         .toDebug(LOGGER);
                 return result;
-
-            } else {
-                throw ToStringBuffer.string("can not cast class")
-                        .add("this.clazz", clazz)
-                        .add("resolvedClazz", resolvedClazz)
-                        .toException(ClassCastException::new);
             }
+            throw ToStringBuffer.string("can not cast class")
+                    .add("from resolvedClazz", resolvedClazz)
+                    .add("to clazz", clazz)
+                    .toException(ClassCastException::new);
         } catch (ClassNotFoundException e) {
             // ignore
             LOGGER.atTrace().log(ToStringBuffer.string("PoolFactory instance not found").add("fullClassName", fullClassName).toString());
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | ClassCastException e) {
-            LOGGER.error(ToStringBuffer.string("Can not create instance class")
+            ToStringBuffer.string("Can not instantiate create.")
                     .add("fullClassName", fullClassName)
                     .addThrowable(e)
-                    .toString());
+                    .toError(LOGGER, e)
+                    .assertFalse();
         }
         return defaultProvider.get();
     }
