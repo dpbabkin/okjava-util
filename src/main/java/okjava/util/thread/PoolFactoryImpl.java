@@ -39,7 +39,6 @@ class PoolFactoryImpl implements PoolFactory {
         return ForkJoinPool.commonPool();
     }
 
-
     @Override
     public Executor createLowPriorityExecutor() {
         return Executors.newSingleThreadExecutor(runnable -> creteThread(runnable, "Low-priority"));

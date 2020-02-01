@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableList;
 import okjava.util.datetime.DateTimeFormat;
 import okjava.util.has.HasLongTimeSequenceId;
 import okjava.util.id.format.TimeSequenceIdFormatter;
+import org.slf4j.Logger;
+import org.slf4j.spi.LoggingEventBuilder;
 
 import java.util.Collection;
 import java.util.List;
@@ -78,22 +80,8 @@ public class ToStringBuffer {
         return exceptionTypes.stream()
                 .filter(c -> c.isAssignableFrom(throwable.getClass()))
                 .findFirst()
-                .orElseThrow(() -> new java.lang.Error("fatal. Throwable, must be assignable at least from Throwable."))
-                .getName();
-    }
-
-    private static String getType_OLD(Throwable throwable) {
-
-        if (throwable instanceof RuntimeException) {
-            return RuntimeException.class.getSimpleName();
-        }
-        if (throwable instanceof java.lang.Error) {
-            return java.lang.Error.class.getSimpleName();
-        }
-        if (throwable instanceof Exception) {
-            return Exception.class.getSimpleName();
-        }
-        return Throwable.class.getSimpleName();
+                .orElseThrow(() -> new java.lang.Error("Throwable, must be assignable at least from Throwable."))
+                .getSimpleName();
     }
 
     public <O> ToStringBuffer addException(Exception exception) {
@@ -129,6 +117,34 @@ public class ToStringBuffer {
     public String toString() {
         this.builder.append("}");
         return builder.toString();
+    }
+
+    public void toError(Logger logger) {
+        toLogger(logger.atError());
+    }
+
+    public void toError(Logger logger, Throwable throwable) {
+        addThrowable(throwable).toLogger(logger.atError());
+    }
+
+    public void toWarning(Logger logger) {
+        toLogger(logger.atWarn());
+    }
+
+    public void toInfo(Logger logger) {
+        toLogger(logger.atInfo());
+    }
+
+    public void toDebug(Logger logger) {
+        toLogger(logger.atDebug());
+    }
+
+    public void toTrace(Logger logger) {
+        toLogger(logger.atTrace());
+    }
+
+    private void toLogger(LoggingEventBuilder loggingEventBuilder) {
+        loggingEventBuilder.log(this.toString());
     }
 
     public Supplier<String> toSupplier() {

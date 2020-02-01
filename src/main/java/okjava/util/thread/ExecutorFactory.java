@@ -1,17 +1,11 @@
 package okjava.util.thread;
 
 import okjava.util.annotation.Singleton;
+import okjava.util.clazz.ClassResolver;
 import okjava.util.concurrent.ExecutableTaskQueueConfined;
-import okjava.util.logger.LoggerUtils;
-import okjava.util.string.ToStringBuffer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.Executor;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.Math.min;
@@ -24,7 +18,6 @@ import static okjava.util.check.Once.calledOnce;
  */
 @Singleton
 public final class ExecutorFactory {
-    private static final Logger LOGGER = LoggerUtils.createLogger(ExecutorFactory.class);
 
     private static final ExecutorFactory INSTANCE = new ExecutorFactory();
 
@@ -32,19 +25,12 @@ public final class ExecutorFactory {
     private static final long KEEP_ALIVE_TIME = TimeUnit.MINUTES.toMillis(5);
     private static final int MIN_CORE_POOL_SIZE = 3;
 
-    private final PoolFactory poolFactory = PoolFactoryResolver.resolvePollFactory();
+    private static final String POOL_FACTORY_CLASS_NAME = "okjava.util.thread.PoolFactoryInstance";
+    private final PoolFactory poolFactory = ClassResolver.resolve(POOL_FACTORY_CLASS_NAME, PoolFactoryImpl::create, PoolFactory.class);
 
-    private final String POOL_FACTORY_CLASS_NAME="okjava.util.thread.impl.PoolFactory";
-//
-//    static {
-//        if (Thread.getDefaultUncaughtExceptionHandler() == null) {
-//            Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(ExecutorFactory.class));
-//        }
-//    }
-
-    private  final OkExecutor OK_EXECUTOR = OkExecutorImpl.create(this.poolFactory.createExecutor());
-    private  final OkExecutor LOW_PRIORITY = wrapOK(this.poolFactory.createLowPriorityExecutor());
-    private  final ScheduledExecutorService SCHEDULED_EXECUTOR_SERVICE = this.poolFactory.createScheduledExecutor();
+    private final OkExecutor OK_EXECUTOR = OkExecutorImpl.create(this.poolFactory.createExecutor());
+    private final OkExecutor LOW_PRIORITY = wrapOK(this.poolFactory.createLowPriorityExecutor());
+    private final ScheduledExecutorService SCHEDULED_EXECUTOR_SERVICE = this.poolFactory.createScheduledExecutor();
 
     private ExecutorFactory() {
         calledOnce(this.getClass());
@@ -66,20 +52,20 @@ public final class ExecutorFactory {
         return KEEP_ALIVE_TIME;
     }
 
-    public ThreadPoolExecutor createCashing(final String name, Class clazz) {
-        return createCashing(name, LoggerFactory.getLogger(clazz), clazz);
-    }
-
-    public ThreadPoolExecutor createCashing(final Logger logger, Class clazz) {
-        return createCashing(clazz.getSimpleName(), logger, clazz);
-    }
-
-    public ThreadPoolExecutor createCashing(final String name, final Logger logger, Class clazz) {
-        ExceptionHandler exceptionHandler = new ExceptionHandler(logger, clazz.getName());
-        DaemonThreadFactory daemonThreadFactory = DaemonThreadFactory.create(name, exceptionHandler);
-        return new ThreadPoolExecutor(getCorePoolSize(), getMaximumPoolSize(), getKeepAliveTime(), TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<>(), daemonThreadFactory);
-    }
+//    public ThreadPoolExecutor createCashing(final String name) {
+//        return createCashing(name, LoggerFactory.getLogger(clazz));
+//    }
+//
+//    public ThreadPoolExecutor createCashing(final Logger logger) {
+//        return createCashing(clazz.getSimpleName(), logger, clazz);
+//    }
+//
+//    public ThreadPoolExecutor createCashing(final String name, final Logger logger, Class clazz) {
+//        ExceptionHandler exceptionHandler = new ExceptionHandler(logger, clazz.getName());
+//        DaemonThreadFactory daemonThreadFactory = DaemonThreadFactory.create(name, exceptionHandler);
+//        return new ThreadPoolExecutor(getCorePoolSize(), getMaximumPoolSize(), getKeepAliveTime(), TimeUnit.MILLISECONDS,
+//                new LinkedBlockingQueue<>(), daemonThreadFactory);
+//    }
 
     public Executor getWrapToStringRunnableExecutor(String toString, Executor delegate) {
         return command -> {

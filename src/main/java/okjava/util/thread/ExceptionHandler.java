@@ -4,10 +4,7 @@ import okjava.util.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.function.Consumer;
 import java.util.stream.Stream;
-
-import static okjava.util.empty.EmptyConsumer.emptyConsumer;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -23,8 +20,6 @@ public final class ExceptionHandler implements Thread.UncaughtExceptionHandler {
         });
     };
     private final Logger logger;
-    private final Consumer<String> callback;
-    private final String className;
     private final Thread.UncaughtExceptionHandler delegate;
 
     public ExceptionHandler() {
@@ -32,21 +27,15 @@ public final class ExceptionHandler implements Thread.UncaughtExceptionHandler {
     }
 
     public ExceptionHandler(Class<?> clazz) {
-        this(LoggerFactory.getLogger(clazz), emptyConsumer(), clazz.getName(), DEFAULT_UNCAUGHT_EXCEPTION_HANDLER);
+        this(LoggerFactory.getLogger(clazz), DEFAULT_UNCAUGHT_EXCEPTION_HANDLER);
     }
 
-    public ExceptionHandler(Logger logger, String className) {
-        this(logger, logger::error, className, DEFAULT_UNCAUGHT_EXCEPTION_HANDLER);
+    public ExceptionHandler(Logger logger) {
+        this(logger, DEFAULT_UNCAUGHT_EXCEPTION_HANDLER);
     }
 
-    public ExceptionHandler(Logger logger, Consumer<String> callback, String className) {
-        this(logger, callback, className, DEFAULT_UNCAUGHT_EXCEPTION_HANDLER);
-    }
-
-    public ExceptionHandler(Logger logger, Consumer<String> callback, String className, Thread.UncaughtExceptionHandler delegate) {
+    public ExceptionHandler(Logger logger, Thread.UncaughtExceptionHandler delegate) {
         this.logger = NotNull.notNull(logger);
-        this.callback = NotNull.notNull(callback);
-        this.className = NotNull.notNull(className);
         this.delegate = NotNull.notNull(delegate);
     }
 
@@ -61,25 +50,19 @@ public final class ExceptionHandler implements Thread.UncaughtExceptionHandler {
             Thread.sleep(903);//wait for logs flushed.
         } finally {
             System.exit(903);
-            return "bye";
+            return "systemExit";
         }
     }
 
     @Override
     public void uncaughtException(Thread t, Throwable e) {
-        logger.error("Ohh... my god... unbelievable... exception in " + className + " executor thread: " + t.getName(), e);
+        logger.error("Ohh... my god... unbelievable... exception in  executor thread: " + t.getName(), e);
         try {
             delegate.uncaughtException(t, e);
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
         } finally {
-            try {
-                callback.accept("CRITICAL Exception: " + e.getMessage());
-            } catch (Exception ex) {
-                logger.error(ex.getMessage(), ex);
-            } finally {
-                assert false : systemExit(logger);
-            }
+            assert false : systemExit(logger);
         }
     }
 }
