@@ -68,6 +68,13 @@ public class ToStringBuffer {
 
     private Throwable throwable = null;
 
+    public <O> ToStringBuffer addNullableThrowable(Throwable throwable) {
+        if (throwable != null) {
+            return addThrowable(throwable);
+        }
+        return this;
+    }
+
     public <O> ToStringBuffer addThrowable(Throwable throwable) {
         if (this.throwable != null) {
             ToStringBuffer.string("throwable already set.").addThrowable(this.throwable).toException(IllegalStateException::new);
@@ -105,7 +112,7 @@ public class ToStringBuffer {
         return add("time", DateTimeFormat.create().longTimeToString(System.currentTimeMillis()));
     }
 
-    public <O> ToStringBuffer addNotNull(String name, O value) {
+    public <O> ToStringBuffer addNullable(String name, O value) {
         if (value != null) {
             return add(name, value);
         }
