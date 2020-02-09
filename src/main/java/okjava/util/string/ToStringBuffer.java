@@ -10,6 +10,7 @@ import org.slf4j.spi.LoggingEventBuilder;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -134,6 +135,7 @@ public class ToStringBuffer {
 
     private String toString = null;
 
+
     @Override
     public String toString() {
         if (toString == null) {
@@ -197,6 +199,10 @@ public class ToStringBuffer {
                 return ToStringBuffer.this.toString();
             }
         };
+    }
+
+    public void toConsumer(Consumer<String> consumer) {
+        consumer.accept(this.toString());
     }
 
     public <E extends Exception> E toException(Function<String, E> function) {
