@@ -42,7 +42,7 @@ public enum LoggerUtils {
     public static Logger createLogger(Class<?> clazz, Object... prefix) {
         String logPrefix = Stream.of(prefix)
                 .map(Object::toString)
-                .collect(Collectors.joining("//", "__", " $"));
+                .collect(Collectors.joining("//", "'", " $"));
 
         return LoggerFactory.getLogger(clazz.getName() + logPrefix);
     }
