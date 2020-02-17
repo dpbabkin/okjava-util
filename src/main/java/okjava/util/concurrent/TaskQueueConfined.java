@@ -7,14 +7,17 @@ import java.util.concurrent.LinkedBlockingDeque;
  * 11/25/2016
  * 19:53.
  */
-public class TaskQueueConfined {
+class TaskQueueConfined {
 
     private final LinkedBlockingDeque<Runnable> queue = new LinkedBlockingDeque<>();
     private final RunnableQueue runnableQueue;
 
+    static TaskQueueConfined create() {
+        return new TaskQueueConfined();
+    }
 
-    public TaskQueueConfined() {
-        this.runnableQueue = new RunnableQueue(queue);
+    private TaskQueueConfined() {
+        this.runnableQueue = RunnableQueue.crete(queue);
     }
 
     public Runnable queueTaskLast(Runnable runnable) {

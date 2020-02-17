@@ -135,7 +135,6 @@ public class ToStringBuffer {
 
     private String toString = null;
 
-
     @Override
     public String toString() {
         if (toString == null) {
@@ -207,5 +206,8 @@ public class ToStringBuffer {
 
     public <E extends Exception> E toException(Function<String, E> function) {
         return function.apply(toString());
+    }
+    public <E extends Exception> void throwException(Function<String, E> function) throws E {
+        throw toException(function);
     }
 }

@@ -13,7 +13,7 @@ import java.util.stream.Stream;
  */
 public final class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 
-    private final static Thread.UncaughtExceptionHandler DEFAULT_UNCAUGHT_EXCEPTION_HANDLER = (t, e) -> {
+    private final static Thread.UncaughtExceptionHandler SOUT_SERR_UNCAUGHT_EXCEPTION_HANDLER = (t, e) -> {
         Stream.of(System.err, System.out).forEach(ps -> {
             ps.println("DEFAULT_UNCAUGHT_EXCEPTION_HANDLER:");
             e.printStackTrace(ps);
@@ -22,19 +22,26 @@ public final class ExceptionHandler implements Thread.UncaughtExceptionHandler {
     private final Logger logger;
     private final Thread.UncaughtExceptionHandler delegate;
 
-    public ExceptionHandler() {
-        this(ExceptionHandler.class);
+
+    private static final ExceptionHandler DEFAULT_EXCEPTION_HANDLER = new ExceptionHandler(ExceptionHandler.class);
+
+    public static Thread.UncaughtExceptionHandler create() {
+        return DEFAULT_EXCEPTION_HANDLER;
     }
 
-    public ExceptionHandler(Class<?> clazz) {
-        this(LoggerFactory.getLogger(clazz), DEFAULT_UNCAUGHT_EXCEPTION_HANDLER);
+    public static Thread.UncaughtExceptionHandler createThreadForward() {
+        return ThreadForwardUncaughtExceptionHandler.threadForwardUncaughtExceptionHandler();
     }
 
-    public ExceptionHandler(Logger logger) {
-        this(logger, DEFAULT_UNCAUGHT_EXCEPTION_HANDLER);
+    private ExceptionHandler(Class<?> clazz) {
+        this(LoggerFactory.getLogger(clazz), SOUT_SERR_UNCAUGHT_EXCEPTION_HANDLER);
     }
 
-    public ExceptionHandler(Logger logger, Thread.UncaughtExceptionHandler delegate) {
+    private ExceptionHandler(Logger logger) {
+        this(logger, SOUT_SERR_UNCAUGHT_EXCEPTION_HANDLER);
+    }
+
+    private ExceptionHandler(Logger logger, Thread.UncaughtExceptionHandler delegate) {
         this.logger = NotNull.notNull(logger);
         this.delegate = NotNull.notNull(delegate);
     }
@@ -59,7 +66,7 @@ public final class ExceptionHandler implements Thread.UncaughtExceptionHandler {
         logger.error("Ohh... my god... unbelievable... exception in  executor thread: " + t.getName(), e);
         try {
             delegate.uncaughtException(t, e);
-        } catch (Exception ex) {
+        } catch (Throwable ex) {
             logger.error(ex.getMessage(), ex);
         } finally {
             assert false : systemExit(logger);

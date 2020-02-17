@@ -18,7 +18,7 @@ public class TaskQueueConfinedPriority<P> {
     private TaskQueueConfinedPriority(Comparator<P> comparator) {
         notNull(comparator);
         this.queue = new PriorityBlockingQueue<>(1, (o1, o2) -> comparator.compare(o1.getPriority(), o2.getPriority()));
-        this.runnableQueue = new RunnableQueue(this.queue);
+        this.runnableQueue = RunnableQueue.crete(this.queue);
     }
 
     public static <P extends Comparable<P>> TaskQueueConfinedPriority<P> create() {

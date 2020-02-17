@@ -1,6 +1,5 @@
 package okjava.util.concurrent;
 
-import okjava.util.AssertUtils;
 import okjava.util.string.ToStringBuffer;
 
 import java.util.Queue;
@@ -14,40 +13,62 @@ import static okjava.util.NotNull.notNull;
  * 11/26/2016
  * 17:13.
  */
-class RunnableQueue implements Runnable {
+final class RunnableQueue implements Runnable {
 
     private final Lock lock = new ReentrantLock();
     private final Queue<? extends Runnable> queue;
 
-    RunnableQueue(Queue<? extends Runnable> queue) {
+    static RunnableQueue crete(Queue<? extends Runnable> queue) {
+        return new RunnableQueue(queue);
+    }
+
+    private RunnableQueue(Queue<? extends Runnable> queue) {
         this.queue = notNull(queue);
     }
 
     @Override
     public void run() {
         int repeatCount = 0;
-        do {
-            if (lock.tryLock()) {
-                try {
-                    Runnable run = queue.poll();
-                    if (run == null) {
-                        break;
-                    }
+        for (re(); v(); er()) {
+
+            if (!lock.tryLock()) {
+                return;
+            }
+
+            try {
+                Runnable run;
+                while ((run = queue.poll()) != null) { // emptying queue.
                     run.run();
-                } catch (RuntimeException e) {
-                    AssertUtils.throwAfterAssert("RuntimeException in RunnableQueue", e, RunnableQueueRuntimeException::new);
-                } finally {
-                    lock.unlock();
                 }
-            } else {
-                break;
+            } finally {
+                lock.unlock();
             }
-            repeatCount++;
-            if (repeatCount >= 10_000_000) {
-                throw ToStringBuffer.string("RepeatCountReached").add("repeatCount=", repeatCount).toException(IllegalStateException::new);
+
+            if (queue.isEmpty()) {
+                return;
             }
-            assert repeatCount < 1_000_000 : "live lock : " + repeatCount;
+
+            checkRepeatCount(repeatCount++);
         }
-        while (!queue.isEmpty());
+    }
+
+    private void checkRepeatCount(int repeatCount) {
+        if (repeatCount >= 10_000_000) {
+            throw ToStringBuffer.string("RepeatCountReached limit")
+                    .add("repeatCount=", repeatCount)
+                    .add("limit", 10_000_000)
+                    .toException(IllegalStateException::new);
+        }
+        assert repeatCount < 1_000_000 : "live lock : " + repeatCount;
+    }
+
+    private void re() {
+    }
+
+    private boolean v() {
+        return true;
+    }
+
+    private void er() {
     }
 }
