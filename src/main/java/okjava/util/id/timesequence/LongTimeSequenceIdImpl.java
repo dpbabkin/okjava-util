@@ -45,28 +45,34 @@ final class LongTimeSequenceIdImpl extends TimeSequenceIdBase implements LongTim
     @Override
     public int compareTo(@Nonnull TimeSequenceId other) {
         if (other instanceof LongTimeSequenceIdImpl) {
-            return Long.compare(this.timeAndSequence, ((LongTimeSequenceIdImpl) other).timeAndSequence);
+            return compareTo((LongTimeSequenceIdImpl) other);
         }
         return super.compareTo(other);
     }
 
+    private int compareTo(LongTimeSequenceIdImpl other) {
+        return Long.compare(this.timeAndSequence, other.timeAndSequence);
+    }
+
     @Override
     public int hashCode() {
-        return (int) (timeAndSequence ^ (timeAndSequence >>> 32));
+        return Long.hashCode(timeAndSequence);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o instanceof LongTimeSequenceIdImpl) {
+        if (o.getClass().equals(LongTimeSequenceIdImpl.class)) {
             LongTimeSequenceIdImpl that = (LongTimeSequenceIdImpl) o;
             if (this.timeAndSequence == that.timeAndSequence) {
                 return true;
             }
         }
-        if (!(o instanceof TimeSequenceId)) return false;
-        TimeSequenceId that = (TimeSequenceId) o;
-        return this.getTime() == that.getTime() && this.getSequence() == that.getSequence();
+        if (o instanceof TimeSequenceId) {
+            TimeSequenceId that = (TimeSequenceId) o;
+            return this.getTime() == that.getTime() && this.getSequence() == that.getSequence();
+        }
+        return false;
     }
 
     @Override

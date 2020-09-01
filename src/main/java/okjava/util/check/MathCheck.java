@@ -1,13 +1,13 @@
 package okjava.util.check;
 
-import static okjava.util.check.Never.neverNeverCalled;
-
 import okjava.util.annotation.Utility;
 import okjava.util.function.IntBiFunction;
 import okjava.util.function.LongBiFunction;
 
 import java.util.function.IntFunction;
 import java.util.function.LongFunction;
+
+import static okjava.util.check.Never.neverNeverCalled;
 
 
 /**
@@ -20,21 +20,27 @@ public enum MathCheck {
     ;
 
     private static final IntFunction<IllegalArgumentException> NON_NEGATIVE_EXCEPTION_FUNCTION_INT =
-        value -> createNewIllegalArgumentException("value must be non negative. value=" + value);
+            value -> createNewIllegalArgumentException("value must be non negative. value=" + value);
+    private static final IntFunction<IllegalArgumentException> POSITIVE_EXCEPTION_FUNCTION_INT =
+            value -> createNewIllegalArgumentException("value must be positive. value=" + value);
+
     private static final LongFunction<IllegalArgumentException> NON_NEGATIVE_EXCEPTION_FUNCTION_LONG =
-        value -> createNewIllegalArgumentException("value must be non negative. value=" + value);
+            value -> createNewIllegalArgumentException("value must be non negative. value=" + value);
+    private static final LongFunction<IllegalArgumentException> POSITIVE_EXCEPTION_FUNCTION_LONG =
+            value -> createNewIllegalArgumentException("value must be positive. value=" + value);
+
     private static final IntBiFunction<IllegalArgumentException> LESS_THEN_OR_EQUALS_EXCEPTION_FUNCTION_INT =
-        (left, right) -> createNewIllegalArgumentException("value " + left + " must be less then or equal to " + right);
+            (left, right) -> createNewIllegalArgumentException("value " + left + " must be less then or equal to " + right);
     private static final LongBiFunction<IllegalArgumentException> LESS_THEN_OR_EQUALS_EXCEPTION_FUNCTION_LONG =
-        (left, right) -> createNewIllegalArgumentException("value " + left + " must be less then or equal to " + right);
+            (left, right) -> createNewIllegalArgumentException("value " + left + " must be less then or equal to " + right);
     private static final IntBiFunction<IllegalArgumentException> LESS_THEN_EXCEPTION_FUNCTION_INT =
-        (left, right) -> createNewIllegalArgumentException("value " + left + " must be less then " + right);
+            (left, right) -> createNewIllegalArgumentException("value " + left + " must be less then " + right);
     private static final LongBiFunction<IllegalArgumentException> LESS_THEN_EXCEPTION_FUNCTION_LONG =
-        (left, right) -> createNewIllegalArgumentException("value " + left + " must be less then " + right);
+            (left, right) -> createNewIllegalArgumentException("value " + left + " must be less then " + right);
     private static final IntBiFunction<IllegalArgumentException> EQUALS_EXCEPTION_FUNCTION_INT =
-        (left, right) -> createNewIllegalArgumentException("value " + left + " must be equal to " + right);
+            (left, right) -> createNewIllegalArgumentException("value " + left + " must be equal to " + right);
     private static final LongBiFunction<IllegalArgumentException> EQUALS_EXCEPTION_FUNCTION_LONG =
-        (left, right) -> createNewIllegalArgumentException("value " + left + " must be equal to " + right);
+            (left, right) -> createNewIllegalArgumentException("value " + left + " must be equal to " + right);
 
     MathCheck(@SuppressWarnings("unused") Never never) {
         neverNeverCalled();
@@ -49,7 +55,7 @@ public enum MathCheck {
     }
 
     public static int positive(int value) {
-        return nonNegative(value, NON_NEGATIVE_EXCEPTION_FUNCTION_INT);
+        return positive(value, POSITIVE_EXCEPTION_FUNCTION_INT);
     }
 
     public static long nonNegative(long value) {
@@ -57,9 +63,8 @@ public enum MathCheck {
     }
 
     public static long positive(long value) {
-        return nonNegative(value, NON_NEGATIVE_EXCEPTION_FUNCTION_LONG);
+        return positive(value, POSITIVE_EXCEPTION_FUNCTION_LONG);
     }
-
 
     public static <E extends Exception> int nonNegative(int value, IntFunction<E> exceptionIntFunction) throws E {
         lessThenOrEqual(0, value, (IntBiFunction<E>) (first, second) -> exceptionIntFunction.apply(second));

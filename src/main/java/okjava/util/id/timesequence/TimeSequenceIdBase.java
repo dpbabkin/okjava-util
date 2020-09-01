@@ -3,6 +3,10 @@ package okjava.util.id.timesequence;
 
 import okjava.util.id.format.TimeSequenceIdFormatter;
 
+import javax.annotation.Nonnull;
+
+import static okjava.util.id.timesequence.TimeSequenceIdComparator.timeSequenceIdComparator;
+
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
  * 5/6/2019
@@ -11,10 +15,13 @@ import okjava.util.id.format.TimeSequenceIdFormatter;
 abstract class TimeSequenceIdBase implements TimeSequenceId {
 
     @Override
+    public int compareTo(@Nonnull TimeSequenceId other) {
+        return timeSequenceIdComparator().compare(this, other);
+    }
+
+    @Override
     public int hashCode() {
-        long raw = this.getTime() << 20;
-        raw += this.getSequence();
-        return (int) (raw ^ (raw >>> 32));
+        return 31 * Long.hashCode(getTime()) + Long.hashCode(getSequence());
     }
 
     @Override

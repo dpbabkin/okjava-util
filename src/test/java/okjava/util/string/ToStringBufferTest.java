@@ -24,49 +24,55 @@ public class ToStringBufferTest {
     @Test
     public void testRuntimeException() {
         String result = ToStringBuffer.string("test").addThrowable(new RuntimeException("msg0")).toString();
-        assertThat(result, is("test { RuntimeException=msg0 { class=java.lang.RuntimeException } }"));
+        assertThat(result, is("test { RuntimeException=java.lang.RuntimeException { message=msg0 thread=main } }"));
+    }
+
+    @Test
+    public void testRuntimeExceptionNoMessage() {
+        String result = ToStringBuffer.string("test").addThrowable(new RuntimeException()).toString();
+        assertThat(result, is("test { RuntimeException=java.lang.RuntimeException { thread=main } }"));
     }
 
     @Test
     public void testIllegalArgumentException() {
         String result = ToStringBuffer.string("test").addThrowable(new IllegalArgumentException("msg1")).toString();
-        assertThat(result, is("test { RuntimeException=msg1 { class=java.lang.IllegalArgumentException } }"));
+        assertThat(result, is("test { RuntimeException=java.lang.IllegalArgumentException { message=msg1 thread=main } }"));
     }
 
     @Test
     public void testError() {
         String result = ToStringBuffer.string("test").addThrowable(new Error("msg2")).toString();
-        assertThat(result, is("test { Error=msg2 { class=java.lang.Error } }"));
+        assertThat(result, is("test { Error=java.lang.Error { message=msg2 thread=main } }"));
     }
 
     @Test
     public void testAssertionError() {
         String result = ToStringBuffer.string("test").addThrowable(new AssertionError("msg3")).toString();
-        assertThat(result, is("test { Error=msg3 { class=java.lang.AssertionError } }"));
+        assertThat(result, is("test { Error=java.lang.AssertionError { message=msg3 thread=main } }"));
     }
 
     @Test
     public void testException() {
         String result = ToStringBuffer.string("test").addThrowable(new Exception("msg4")).toString();
-        assertThat(result, is("test { Exception=msg4 { class=java.lang.Exception } }"));
+        assertThat(result, is("test { Exception=java.lang.Exception { message=msg4 thread=main } }"));
     }
 
     @Test
     public void testIOException() {
         String result = ToStringBuffer.string("test").addThrowable(new IOException("msg5")).toString();
-        assertThat(result, is("test { Exception=msg5 { class=java.io.IOException } }"));
+        assertThat(result, is("test { Exception=java.io.IOException { message=msg5 thread=main } }"));
     }
 
     @Test
     public void testThrowable() {
         String result = ToStringBuffer.string("test").addThrowable(new Throwable("msg6")).toString();
-        assertThat(result, is("test { Throwable=msg6 { class=java.lang.Throwable } }"));
+        assertThat(result, is("test { Throwable=java.lang.Throwable { message=msg6 thread=main } }"));
     }
 
     @Test
     public void testNoneThrowable() {
         String result = ToStringBuffer.string("test").addThrowable(new NoneThrowable("msg7")).toString();
-        assertThat(result, is("test { Throwable=msg7 { class=okjava.util.string.ToStringBufferTest$NoneThrowable } }"));
+        assertThat(result, is("test { Throwable=okjava.util.string.ToStringBufferTest$NoneThrowable { message=msg7 thread=main } }"));
     }
 
     static class NoneThrowable extends Throwable {

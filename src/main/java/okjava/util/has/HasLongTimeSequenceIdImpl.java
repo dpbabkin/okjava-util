@@ -5,7 +5,7 @@ import okjava.util.id.TimeSequenceIdGeneratorFactory;
 import okjava.util.id.timesequence.TimeSequenceIdFactory;
 import okjava.util.string.ToStringBuffer;
 
-public class HasLongTimeSequenceIdImpl extends HasIdImpl<LongTimeSequenceId> implements HasLongTimeSequenceId {
+public abstract class HasLongTimeSequenceIdImpl extends HasIdImpl<LongTimeSequenceId> implements HasLongTimeSequenceId {
 
     public HasLongTimeSequenceIdImpl(long id) {
         super(TimeSequenceIdFactory.timeSequenceIdFactory().fromLong(id));

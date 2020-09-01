@@ -10,7 +10,7 @@ import static okjava.util.check.Never.neverNeverCalled;
 public enum WaitTimeSupplierFactory {
     ;
 
-    public static final long DEFAULT_POLL_INTERVAL = 3;
+    public static final long DEFAULT_POLL_INTERVAL = 10;
 
     WaitTimeSupplierFactory(@SuppressWarnings("unused") Never never) {
         neverNeverCalled();

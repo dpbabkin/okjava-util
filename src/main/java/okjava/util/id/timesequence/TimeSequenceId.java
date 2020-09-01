@@ -14,9 +14,6 @@ public interface TimeSequenceId extends Comparable<TimeSequenceId> {
 
     long getSequence();
 
-
     @Override
-    default int compareTo(@Nonnull TimeSequenceId other) {
-        return timeSequenceIdComparator().compare(this, other);
-    }
+    int compareTo(@Nonnull TimeSequenceId other);
 }

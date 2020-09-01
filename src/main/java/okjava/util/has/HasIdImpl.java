@@ -23,7 +23,7 @@ public class HasIdImpl<ID> implements HasId<ID> {
 //    }
 
     @Override
-    public ID getId() {
+    public final ID getId() {
         return id;
     }
 

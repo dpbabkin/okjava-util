@@ -143,7 +143,7 @@ public class MonsterStory {
 
         @Override
         public String sick() {
-            return "And so the monster %s got a very bad stomach, because the monster %S was sitting in his stomach and was also sick.";
+            return "And so the monster %s got a very bad stomach, because the monster %s was sitting in his stomach and was also sick.";
         }
 
         @Override

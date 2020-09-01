@@ -82,9 +82,11 @@ public class ToStringBuffer {
         }
         this.throwable = throwable;
         String type = getType(throwable);
-        return add(type, ToStringBuffer.string(throwable.getMessage()).add("class", throwable.getClass().getName()));
-        //return add(type + ".getClass()", throwable.getClass().getName()).
-        //        add(type + ".getMessage()", throwable.getMessage());
+        return add(type, ToStringBuffer
+                .string(throwable.getClass().getName())
+                .addNullable("message", throwable.getMessage())
+                .addThread()
+                .toString());
     }
 
     private final static List<Class<? extends Throwable>> exceptionTypes = ImmutableList.of(RuntimeException.class, java.lang.Error.class, Exception.class, Throwable.class);
@@ -169,11 +171,15 @@ public class ToStringBuffer {
     }
 
     public void toDebug(Logger logger) {
-        toLogger(logger.atDebug());
+        if (logger.isDebugEnabled()) {
+            toLogger(logger.atDebug());
+        }
     }
 
     public void toTrace(Logger logger) {
-        toLogger(logger.atTrace());
+        if (logger.isTraceEnabled()) {
+            toLogger(logger.atTrace());
+        }
     }
 
     private ToStringBuffer toLogger(LoggingEventBuilder loggingEventBuilder) {
@@ -207,6 +213,7 @@ public class ToStringBuffer {
     public <E extends Exception> E toException(Function<String, E> function) {
         return function.apply(toString());
     }
+
     public <E extends Exception> void throwException(Function<String, E> function) throws E {
         throw toException(function);
     }

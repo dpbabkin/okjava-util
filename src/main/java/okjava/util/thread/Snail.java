@@ -145,7 +145,7 @@ public enum Snail {
         int totalLength = 79;
         int toAdd = (totalLength - max) / 2;
 
-        return Stream.of(split)
+         return Stream.of(split)
                 .map(s -> fillEnd(s, max + toAdd, add))
                 .map(s -> fillStart(s, totalLength, add))
                 .collect(Collectors.joining(System.lineSeparator()));
