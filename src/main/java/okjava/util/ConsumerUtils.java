@@ -1,7 +1,5 @@
 package okjava.util;
 
-import static okjava.util.check.Never.neverNeverCalled;
-
 import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
 import okjava.util.e.EConsumer;
@@ -12,6 +10,8 @@ import okjava.util.exception.SneakyThrower;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+
+import static okjava.util.check.Never.neverNeverCalled;
 
 
 /**
@@ -55,6 +55,11 @@ public enum ConsumerUtils {
         return (v) -> eConsumer.accept(mapper.apply(v));
     }
 
+    public static <V, E extends Exception> Consumer<V> divertExceptionFromEConsumerAndWrapToRuntime(EConsumer<V, E> eConsumer) {
+        return divertExceptionFromEConsumer(eConsumer, e -> {
+            throw new RuntimeException(e.getMessage(), e);
+        });
+    }
 
     @SuppressWarnings("unchecked")
     public static <V, E extends Exception> Consumer<V> divertExceptionFromEConsumer(EConsumer<V, E> eConsumer, ExceptionHandler<E> exceptionHandler) {
