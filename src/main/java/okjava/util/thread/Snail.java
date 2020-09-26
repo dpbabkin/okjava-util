@@ -135,7 +135,7 @@ public enum Snail {
     }
 
     private static String generateStop() {
-        char add = '─';
+        char add = "─".charAt(0);
         String[] split = stopNative().split("\n");
 
         int max = Stream.of(split)

@@ -51,8 +51,8 @@ public enum ConsumerUtils {
         return (v) -> eConsumer.accept(mapper.apply(v));
     }
 
-    public static <V1, V2, E extends Exception> EConsumer<V2, E> map(Consumer<V1> eConsumer, EFunction<V2, V1, E> mapper) {
-        return (v) -> eConsumer.accept(mapper.apply(v));
+    public static <V1, V2, E extends Exception> EConsumer<V2, E> map(Consumer<V1> consumer, EFunction<V2, V1, E> mapper) {
+        return (v) -> consumer.accept(mapper.apply(v));
     }
 
     public static <V, E extends Exception> Consumer<V> divertExceptionFromEConsumerAndWrapToRuntime(EConsumer<V, E> eConsumer) {
