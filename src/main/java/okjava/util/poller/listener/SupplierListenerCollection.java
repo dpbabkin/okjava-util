@@ -9,6 +9,11 @@ import java.util.function.Supplier;
  */
 public interface SupplierListenerCollection<V> extends ListenerCollection<Supplier<V>> {
 
+    /**
+     *
+     * @param listener
+     * @return unsubscribe callBack
+     */
     Runnable registerListener(SupplierListener<V> listener);
 
     @Override
