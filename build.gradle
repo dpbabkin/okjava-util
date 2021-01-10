@@ -12,5 +12,6 @@ dependencies {
 
     testImplementation group: 'junit', name: 'junit', version: '+'
     testImplementation group: 'org.hamcrest', name: 'hamcrest-all', version: '+'
+    testImplementation group: 'org.hamcrest', name: 'java-hamcrest', version: '+'
     testImplementation group: 'org.slf4j', name: 'slf4j-simple', version: '+'
 }

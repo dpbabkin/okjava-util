@@ -19,7 +19,7 @@ import static okjava.util.id.LongTimeSequenceIdUtils.joinTimeAndSequence;
 class LongTimeTimeSequenceIdGenerator implements IdGenerator<Long> {
     private static final Logger LOGGER = LoggerUtils.createLogger(LongTimeTimeSequenceIdGenerator.class);
 
-    private static IdGenerator<Long> INSTANCE;
+    private final static IdGenerator<Long> INSTANCE;
 
     static {
         INSTANCE = new LongTimeTimeSequenceIdGenerator();
@@ -66,7 +66,7 @@ class LongTimeTimeSequenceIdGenerator implements IdGenerator<Long> {
             final long oldValue = time.get();
             if (newValue <= oldValue) {
                 if (isMaxSequence(oldValue)) {
-                    yield();
+                    yieldThread();
                     continue;
                 }
                 newValue = incrementSequence(oldValue);
@@ -87,7 +87,7 @@ class LongTimeTimeSequenceIdGenerator implements IdGenerator<Long> {
         return newValue;
     }
 
-    private static void yield() {
+    private static void yieldThread() {
         try {
             Thread.sleep(1);
         } catch (InterruptedException e) {

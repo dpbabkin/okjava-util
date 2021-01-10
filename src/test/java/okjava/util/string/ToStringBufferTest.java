@@ -1,11 +1,13 @@
 package okjava.util.string;
 
+import org.hamcrest.Matcher;
 import org.junit.Test;
 
 import java.io.IOException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.text.MatchesPattern.matchesPattern;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -24,55 +26,69 @@ public class ToStringBufferTest {
     @Test
     public void testRuntimeException() {
         String result = ToStringBuffer.string("test").addThrowable(new RuntimeException("msg0")).toString();
-        assertThat(result, is("test { RuntimeException=java.lang.RuntimeException { message=msg0 thread=main } }"));
+        assertThat(result, matchesPattern("test \\{ RuntimeException=java\\.lang\\.RuntimeException \\{ message=msg0 thread=[A-z ]+ \\} \\}"));
     }
 
     @Test
     public void testRuntimeExceptionNoMessage() {
         String result = ToStringBuffer.string("test").addThrowable(new RuntimeException()).toString();
-        assertThat(result, is("test { RuntimeException=java.lang.RuntimeException { thread=main } }"));
+        assertThat(result, matchesPattern("test \\{ RuntimeException=java\\.lang\\.RuntimeException \\{ thread=[A-z ]+ \\} \\}"));
     }
 
     @Test
     public void testIllegalArgumentException() {
         String result = ToStringBuffer.string("test").addThrowable(new IllegalArgumentException("msg1")).toString();
-        assertThat(result, is("test { RuntimeException=java.lang.IllegalArgumentException { message=msg1 thread=main } }"));
+        assertThat(result, matchesPattern("test \\{ RuntimeException=java\\.lang\\.IllegalArgumentException \\{ message=msg1 thread=[A-z ]+ \\} \\}"));
     }
 
     @Test
     public void testError() {
         String result = ToStringBuffer.string("test").addThrowable(new Error("msg2")).toString();
-        assertThat(result, is("test { Error=java.lang.Error { message=msg2 thread=main } }"));
+        assertThat(result, matchesPattern("test \\{ Error=java\\.lang\\.Error \\{ message=msg2 thread=[A-z ]+ \\} \\}"));
     }
 
     @Test
     public void testAssertionError() {
         String result = ToStringBuffer.string("test").addThrowable(new AssertionError("msg3")).toString();
-        assertThat(result, is("test { Error=java.lang.AssertionError { message=msg3 thread=main } }"));
+        assertThat(result, matchesPattern("test \\{ Error=java\\.lang\\.AssertionError \\{ message=msg3 thread=[A-z ]+ \\} \\}"));
     }
 
     @Test
     public void testException() {
         String result = ToStringBuffer.string("test").addThrowable(new Exception("msg4")).toString();
-        assertThat(result, is("test { Exception=java.lang.Exception { message=msg4 thread=main } }"));
+        assertThat(result, matchesPattern("test \\{ Exception=java\\.lang\\.Exception \\{ message=msg4 thread=[A-z ]+ \\} \\}"));
     }
 
     @Test
     public void testIOException() {
         String result = ToStringBuffer.string("test").addThrowable(new IOException("msg5")).toString();
-        assertThat(result, is("test { Exception=java.io.IOException { message=msg5 thread=main } }"));
+        assertThat(result, matchesPattern("test \\{ Exception=java\\.io\\.IOException \\{ message=msg5 thread=[A-z ]+ \\} \\}"));
     }
 
     @Test
     public void testThrowable() {
         String result = ToStringBuffer.string("test").addThrowable(new Throwable("msg6")).toString();
-        assertThat(result, is("test { Throwable=java.lang.Throwable { message=msg6 thread=main } }"));
+        assertThat(result, regExpMatcher("test { Throwable=java.lang.Throwable { message=msg6 thread=*ANY_THREAD_NAME* } }"));
+        //assertThat(result, matchesPattern("test \\{ Throwable=java\\.lang\\.Throwable \\{ message=msg6 thread=[A-z ]+ \\} \\}"));
     }
 
     @Test
     public void testNoneThrowable() {
         String result = ToStringBuffer.string("test").addThrowable(new NoneThrowable("msg7")).toString();
-        assertThat(result, is("test { Throwable=okjava.util.string.ToStringBufferTest$NoneThrowable { message=msg7 thread=main } }"));
+        assertThat(result, regExpMatcher("test { Throwable=okjava.util.string.ToStringBufferTest$NoneThrowable { message=msg7 thread=*ANY_THREAD_NAME* } }"));
+        //assertThat(result, matchesPattern("test \\{ Throwable=okjava\\.util\\.string\\.ToStringBufferTest\\$NoneThrowable \\{ message=msg7 thread=[A-z ]+ \\} \\}"));
+    }
+
+    static Matcher<String> regExpMatcher(String regexp) {
+        return matchesPattern(regexp
+                .replace("*ANY_THREAD_NAME*", "[A-z ]+")
+                .replace("{", "\\{")
+                .replace("}", "\\}")
+                .replace(".", "\\.")
+                .replace("$", "\\$")
+
+
+        );
     }
 
     static class NoneThrowable extends Throwable {
@@ -80,6 +96,4 @@ public class ToStringBufferTest {
             super(message);
         }
     }
-
-
 }
