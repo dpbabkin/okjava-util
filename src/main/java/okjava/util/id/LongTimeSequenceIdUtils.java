@@ -2,13 +2,7 @@ package okjava.util.id;
 
 import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
-import okjava.util.id.timesequence.TimeSequenceId;
-import okjava.util.id.timesequence.TimeSequenceIdFactory;
-
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.function.Function;
+import okjava.util.string.ToStringBuffer;
 
 import static okjava.util.check.Never.neverNeverCalled;
 
@@ -38,15 +32,13 @@ public enum LongTimeSequenceIdUtils {
 
         assert time <= MAX_TIME : time;
         assert sequence <= MAX_SEQUENCE : sequence;
-        //MathCheck.lessThenOrEqual(time, MAX_TIME);
-        //MathCheck.lessThenOrEqual(sequence, MAX_SEQUENCE);
 
         long timeAndSequence = time << 20;
         timeAndSequence += sequence;
 
-
         assert timeAndSequence > 0;
         assert (timeAndSequence & RESERVED_BITS) == 0; //two highest bits are reserved.
+
         return timeAndSequence;
     }
 
@@ -59,9 +51,20 @@ public enum LongTimeSequenceIdUtils {
         return raw & MAX_SEQUENCE;
     }
 
-    public static boolean isMaxSequence(long raw) {
-        assert fetchSequence(raw) <= MAX_SEQUENCE : raw;
-        return fetchSequence(raw) >= MAX_SEQUENCE;
+    static boolean isMaxSequence(long raw) {
+        final long sequence = fetchSequence(raw);
+
+        if (sequence < MAX_SEQUENCE) {
+            return false;
+        } else if (sequence == MAX_SEQUENCE) {
+            return true;
+        }
+        assert false : raw;
+        throw ToStringBuffer.string("MAX_SEQUENCE value exceeded.")
+                .add("raw", raw)
+                .add("sequence", sequence)
+                .add("MAX_SEQUENCE", MAX_SEQUENCE)
+                .toException(IllegalStateException::new);
     }
 
     public static long incrementSequence(long raw) {

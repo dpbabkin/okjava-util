@@ -54,7 +54,7 @@ class LongTimeTimeSequenceIdGenerator implements IdGenerator<Long> {
     }
 
     public Long generate() {
-        long newValue;
+        long newIdValue;
         int repeatCount = 0;
         for (; ; ) {
             if (repeatCount++ < 0) {
@@ -62,16 +62,16 @@ class LongTimeTimeSequenceIdGenerator implements IdGenerator<Long> {
             }
 
             final long millis = millis();
-            newValue = joinTimeAndSequence(millis, 0);
+            newIdValue = joinTimeAndSequence(millis, 0);
             final long oldValue = time.get();
-            if (newValue <= oldValue) {
+            if (newIdValue <= oldValue) {
                 if (isMaxSequence(oldValue)) {
-                    yieldThread();
+                    LongTimeTimeSequenceIdGenerator.yield();
                     continue;
                 }
-                newValue = incrementSequence(oldValue);
+                newIdValue = incrementSequence(oldValue);
             }
-            if (this.time.compareAndSet(oldValue, newValue)) {
+            if (this.time.compareAndSet(oldValue, newIdValue)) {
                 break;
             }
         }
@@ -84,10 +84,10 @@ class LongTimeTimeSequenceIdGenerator implements IdGenerator<Long> {
             throw ToStringBuffer.string("RepeatCountReached").add("repeatCount=", repeatCount).toException(IllegalStateException::new);
         }
 
-        return newValue;
+        return newIdValue;
     }
 
-    private static void yieldThread() {
+    private static void yield() {
         try {
             Thread.sleep(1);
         } catch (InterruptedException e) {
