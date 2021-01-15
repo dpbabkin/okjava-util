@@ -1,9 +1,8 @@
 package okjava.util.has;
 
-import okjava.util.datetime.DateTimeFormatUtils;
 import okjava.util.id.LongTimeSequenceId;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -18,8 +17,8 @@ public interface HasLongTimeSequenceId extends HasId<LongTimeSequenceId> {
         return getTimeSequence().toString();
     }
 
-    default LocalDateTime getCreationLocalDateTime() {
-        return DateTimeFormatUtils.convertMillisToLocalDateTime(getTimeSequence().getTime());
+    default Instant getCreationLocalDateTime() {
+        return Instant.ofEpochMilli(getTimeSequence().getTime());
     }
 
 //    //default long getCreationTimeAsLong() {

@@ -15,6 +15,6 @@ public class DateTimeFormatTest {
     public void test001() {
         long time = 1557178359371L;
         String result = TimeSequenceIdFormatConstants.FORMATTER.longTimeToString(time);
-        assertThat(result, is("20190506:213239.371"));
+        assertThat(result, is("20190506:213239.371Z"));
     }
 }

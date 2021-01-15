@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 import okjava.util.datetime.DateTimeFormat;
 import okjava.util.has.HasLongTimeSequenceId;
 import okjava.util.has.HasTimeSequenceId;
-import okjava.util.id.format.TimeSequenceIdFormatter;
 import okjava.util.id.timesequence.TimeSequenceId;
 import okjava.util.id.timesequence.TimeSequenceIdFactory;
 import org.slf4j.Logger;
@@ -192,9 +191,8 @@ public class ToStringBuffer {
         }
     }
 
-    private ToStringBuffer toLogger(LoggingEventBuilder loggingEventBuilder) {
+    private void toLogger(LoggingEventBuilder loggingEventBuilder) {
         loggingEventBuilder.log(this.toString());
-        return this;
     }
 
     private ToStringBuffer toLogger(LoggingEventBuilder loggingEventBuilder, Throwable throwable) {

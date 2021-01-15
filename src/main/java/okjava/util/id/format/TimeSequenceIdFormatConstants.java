@@ -15,7 +15,7 @@ import static okjava.util.check.Never.neverNeverCalled;
 enum TimeSequenceIdFormatConstants {
     ;
 
-     final static String PATTERN = "yyyyMMdd:HHmmss.SSS";
+     final static String PATTERN = "yyyyMMdd:HHmmss.SSSX";
      final static DateTimeFormat FORMATTER = DateTimeFormat.create(PATTERN);
      final static String SEPARATOR = "'";
 

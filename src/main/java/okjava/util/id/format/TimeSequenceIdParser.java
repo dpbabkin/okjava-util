@@ -1,7 +1,6 @@
 package okjava.util.id.format;
 
 import okjava.util.annotation.Singleton;
-import okjava.util.id.LongTimeSequenceId;
 import okjava.util.id.timesequence.TimeSequenceId;
 import okjava.util.id.timesequence.TimeSequenceIdFactory;
 import okjava.util.string.ToStringBuffer;
@@ -19,37 +18,28 @@ import static okjava.util.id.LongTimeSequenceIdUtils.joinTimeAndSequence;
  * 23:10.
  */
 @Singleton
-public final class TimeSequenceIdParser {
+final class TimeSequenceIdParser {
     private static final TimeSequenceIdParser INSTANCE = new TimeSequenceIdParser();
 
     private TimeSequenceIdParser() {
         calledOnce(this.getClass());
     }
 
-    public static TimeSequenceIdParser i() {
+    static TimeSequenceIdParser timeSequenceIdParser() {
         return INSTANCE;
     }
 
-    public static TimeSequenceIdParser create() {
-        return INSTANCE;
-    }
-
-    public static TimeSequenceIdParser timeSequenceIdParser() {
-        return INSTANCE;
-    }
-
-    private final Function<String, Long> parser = this::parse;
-    private final Function<String, TimeSequenceId> timeSequenceIdParser = this::parseToLongTimeSequenceId;
+    private final Function<String, Long> parser = this::parseLong;
+    private final Function<String, TimeSequenceId> timeSequenceIdParser = this::parseTimeSequenceId;
 
     private interface Handler<R> {
         R handle(long time, long sequence);
     }
 
     private final Handler<TimeSequenceId> timeSequenceIdHandler = new TimeSequenceIdHandler();
-    private final Handler<LongTimeSequenceId> longTimeSequenceIdHandler = new LongTimeSequenceIdHandler();
     private final Handler<Long> longHandler = new LongHandler();
 
-    private <R> R parseToTimeSequenceId(String id, Handler<R> handler) {
+    private <R> R parseTimeSequenceId(String id, Handler<R> handler) {
         String[] split = id.split(TimeSequenceIdFormatConstants.SEPARATOR);
         if (split.length != 2) {
             throw new IllegalArgumentException(id);
@@ -63,23 +53,19 @@ public final class TimeSequenceIdParser {
         }
     }
 
-    public TimeSequenceId parseToTimeSequenceId(String id) {
-        return parseToTimeSequenceId(id, timeSequenceIdHandler);
+     TimeSequenceId parseTimeSequenceId(String id) {
+        return parseTimeSequenceId(id, timeSequenceIdHandler);
     }
 
-    public LongTimeSequenceId parseToLongTimeSequenceId(String id) {
-        return parseToTimeSequenceId(id, longTimeSequenceIdHandler);
+     Long parseLong(String id) {
+        return parseTimeSequenceId(id, longHandler);
     }
 
-    public Long parse(String id) {
-        return parseToTimeSequenceId(id, longHandler);
-    }
-
-    public Function<String, Long> getParser() {
+     Function<String, Long> getLongParser() {
         return parser;
     }
 
-    public Function<String, TimeSequenceId> getTimeSequenceIdParser() {
+     Function<String, TimeSequenceId> getTimeSequenceIdParser() {
         return timeSequenceIdParser;
     }
 
@@ -90,15 +76,6 @@ public final class TimeSequenceIdParser {
             return TimeSequenceIdFactory.timeSequenceIdFactory().create(time, sequence);
         }
     }
-
-    private final static class LongTimeSequenceIdHandler implements Handler<LongTimeSequenceId> {
-
-        @Override
-        public LongTimeSequenceId handle(long time, long sequence) {
-            return TimeSequenceIdFactory.timeSequenceIdFactory().createLongTimeSequence(time, sequence);
-        }
-    }
-
     private final static class LongHandler implements Handler<Long> {
 
         @Override

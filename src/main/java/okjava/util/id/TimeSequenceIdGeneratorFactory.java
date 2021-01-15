@@ -3,6 +3,7 @@ package okjava.util.id;
 import okjava.util.SupplierUtils;
 import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
+import okjava.util.id.format.LongTimeSequenceIdForPer;
 import okjava.util.id.timesequence.TimeSequenceId;
 import okjava.util.id.timesequence.TimeSequenceIdFactory;
 
@@ -10,7 +11,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static okjava.util.check.Never.neverNeverCalled;
-import static okjava.util.id.format.TimeSequenceIdFormatter.timeSequenceIdFormatter;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -30,11 +30,11 @@ public enum TimeSequenceIdGeneratorFactory {
     }
 
     public static IdGenerator<String> withStringPrefixAndFormattedId(String prefix) {
-        Function<Long, String> mapper = id -> prefix + timeSequenceIdFormatter().format(id);
+        Function<Long, String> mapper = id -> prefix + LongTimeSequenceIdForPer.longTimeSequenceIdForPer().format(id);
         return withMapper(mapper);
     }
 
-    private static final IdGenerator<String> STRING_TIME_SEQUENCE_ID_ID_GENERATOR = withMapper(timeSequenceIdFormatter().getFormatter());
+    private static final IdGenerator<String> STRING_TIME_SEQUENCE_ID_ID_GENERATOR = withMapper(LongTimeSequenceIdForPer.longTimeSequenceIdForPer().getFormatter());
 
     public static <F> IdGenerator<F> withMapper(Function<Long, F> mapper) {
         Supplier<F> supplier = SupplierUtils.map(longIdGenerator(), mapper);

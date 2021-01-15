@@ -1,11 +1,7 @@
 package okjava.util.id.timesequence;
 
-import okjava.util.datetime.DateTimeFormatUtils;
-
-import static okjava.util.id.timesequence.TimeSequenceIdComparator.timeSequenceIdComparator;
-
 import javax.annotation.Nonnull;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -20,7 +16,7 @@ public interface TimeSequenceId extends Comparable<TimeSequenceId> {
     @Override
     int compareTo(@Nonnull TimeSequenceId other);
 
-    default LocalDateTime getCreationLocalDateTime() {
-        return DateTimeFormatUtils.convertMillisToLocalDateTime(getTime());
+    default Instant getCreationInstant() {
+        return Instant.ofEpochMilli(getTime());
     }
 }

@@ -1,7 +1,8 @@
 package okjava.util.datetime;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -10,7 +11,7 @@ import java.time.format.DateTimeFormatter;
  * 23:36.
  */
 public final class DateTimeFormat {
-    private static final String DEFAULT_FORMAT = "yyyy.MM.dd HH:mm:ss.SSS";
+    private static final String DEFAULT_FORMAT = "yyyy.MM.dd HH:mm:ss.SSS X";
     private static final DateTimeFormat DEFAULT_INSTANCE = DateTimeFormat.create(DEFAULT_FORMAT);
 
     private final DateTimeFormatter formatter;
@@ -27,13 +28,20 @@ public final class DateTimeFormat {
         return new DateTimeFormat(format);
     }
 
+    public ZonedDateTime stringToZonedDateTime(String dateTime) {
+        return ZonedDateTime.parse(dateTime, formatter);
+    }
+
+    public Instant stringToInstant(String dateTime) {
+        return stringToZonedDateTime(dateTime).toInstant();
+    }
+
     public long stringToLong(String dateTime) {
-        LocalDateTime localDateTime = LocalDateTime.parse(dateTime, formatter);
-        return localDateTime.toInstant(ZoneOffset.UTC).toEpochMilli();
+        return stringToInstant(dateTime).toEpochMilli();
     }
 
     public String longTimeToString(long time) {
-        LocalDateTime dateTime = DateTimeFormatUtils.convertMillisToLocalDateTime(time);
-        return dateTime.format(formatter);
+        ZonedDateTime zonedDateTime = Instant.ofEpochMilli(time).atZone(ZoneOffset.UTC);
+        return zonedDateTime.format(formatter);
     }
 }

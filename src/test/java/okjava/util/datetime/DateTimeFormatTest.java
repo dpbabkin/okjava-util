@@ -13,7 +13,7 @@ import org.junit.Test;
 public class DateTimeFormatTest {
 
 
-    private final DateTimeFormat dateTimeFormat = DateTimeFormat.create("yyyyMMdd HHmmssSSS");
+    private final DateTimeFormat dateTimeFormat = DateTimeFormat.create("yyyyMMdd HHmmssSSS X");
 
 
     @Test
@@ -22,13 +22,13 @@ public class DateTimeFormatTest {
 
         String result = dateTimeFormat.longTimeToString(time);
 
-        assertThat(result, is("20190506 213239371"));
+        assertThat(result, is("20190506 213239371 Z"));
 
     }
 
     @Test
     public void testStringToLong() {
-        String time = "20190506 213239371";
+        String time = "20190506 213239371 Z";
 
         long result = dateTimeFormat.stringToLong(time);
 

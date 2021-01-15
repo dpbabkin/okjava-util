@@ -1,9 +1,9 @@
-package okjava.util.id.timesequence;
+package okjava.util.id.format;
 
-import okjava.util.id.TimeSequenceIdGeneratorFactory;
 import okjava.util.id.LongTimeSequenceIdUtils;
-import okjava.util.id.format.TimeSequenceIdFormatter;
-import okjava.util.id.format.TimeSequenceIdParser;
+import okjava.util.id.TimeSequenceIdGeneratorFactory;
+import okjava.util.id.timesequence.TimeSequenceId;
+import okjava.util.id.timesequence.TimeSequenceIdFactory;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -21,21 +21,21 @@ public class LongTimeSequenceIdUtilsTest {
 
     @Test
     public void test001() {
-        String result = TimeSequenceIdFormatter.timeSequenceIdFormatter().format(ID);
-        assertThat(result, is("20200101:123456.789'0"));
+        String result = LongTimeSequenceIdFormatter.longTimeSequenceIdFormatter().format(ID);
+        assertThat(result, is("20200101:123456.789Z'0"));
     }
 
     @Test
     public void test002() {
-        String result = TimeSequenceIdFormatter.timeSequenceIdFormatter().format(TIME_LONG, 5);
-        assertThat(result, is("20190506:213239.371'5"));
+        String result = LongTimeSequenceIdFormatter.longTimeSequenceIdFormatter().format(TIME_LONG, 5);
+        assertThat(result, is("20190506:213239.371Z'5"));
     }
 
     @Test
     public void test003() {
-        String id = "20190506:213239.371'5";
+        String id = "20190506:213239.371Z'5";
 
-        long result = TimeSequenceIdParser.timeSequenceIdParser().parse(id);
+        long result = TimeSequenceIdParser.timeSequenceIdParser().parseLong(id);
         assertThat(LongTimeSequenceIdUtils.fetchTime(result), is(TIME_LONG));
         assertThat(LongTimeSequenceIdUtils.fetchSequence(result), is(5L));
     }
@@ -44,8 +44,8 @@ public class LongTimeSequenceIdUtilsTest {
     public void test004() {
         long id = TimeSequenceIdGeneratorFactory.longIdGenerator().generate();
 
-        String formattedString = TimeSequenceIdFormatter.timeSequenceIdFormatter().format(id);
-        long newId = TimeSequenceIdParser.timeSequenceIdParser().parse(formattedString);
+        String formattedString = LongTimeSequenceIdFormatter.longTimeSequenceIdFormatter().format(id);
+        long newId = TimeSequenceIdParser.timeSequenceIdParser().parseLong(formattedString);
         System.out.println("id=" + id + " newId=" + newId);
         assertThat(id, is(newId));
     }
@@ -55,7 +55,7 @@ public class LongTimeSequenceIdUtilsTest {
         TimeSequenceId timeSequenceId = TimeSequenceIdGeneratorFactory.withMapper(l -> TimeSequenceIdFactory.timeSequenceIdFactory().fromLong(l)).generate();
 
         String formattedString = TimeSequenceIdFormatter.timeSequenceIdFormatter().format(timeSequenceId);
-        TimeSequenceId newTimeSequenceId = TimeSequenceIdParser.timeSequenceIdParser().parseToTimeSequenceId(formattedString);
+        TimeSequenceId newTimeSequenceId = TimeSequenceIdParser.timeSequenceIdParser().parseTimeSequenceId(formattedString);
         System.out.println("timeSequenceId=" + timeSequenceId + " newTimeSequenceId=" + newTimeSequenceId);
         assertThat(timeSequenceId, is(newTimeSequenceId));
     }
@@ -75,16 +75,21 @@ public class LongTimeSequenceIdUtilsTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void test007() {
-        TimeSequenceIdParser.timeSequenceIdParser().parse("20190506:213239.371_XXX");
+        TimeSequenceIdParser.timeSequenceIdParser().parseLong("20190506:213239.371_XXX");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void test008() {
-        TimeSequenceIdParser.timeSequenceIdParser().parse("20190506XX:213239.371_5");
+        TimeSequenceIdParser.timeSequenceIdParser().parseLong("20190506XX:213239.371_5");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void test009() {
-        TimeSequenceIdParser.timeSequenceIdParser().parse("20190506:213239.371");
+        TimeSequenceIdParser.timeSequenceIdParser().parseLong("20190506:213239.371");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void test010() {
+        TimeSequenceIdParser.timeSequenceIdParser().parseLong("20200101:123456.789'0");
     }
 }

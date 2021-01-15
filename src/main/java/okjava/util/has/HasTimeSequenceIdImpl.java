@@ -1,15 +1,15 @@
 package okjava.util.has;
 
-import okjava.util.id.LongTimeSequenceId;
-import okjava.util.id.TimeSequenceIdGeneratorFactory;
 import okjava.util.id.timesequence.TimeSequenceId;
-import okjava.util.id.timesequence.TimeSequenceIdFactory;
 import okjava.util.string.ToStringBuffer;
+
+import static okjava.util.id.TimeSequenceIdGeneratorFactory.timeSequenceIdGenerator;
+import static okjava.util.id.timesequence.TimeSequenceIdFactory.timeSequenceIdFactory;
 
 public abstract class HasTimeSequenceIdImpl extends HasIdImpl<TimeSequenceId> implements HasTimeSequenceId {
 
     public HasTimeSequenceIdImpl(long id) {
-        super(TimeSequenceIdFactory.timeSequenceIdFactory().fromLong(id));
+        this(timeSequenceIdFactory().fromLong(id));
     }
 
     public HasTimeSequenceIdImpl(TimeSequenceId timeSequenceId) {
@@ -17,7 +17,7 @@ public abstract class HasTimeSequenceIdImpl extends HasIdImpl<TimeSequenceId> im
     }
 
     public HasTimeSequenceIdImpl() {
-        this(TimeSequenceIdGeneratorFactory.timeSequenceIdGenerator().generate());
+        this(timeSequenceIdGenerator().generate());
     }
 
     @Override
