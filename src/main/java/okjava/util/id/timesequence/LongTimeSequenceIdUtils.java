@@ -1,4 +1,4 @@
-package okjava.util.id;
+package okjava.util.id.timesequence;
 
 import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
@@ -13,7 +13,7 @@ import static okjava.util.check.Never.neverNeverCalled;
  */
 
 @Utility
-public enum LongTimeSequenceIdUtils {
+enum LongTimeSequenceIdUtils {
     ;
 
     private static final long MAX_SEQUENCE = (1L << 20) - 1;// 1_048_575 = bx11111111111111111111 (20)
@@ -24,13 +24,17 @@ public enum LongTimeSequenceIdUtils {
         neverNeverCalled();
     }
 
-    public static boolean ifUnderLimit(long time, long sequence) {
+    static boolean ifUnderLimit(long time, long sequence) {
+        assert time > 0 : time;
+        assert sequence >= 0 : sequence;
         return time <= MAX_TIME && sequence <= MAX_SEQUENCE;
     }
 
-    public static long joinTimeAndSequence(long time, long sequence) {
+    static long joinTimeAndSequence(long time, long sequence) {
 
+        assert time > 0 : time;
         assert time <= MAX_TIME : time;
+        assert sequence >= 0 : sequence;
         assert sequence <= MAX_SEQUENCE : sequence;
 
         long timeAndSequence = time << 20;
@@ -42,12 +46,12 @@ public enum LongTimeSequenceIdUtils {
         return timeAndSequence;
     }
 
-    public static long fetchTime(long raw) {
+    static long fetchTime(long raw) {
         assert (raw >>> 20) > 0 : raw;
         return raw >>> 20;
     }
 
-    public static long fetchSequence(long raw) {
+    static long fetchSequence(long raw) {
         return raw & MAX_SEQUENCE;
     }
 
@@ -67,9 +71,8 @@ public enum LongTimeSequenceIdUtils {
                 .toException(IllegalStateException::new);
     }
 
-    public static long incrementSequence(long raw) {
+    static long incrementSequence(long raw) {
         assert fetchSequence(raw) < MAX_SEQUENCE : raw;
         return raw + 1;
     }
-
 }

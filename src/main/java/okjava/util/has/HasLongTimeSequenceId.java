@@ -1,6 +1,6 @@
 package okjava.util.has;
 
-import okjava.util.id.LongTimeSequenceId;
+import okjava.util.id.timesequence.LongTimeSequenceId;
 
 import java.time.Instant;
 

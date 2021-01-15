@@ -1,12 +1,10 @@
 package okjava.util.id.timesequence;
 
-import okjava.util.id.LongTimeSequenceId;
-
 import javax.annotation.Nonnull;
 
-import static okjava.util.id.LongTimeSequenceIdUtils.fetchSequence;
-import static okjava.util.id.LongTimeSequenceIdUtils.fetchTime;
-import static okjava.util.id.LongTimeSequenceIdUtils.joinTimeAndSequence;
+import static okjava.util.id.timesequence.LongTimeSequenceIdUtils.fetchSequence;
+import static okjava.util.id.timesequence.LongTimeSequenceIdUtils.fetchTime;
+import static okjava.util.id.timesequence.LongTimeSequenceIdUtils.joinTimeAndSequence;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

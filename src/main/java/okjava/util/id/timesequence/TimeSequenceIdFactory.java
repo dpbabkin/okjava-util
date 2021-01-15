@@ -1,10 +1,9 @@
 package okjava.util.id.timesequence;
 
 import okjava.util.annotation.Singleton;
-import okjava.util.id.LongTimeSequenceId;
 
 import static okjava.util.check.Once.calledOnce;
-import static okjava.util.id.LongTimeSequenceIdUtils.ifUnderLimit;
+import static okjava.util.id.timesequence.LongTimeSequenceIdUtils.ifUnderLimit;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
