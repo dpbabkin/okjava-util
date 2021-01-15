@@ -1,10 +1,10 @@
 package okjava.util.id;
 
-import static okjava.util.check.MathCheck.lessThenOrEqual;
-
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
+
+import static okjava.util.check.MathCheck.lessThenOrEqual;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

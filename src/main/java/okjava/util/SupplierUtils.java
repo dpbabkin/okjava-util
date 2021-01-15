@@ -1,12 +1,12 @@
 package okjava.util;
 
-import static okjava.util.check.Never.neverNeverCalled;
-
 import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
+
+import static okjava.util.check.Never.neverNeverCalled;
 
 
 /**

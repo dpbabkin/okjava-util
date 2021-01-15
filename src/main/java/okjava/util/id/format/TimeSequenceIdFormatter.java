@@ -6,8 +6,6 @@ import okjava.util.id.timesequence.TimeSequenceId;
 import java.util.function.Function;
 
 import static okjava.util.check.Once.calledOnce;
-import static okjava.util.id.LongTimeSequenceIdUtils.fetchSequence;
-import static okjava.util.id.LongTimeSequenceIdUtils.fetchTime;
 import static okjava.util.id.format.LongTimeSequenceIdFormatter.longTimeSequenceIdFormatter;
 
 /**
@@ -16,25 +14,19 @@ import static okjava.util.id.format.LongTimeSequenceIdFormatter.longTimeSequence
  * 23:10.
  */
 @Singleton
-final class TimeSequenceIdFormatter {
+final class TimeSequenceIdFormatter implements Function<TimeSequenceId, String> {
     private static final TimeSequenceIdFormatter INSTANCE = new TimeSequenceIdFormatter();
 
     private TimeSequenceIdFormatter() {
         calledOnce(this.getClass());
     }
 
-
     static TimeSequenceIdFormatter timeSequenceIdFormatter() {
         return INSTANCE;
     }
 
-    private final Function<TimeSequenceId, String> timeSequenceIdFormatter = this::format;
-
-    String format(TimeSequenceId timeSequenceId) {
+    @Override
+    public String apply(TimeSequenceId timeSequenceId) {
         return longTimeSequenceIdFormatter().format(timeSequenceId.getTime(), timeSequenceId.getSequence());
-    }
-
-    Function<TimeSequenceId, String> getFormatter() {
-        return timeSequenceIdFormatter;
     }
 }

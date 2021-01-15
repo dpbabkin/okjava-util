@@ -1,7 +1,5 @@
 package okjava.util.cache;
 
-import static okjava.util.check.Once.calledOnce;
-
 import okjava.util.annotation.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +10,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
+import static okjava.util.check.Once.calledOnce;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

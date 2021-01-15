@@ -1,12 +1,12 @@
 package okjava.util.id;
 
-import static okjava.util.check.Once.calledOnce;
-import static okjava.util.id.timesequence.TimeSequenceIdFactory.timeSequenceIdFactory;
-
 import okjava.util.annotation.Singleton;
 import okjava.util.id.timesequence.TimeSequenceId;
 
 import java.util.concurrent.locks.ReentrantLock;
+
+import static okjava.util.check.Once.calledOnce;
+import static okjava.util.id.timesequence.TimeSequenceIdFactory.timeSequenceIdFactory;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -14,6 +14,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * 20:25.
  */
 @Singleton
+@Deprecated // never used.
 final class TimeBucketCountIdGenerator implements IdGenerator<TimeSequenceId> {
     private static IdGenerator<TimeSequenceId> INSTANCE = new TimeBucketCountIdGenerator();
     private final ReentrantLock lock = new ReentrantLock();

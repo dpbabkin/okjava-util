@@ -3,7 +3,6 @@ package okjava.util.poller;
 import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
 import okjava.util.poller.poller.Poller;
-import okjava.util.string.ToStringBuffer;
 
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -13,7 +12,6 @@ import static okjava.util.WaitTestUtils.catchInterrupted;
 import static okjava.util.check.Never.neverNeverCalled;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
 
 @Utility
 public class PollerTestUtils {

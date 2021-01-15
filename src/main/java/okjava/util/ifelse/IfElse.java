@@ -1,10 +1,5 @@
 package okjava.util.ifelse;
 
-import static okjava.util.NotNull.notNull;
-import static okjava.util.check.Never.neverNeverCalled;
-import static okjava.util.empty.EmptyConsumer.emptyConsumer;
-import static okjava.util.empty.EmptyRunnable.emptyRunnable;
-
 import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
 
@@ -13,6 +8,11 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+
+import static okjava.util.NotNull.notNull;
+import static okjava.util.check.Never.neverNeverCalled;
+import static okjava.util.empty.EmptyConsumer.emptyConsumer;
+import static okjava.util.empty.EmptyRunnable.emptyRunnable;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

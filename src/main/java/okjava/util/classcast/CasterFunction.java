@@ -1,9 +1,9 @@
 package okjava.util.classcast;
 
-import static okjava.util.NotNull.notNull;
-
 import java.util.function.Consumer;
 import java.util.function.Function;
+
+import static okjava.util.NotNull.notNull;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

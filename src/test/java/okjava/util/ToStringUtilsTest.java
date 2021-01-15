@@ -1,14 +1,13 @@
 package okjava.util;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-
 import com.google.common.collect.ImmutableList;
-
 import okjava.util.string.ToStringUtils;
 import org.junit.Test;
 
 import java.util.List;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

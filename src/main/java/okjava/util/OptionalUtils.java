@@ -1,9 +1,5 @@
 package okjava.util;
 
-import static okjava.util.NotNull.notNull;
-import static okjava.util.StreamUtils.toStream;
-import static okjava.util.check.Never.neverNeverCalled;
-
 import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
 import okjava.util.e.EEFunction;
@@ -11,6 +7,10 @@ import okjava.util.e.EFunction;
 
 import java.util.Optional;
 import java.util.stream.Stream;
+
+import static okjava.util.NotNull.notNull;
+import static okjava.util.StreamUtils.toStream;
+import static okjava.util.check.Never.neverNeverCalled;
 
 
 /**

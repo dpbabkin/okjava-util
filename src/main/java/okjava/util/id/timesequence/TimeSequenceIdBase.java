@@ -1,8 +1,6 @@
 package okjava.util.id.timesequence;
 
 
-import okjava.util.id.format.TimeSequenceIdForPer;
-
 import javax.annotation.Nonnull;
 
 import static okjava.util.id.format.TimeSequenceIdForPer.timeSequenceIdForPer;

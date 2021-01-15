@@ -14,7 +14,7 @@ import static okjava.util.id.LongTimeSequenceIdUtils.fetchTime;
  * 23:10.
  */
 @Singleton
-final class LongTimeSequenceIdFormatter {
+final class LongTimeSequenceIdFormatter implements Function<Long, String> {
     private static final LongTimeSequenceIdFormatter INSTANCE = new LongTimeSequenceIdFormatter();
 
     private LongTimeSequenceIdFormatter() {
@@ -25,8 +25,6 @@ final class LongTimeSequenceIdFormatter {
         return INSTANCE;
     }
 
-    private final Function<Long, String> longFormatter = this::format;
-
     private static String longTimeToString(long time) {
         return TimeSequenceIdFormatConstants.FORMATTER.longTimeToString(time);
     }
@@ -35,11 +33,8 @@ final class LongTimeSequenceIdFormatter {
         return longTimeToString(time) + TimeSequenceIdFormatConstants.SEPARATOR + sequence;
     }
 
-    String format(long id) {
+    @Override
+    public String apply(Long id) {
         return format(fetchTime(id), fetchSequence(id));
-    }
-
-    Function<Long, String> getFormatter() {
-        return longFormatter;
     }
 }

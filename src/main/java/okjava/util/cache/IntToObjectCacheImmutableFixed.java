@@ -1,12 +1,12 @@
 package okjava.util.cache;
 
-import static okjava.util.check.MathCheck.lessThen;
-import static okjava.util.check.MathCheck.nonNegative;
-
 import com.google.common.collect.ImmutableList;
 
 import java.util.List;
 import java.util.function.IntFunction;
+
+import static okjava.util.check.MathCheck.lessThen;
+import static okjava.util.check.MathCheck.nonNegative;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

@@ -1,9 +1,9 @@
 package okjava.util.concurrent;
 
-import static okjava.util.NotNull.notNull;
-
 import java.util.Comparator;
 import java.util.concurrent.PriorityBlockingQueue;
+
+import static okjava.util.NotNull.notNull;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

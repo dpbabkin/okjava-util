@@ -1,8 +1,5 @@
 package okjava.util.ifelse;
 
-import static java.util.Objects.requireNonNull;
-import static okjava.util.check.Never.neverNeverCalled;
-
 import okjava.util.annotation.Utility;
 import okjava.util.check.Dummy;
 import okjava.util.check.Never;
@@ -14,6 +11,9 @@ import okjava.util.e.ESupplier;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
+
+import static java.util.Objects.requireNonNull;
+import static okjava.util.check.Never.neverNeverCalled;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

@@ -1,13 +1,10 @@
 package okjava.util;
 
-import static okjava.util.check.Never.neverNeverCalled;
-
 import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSortedSet;
-
 import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
 
@@ -17,6 +14,8 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
+
+import static okjava.util.check.Never.neverNeverCalled;
 
 
 @Utility

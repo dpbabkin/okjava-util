@@ -79,4 +79,9 @@ final class LongTimeSequenceIdImpl extends TimeSequenceIdBase implements LongTim
     public Long getId() {
         return timeAndSequence;
     }
+
+    @Override
+    public long getRawLong() {
+        return timeAndSequence;
+    }
 }

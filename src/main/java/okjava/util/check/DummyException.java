@@ -1,8 +1,8 @@
 package okjava.util.check;
 
-import static okjava.util.check.Once.calledOnce;
-
 import okjava.util.annotation.Singleton;
+
+import static okjava.util.check.Once.calledOnce;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

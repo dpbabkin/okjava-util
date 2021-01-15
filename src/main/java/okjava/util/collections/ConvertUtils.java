@@ -1,7 +1,5 @@
 package okjava.util.collections;
 
-import static okjava.util.check.Never.neverNeverCalled;
-
 import com.google.common.collect.ImmutableList;
 import okjava.util.annotation.Utility;
 import okjava.util.check.DummyException;
@@ -12,7 +10,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.stream.Collectors;
+
+import static okjava.util.check.Never.neverNeverCalled;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

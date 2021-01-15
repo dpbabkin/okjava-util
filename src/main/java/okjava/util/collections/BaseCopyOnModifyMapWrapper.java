@@ -1,13 +1,13 @@
 package okjava.util.collections;
 
-import static okjava.util.Final.create;
-import static okjava.util.NotNull.notNull;
-
 import okjava.util.Final;
 
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
+
+import static okjava.util.Final.create;
+import static okjava.util.NotNull.notNull;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

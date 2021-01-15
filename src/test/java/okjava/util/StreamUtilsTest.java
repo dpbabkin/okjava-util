@@ -1,14 +1,14 @@
 package okjava.util;
 
+import org.junit.Test;
+
+import java.util.Set;
+
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.stream.Collectors.toSet;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
-
-import org.junit.Test;
-
-import java.util.Set;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

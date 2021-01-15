@@ -1,18 +1,17 @@
 package okjava.util.collections;
 
-import static com.google.common.collect.Maps.newEnumMap;
-import static com.google.common.collect.Maps.newHashMap;
-import static okjava.util.check.Never.neverNeverCalled;
-
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-
 import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
 
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.function.Function;
+
+import static com.google.common.collect.Maps.newEnumMap;
+import static com.google.common.collect.Maps.newHashMap;
+import static okjava.util.check.Never.neverNeverCalled;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

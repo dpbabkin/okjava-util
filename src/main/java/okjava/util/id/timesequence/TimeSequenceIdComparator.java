@@ -1,11 +1,11 @@
 package okjava.util.id.timesequence;
 
-import static okjava.util.check.Never.neverNeverCalled;
-
 import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
 
 import java.util.Comparator;
+
+import static okjava.util.check.Never.neverNeverCalled;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

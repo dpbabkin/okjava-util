@@ -1,9 +1,9 @@
 package okjava.util.cache;
 
-import static okjava.util.NotNull.notNull;
-
 import java.util.function.BinaryOperator;
 import java.util.function.IntFunction;
+
+import static okjava.util.NotNull.notNull;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

@@ -1,10 +1,10 @@
 package okjava.util.id;
 
-import static okjava.util.check.Once.calledOnce;
-
 import okjava.util.annotation.Singleton;
 
 import java.util.concurrent.atomic.AtomicLong;
+
+import static okjava.util.check.Once.calledOnce;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

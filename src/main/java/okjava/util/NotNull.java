@@ -1,14 +1,14 @@
 package okjava.util;
 
-import static okjava.util.FunnyFailMessage.getFunnyFailMessage;
-import static okjava.util.FunnyFailMessage.getFunnyFailMessageSupplier;
-import static okjava.util.check.Never.neverNeverCalled;
-
 import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
 import okjava.util.string.ToStringBuffer;
 
 import java.util.function.Supplier;
+
+import static okjava.util.FunnyFailMessage.getFunnyFailMessage;
+import static okjava.util.FunnyFailMessage.getFunnyFailMessageSupplier;
+import static okjava.util.check.Never.neverNeverCalled;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

@@ -5,7 +5,6 @@ import okjava.util.blockandwait.Constants;
 import okjava.util.blockandwait.core.BlockAndWaitGeneralImpl;
 import okjava.util.blockandwait.core.BlockAndWaitGeneralUpdatable;
 
-import java.util.concurrent.TimeUnit;
 import java.util.function.LongSupplier;
 import java.util.function.Supplier;
 

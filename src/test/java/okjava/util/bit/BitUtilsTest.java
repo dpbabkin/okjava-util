@@ -1,14 +1,14 @@
 package okjava.util.bit;
 
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.core.Is.is;
-
 import okjava.util.datetime.DateTimeFormat;
 import org.junit.Test;
 
 import java.util.Random;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.core.Is.is;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

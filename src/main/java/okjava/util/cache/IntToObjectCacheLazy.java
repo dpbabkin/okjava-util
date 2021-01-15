@@ -1,12 +1,12 @@
 package okjava.util.cache;
 
-import static okjava.util.NotNull.notNull;
-import static okjava.util.check.MathCheck.nonNegative;
-
 import com.google.common.collect.Lists;
 
 import java.util.List;
 import java.util.function.IntFunction;
+
+import static okjava.util.NotNull.notNull;
+import static okjava.util.check.MathCheck.nonNegative;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

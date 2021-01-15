@@ -1,8 +1,8 @@
 package okjava.util;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.function.Supplier;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

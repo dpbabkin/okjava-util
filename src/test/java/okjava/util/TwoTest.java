@@ -1,9 +1,9 @@
 package okjava.util;
 
+import org.junit.Test;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-
-import org.junit.Test;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

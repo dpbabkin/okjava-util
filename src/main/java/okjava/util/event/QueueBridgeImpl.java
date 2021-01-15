@@ -1,13 +1,13 @@
 package okjava.util.event;
 
-import static okjava.util.NotNull.notNull;
-
 import okjava.util.NeverHappensError;
 import okjava.util.e.EConsumer;
 import okjava.util.string.ToStringBuffer;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.function.Consumer;
+
+import static okjava.util.NotNull.notNull;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

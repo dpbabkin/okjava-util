@@ -1,11 +1,11 @@
 package okjava.util;
 
-import static okjava.util.NotNull.notNull;
-
 import okjava.util.function.BiSupplier;
 import okjava.util.string.ToStringBuffer;
 
 import java.util.Objects;
+
+import static okjava.util.NotNull.notNull;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

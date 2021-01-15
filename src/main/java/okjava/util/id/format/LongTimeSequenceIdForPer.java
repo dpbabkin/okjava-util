@@ -2,6 +2,9 @@ package okjava.util.id.format;
 
 import okjava.util.forper.ABForPer;
 import okjava.util.forper.ForPer;
+import okjava.util.id.LongTimeSequenceId;
+import okjava.util.id.timesequence.TimeSequenceId;
+import okjava.util.string.ToStringBuffer;
 
 import static okjava.util.id.format.LongTimeSequenceIdFormatter.longTimeSequenceIdFormatter;
 
@@ -15,14 +18,18 @@ public final class LongTimeSequenceIdForPer extends ABForPer<Long> {
     private final static ForPer<Long> INSTANCE = new LongTimeSequenceIdForPer();
 
     public static ForPer<Long> longTimeSequenceIdForPer() {
-        return i();
-    }
-
-    public static ForPer<Long> i() {
         return INSTANCE;
     }
 
     private LongTimeSequenceIdForPer() {
-        super(TimeSequenceIdParser.timeSequenceIdParser().getLongParser(), longTimeSequenceIdFormatter().getFormatter());
+        super(LongTimeSequenceIdForPer::parseToLong, longTimeSequenceIdFormatter());
+    }
+
+    private static Long parseToLong(String id) {
+        TimeSequenceId timeSequenceId = TimeSequenceIdParser.timeSequenceIdParser().apply(id);
+        if (timeSequenceId instanceof LongTimeSequenceId) {
+            return ((LongTimeSequenceId) timeSequenceId).getRawLong();
+        }
+        throw ToStringBuffer.string("createLongTimeSequence").add("id", id).toException(IllegalArgumentException::new);
     }
 }

@@ -1,7 +1,6 @@
 package okjava.util.poller;
 
 import okjava.util.blockandwait.supplier.WaitTimeSupplierFactory;
-import okjava.util.condition.BlockingWaitForEvent;
 import okjava.util.condition.waiter.WaiterProviderImpl;
 import okjava.util.condition.waiter.WaiterProviderUpdatable;
 import org.junit.Test;

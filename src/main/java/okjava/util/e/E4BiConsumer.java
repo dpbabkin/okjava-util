@@ -1,8 +1,8 @@
 package okjava.util.e;
 
-import static okjava.util.NotNull.notNull;
-
 import java.util.function.BiConsumer;
+
+import static okjava.util.NotNull.notNull;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

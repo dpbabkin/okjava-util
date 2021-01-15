@@ -21,6 +21,6 @@ public final class TimeSequenceIdForPer extends ABForPer<TimeSequenceId> {
     }
 
     private TimeSequenceIdForPer() {
-        super(TimeSequenceIdParser.timeSequenceIdParser().getTimeSequenceIdParser(), TimeSequenceIdFormatter.timeSequenceIdFormatter().getFormatter());
+        super(TimeSequenceIdParser.timeSequenceIdParser(), TimeSequenceIdFormatter.timeSequenceIdFormatter());
     }
 }

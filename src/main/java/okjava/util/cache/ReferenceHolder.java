@@ -1,12 +1,12 @@
 package okjava.util.cache;
 
 
-import static okjava.util.NotNull.notNull;
-import static okjava.util.thread.RunnableUtils.wrapToString;
-
 import java.lang.ref.Reference;
 import java.util.function.Function;
 import java.util.function.Supplier;
+
+import static okjava.util.NotNull.notNull;
+import static okjava.util.thread.RunnableUtils.wrapToString;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

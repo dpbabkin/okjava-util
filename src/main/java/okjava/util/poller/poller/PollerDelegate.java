@@ -1,7 +1,6 @@
 package okjava.util.poller.poller;
 
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
 /**

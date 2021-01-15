@@ -1,5 +1,11 @@
 package okjava.util;
 
+import com.google.common.collect.Lists;
+import org.junit.Test;
+
+import java.util.List;
+import java.util.Map;
+
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -7,13 +13,6 @@ import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-
-import com.google.common.collect.Lists;
-
-import org.junit.Test;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

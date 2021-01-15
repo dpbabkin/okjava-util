@@ -1,11 +1,11 @@
 package okjava.util.cache;
 
 
-import static okjava.util.check.Once.calledOnce;
-
 import okjava.util.annotation.Singleton;
 
 import java.util.function.Supplier;
+
+import static okjava.util.check.Once.calledOnce;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

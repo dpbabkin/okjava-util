@@ -1,13 +1,13 @@
 package okjava.util.check;
 
-import static java.util.Objects.requireNonNull;
-import static okjava.util.check.Never.fail;
-import static okjava.util.check.Never.neverNeverCalled;
-
 import okjava.util.annotation.Utility;
 
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static java.util.Objects.requireNonNull;
+import static okjava.util.check.Never.fail;
+import static okjava.util.check.Never.neverNeverCalled;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

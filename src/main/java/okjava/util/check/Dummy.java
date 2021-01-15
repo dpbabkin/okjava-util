@@ -1,10 +1,10 @@
 package okjava.util.check;
 
+import okjava.util.annotation.Singleton;
+
 import static okjava.util.check.InitializationControl.checkForClass;
 import static okjava.util.check.InitializationControl.generateForClass;
 import static okjava.util.check.Once.calledOnce;
-
-import okjava.util.annotation.Singleton;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

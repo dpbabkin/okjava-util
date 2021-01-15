@@ -1,13 +1,13 @@
 package okjava.util.empty;
 
-import static okjava.util.check.Never.neverNeverCalled;
-import static okjava.util.check.Once.calledOnce;
-
 import okjava.util.annotation.Utility;
 import okjava.util.check.Dummy;
 import okjava.util.check.Never;
 
 import java.util.function.BiConsumer;
+
+import static okjava.util.check.Never.neverNeverCalled;
+import static okjava.util.check.Once.calledOnce;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

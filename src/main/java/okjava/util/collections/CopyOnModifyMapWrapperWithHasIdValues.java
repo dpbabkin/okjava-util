@@ -2,7 +2,6 @@ package okjava.util.collections;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-
 import okjava.util.has.HasId;
 
 import java.util.EnumMap;

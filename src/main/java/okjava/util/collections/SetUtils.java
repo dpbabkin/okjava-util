@@ -1,13 +1,12 @@
 package okjava.util.collections;
 
-import static okjava.util.check.Never.neverNeverCalled;
-
 import com.google.common.collect.ImmutableSet;
-
 import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
 
 import java.util.Set;
+
+import static okjava.util.check.Never.neverNeverCalled;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

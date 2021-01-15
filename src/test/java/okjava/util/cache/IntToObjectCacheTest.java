@@ -1,11 +1,11 @@
 package okjava.util.cache;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-
 import org.junit.Test;
 
 import java.util.function.IntFunction;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

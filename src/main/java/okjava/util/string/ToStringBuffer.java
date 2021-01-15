@@ -2,10 +2,8 @@ package okjava.util.string;
 
 import com.google.common.collect.ImmutableList;
 import okjava.util.datetime.DateTimeFormat;
-import okjava.util.has.HasLongTimeSequenceId;
 import okjava.util.has.HasTimeSequenceId;
 import okjava.util.id.timesequence.TimeSequenceId;
-import okjava.util.id.timesequence.TimeSequenceIdFactory;
 import org.slf4j.Logger;
 import org.slf4j.spi.LoggingEventBuilder;
 

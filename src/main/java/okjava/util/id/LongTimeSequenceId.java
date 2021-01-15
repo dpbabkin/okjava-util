@@ -5,5 +5,5 @@ import okjava.util.id.timesequence.TimeSequenceId;
 
 public interface LongTimeSequenceId extends TimeSequenceId, HasLongId {
 
-
+    long getRawLong();
 }

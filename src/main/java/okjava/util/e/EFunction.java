@@ -1,8 +1,8 @@
 package okjava.util.e;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.function.Function;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

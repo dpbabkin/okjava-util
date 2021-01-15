@@ -1,5 +1,14 @@
 package okjava.util;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableSortedSet;
+import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.List;
+
 import static java.util.Collections.emptyList;
 import static okjava.util.GuavaCollectors.toImmutableList;
 import static okjava.util.GuavaCollectors.toImmutableMap;
@@ -7,16 +16,6 @@ import static okjava.util.GuavaCollectors.toImmutableSet;
 import static okjava.util.GuavaCollectors.toImmutableSortedSet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.ImmutableSortedSet;
-
-import org.junit.Test;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

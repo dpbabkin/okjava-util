@@ -1,9 +1,9 @@
 package okjava.util;
 
-import static okjava.util.NotNull.notNull;
-
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+
+import static okjava.util.NotNull.notNull;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

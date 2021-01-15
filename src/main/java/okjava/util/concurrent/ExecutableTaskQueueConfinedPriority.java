@@ -1,8 +1,8 @@
 package okjava.util.concurrent;
 
-import static okjava.util.NotNull.notNull;
-
 import java.util.concurrent.Executor;
+
+import static okjava.util.NotNull.notNull;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

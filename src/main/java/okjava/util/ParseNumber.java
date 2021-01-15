@@ -1,13 +1,13 @@
 package okjava.util;
 
-import static okjava.util.OptionalUtils.or;
-import static okjava.util.check.Never.neverNeverCalled;
-
 import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
 
 import java.util.Optional;
 import java.util.function.Function;
+
+import static okjava.util.OptionalUtils.or;
+import static okjava.util.check.Never.neverNeverCalled;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

@@ -1,13 +1,13 @@
 package okjava.util.event;
 
-import static okjava.util.NotNull.notNull;
-
 import okjava.util.logger.LoggerUtils;
 import okjava.util.string.ToStringBuffer;
 import org.slf4j.Logger;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.function.Consumer;
+
+import static okjava.util.NotNull.notNull;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
