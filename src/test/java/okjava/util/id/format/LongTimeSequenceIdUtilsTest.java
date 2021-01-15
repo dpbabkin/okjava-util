@@ -25,11 +25,11 @@ public class LongTimeSequenceIdUtilsTest {
         assertThat(result, is("20200101:123456.789Z'0"));
     }
 
-    @Test
-    public void test002() {
-        String result = LongTimeSequenceIdFormatter.longTimeSequenceIdFormatter().format(TIME_LONG, 5);
-        assertThat(result, is("20190506:213239.371Z'5"));
-    }
+//    @Test
+//    public void test002() {
+//        String result = LongTimeSequenceIdFormatter.longTimeSequenceIdFormatter().format(TIME_SEQUENCE_ID.getTime(), TIME_SEQUENCE_ID.getSequence());
+//        assertThat(result, is("20190506:213239.371Z'5"));
+//    }
 
     @Test
     public void test003() {

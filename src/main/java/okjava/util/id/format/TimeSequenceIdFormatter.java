@@ -6,7 +6,6 @@ import okjava.util.id.timesequence.TimeSequenceId;
 import java.util.function.Function;
 
 import static okjava.util.check.Once.calledOnce;
-import static okjava.util.id.format.LongTimeSequenceIdFormatter.longTimeSequenceIdFormatter;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -27,6 +26,14 @@ final class TimeSequenceIdFormatter implements Function<TimeSequenceId, String> 
 
     @Override
     public String apply(TimeSequenceId timeSequenceId) {
-        return longTimeSequenceIdFormatter().format(timeSequenceId.getTime(), timeSequenceId.getSequence());
+        return format(timeSequenceId.getTime(), timeSequenceId.getSequence());
+    }
+
+    private static String longTimeToString(long time) {
+        return TimeSequenceIdFormatConstants.FORMATTER.longTimeToString(time);
+    }
+
+    private String format(long time, long sequence) {
+        return longTimeToString(time) + TimeSequenceIdFormatConstants.SEPARATOR + sequence;
     }
 }
