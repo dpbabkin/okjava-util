@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
  * 5/26/2019
  * 17:42.
  */
+@Deprecated //use HasTimeSequenceId
 public interface HasLongTimeSequenceId extends HasId<LongTimeSequenceId> {
 
     @Override

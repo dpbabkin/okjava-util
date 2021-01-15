@@ -2,7 +2,6 @@ package okjava.util.thread;
 
 import okjava.util.id.TimeSequenceIdGeneratorFactory;
 import org.junit.Ignore;
-import org.junit.Test;
 
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinWorkerThread;
@@ -29,7 +28,7 @@ public class ThreadPoolTest {
                     public ForkJoinWorkerThread newThread(ForkJoinPool pool) {
                         ForkJoinWorkerThread t = new ForkJoinWorkerThread(pool) {
                         };
-                        t.setName("test`" + cc.getAndIncrement()+ " "+TimeSequenceIdGeneratorFactory.withFormattedId().generate());
+                        t.setName("test`" + cc.getAndIncrement()+ " "+TimeSequenceIdGeneratorFactory.stringIdGenerator().generate());
                         t.setDaemon(false);
                         return t;
                     }

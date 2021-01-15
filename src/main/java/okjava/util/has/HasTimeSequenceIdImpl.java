@@ -2,28 +2,28 @@ package okjava.util.has;
 
 import okjava.util.id.LongTimeSequenceId;
 import okjava.util.id.TimeSequenceIdGeneratorFactory;
+import okjava.util.id.timesequence.TimeSequenceId;
 import okjava.util.id.timesequence.TimeSequenceIdFactory;
 import okjava.util.string.ToStringBuffer;
 
-@Deprecated
-public abstract class HasLongTimeSequenceIdImpl extends HasIdImpl<LongTimeSequenceId> implements HasLongTimeSequenceId {
+public abstract class HasTimeSequenceIdImpl extends HasIdImpl<TimeSequenceId> implements HasTimeSequenceId {
 
-    public HasLongTimeSequenceIdImpl(long id) {
+    public HasTimeSequenceIdImpl(long id) {
         super(TimeSequenceIdFactory.timeSequenceIdFactory().fromLong(id));
     }
 
-    public HasLongTimeSequenceIdImpl(LongTimeSequenceId timeSequenceId) {
+    public HasTimeSequenceIdImpl(TimeSequenceId timeSequenceId) {
         super(timeSequenceId);
     }
 
-    public HasLongTimeSequenceIdImpl() {
-        this(TimeSequenceIdGeneratorFactory.longTimeSequenceIdGenerator().generate());
+    public HasTimeSequenceIdImpl() {
+        this(TimeSequenceIdGeneratorFactory.timeSequenceIdGenerator().generate());
     }
 
     @Override
     public String toString() {
         return ToStringBuffer.of(this).
-                timeSequenceId(this.getId())
+                timeSequenceId(this)
                 .toString();
     }
 }

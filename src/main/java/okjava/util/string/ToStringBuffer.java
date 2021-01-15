@@ -3,7 +3,10 @@ package okjava.util.string;
 import com.google.common.collect.ImmutableList;
 import okjava.util.datetime.DateTimeFormat;
 import okjava.util.has.HasLongTimeSequenceId;
+import okjava.util.has.HasTimeSequenceId;
 import okjava.util.id.format.TimeSequenceIdFormatter;
+import okjava.util.id.timesequence.TimeSequenceId;
+import okjava.util.id.timesequence.TimeSequenceIdFactory;
 import org.slf4j.Logger;
 import org.slf4j.spi.LoggingEventBuilder;
 
@@ -15,6 +18,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static okjava.util.NotNull.notNull;
+import static okjava.util.id.timesequence.TimeSequenceIdFactory.timeSequenceIdFactory;
 import static okjava.util.string.ToStringUtils.i2s;
 import static okjava.util.string.ToStringUtils.m2s;
 import static okjava.util.string.ToStringUtils.nullable;
@@ -47,12 +51,21 @@ public class ToStringBuffer {
     }
 
     public <O> ToStringBuffer timeSequenceId(long id) {
-        return addTimeSequence("id", id);
+        return timeSequenceId(timeSequenceIdFactory().fromLong(id));
     }
 
-    public <O> ToStringBuffer timeSequenceId(HasLongTimeSequenceId id) {
-        return add("id", id.getStringId());
+    public <O> ToStringBuffer timeSequenceId(HasTimeSequenceId id) {
+        return timeSequenceId(id.getId());
     }
+
+    public <O> ToStringBuffer timeSequenceId(TimeSequenceId id) {
+        return add("id", id.toString());
+    }
+
+    //public <O> ToStringBuffer addTimeSequence(String name, long id) {
+    //    return  timeSequenceId(TimeSequenceIdFactory.timeSequenceIdFactory().fromLong(id));
+        //add(name, TimeSequenceIdFormatter.timeSequenceIdFormatter().format(id));
+    //}
 
     public <O> ToStringBuffer ln() {
         return addRaw(System.lineSeparator());
@@ -63,9 +76,6 @@ public class ToStringBuffer {
         return this;
     }
 
-    public <O> ToStringBuffer addTimeSequence(String name, long id) {
-        return add(name, TimeSequenceIdFormatter.timeSequenceIdFormatter().format(id));
-    }
 
     private Throwable throwable = null;
 

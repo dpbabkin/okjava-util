@@ -39,7 +39,7 @@ public final class TimeSequenceIdParser {
     }
 
     private final Function<String, Long> parser = this::parse;
-    private final Function<String, LongTimeSequenceId> timeSequenceIdParser = this::parseToLongTimeSequenceId;
+    private final Function<String, TimeSequenceId> timeSequenceIdParser = this::parseToLongTimeSequenceId;
 
     private interface Handler<R> {
         R handle(long time, long sequence);
@@ -79,7 +79,7 @@ public final class TimeSequenceIdParser {
         return parser;
     }
 
-    public Function<String, LongTimeSequenceId> getTimeSequenceIdParser() {
+    public Function<String, TimeSequenceId> getTimeSequenceIdParser() {
         return timeSequenceIdParser;
     }
 

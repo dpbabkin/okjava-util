@@ -2,6 +2,7 @@ package okjava.util.poller.listener;
 
 import com.google.common.collect.Maps;
 import okjava.util.id.TimeSequenceIdGeneratorFactory;
+import okjava.util.id.timesequence.TimeSequenceId;
 import okjava.util.thread.ExecutorFactory;
 
 import java.util.Map;
@@ -17,7 +18,7 @@ public class SupplierListenerCollectionImpl<V> implements SupplierListenerCollec
 
     private final static Executor EXECUTOR = ExecutorFactory.getInstance().getExecutor();
 
-    private final Map<Long, SupplierListener<V>> listeners = Maps.newConcurrentMap();
+    private final Map<TimeSequenceId, SupplierListener<V>> listeners = Maps.newConcurrentMap();
 
     public static <V> SupplierListenerCollectionImpl<V> create() {
         return new SupplierListenerCollectionImpl<>();
@@ -28,7 +29,7 @@ public class SupplierListenerCollectionImpl<V> implements SupplierListenerCollec
 
     @Override
     public Runnable registerListener(SupplierListener<V> listener) {
-        final Long id = TimeSequenceIdGeneratorFactory.longTimeSequenceIdGenerator().generate();
+        TimeSequenceId id = TimeSequenceIdGeneratorFactory.timeSequenceIdGenerator().generate();
         listeners.put(id, listener);
         return () -> listeners.remove(id);
 

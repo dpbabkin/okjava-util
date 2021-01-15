@@ -36,7 +36,7 @@ public final class TimeSequenceIdFormatter {
     }
 
     private final Function<Long, String> formatter = this::format;
-    private final Function<LongTimeSequenceId, String> timeSequenceIdFormatter = this::format;
+    private final Function<TimeSequenceId, String> timeSequenceIdFormatter = this::format;
 
     private static String longTimeToString(long time) {
         return TimeSequenceIdFormatConstants.FORMATTER.longTimeToString(time);
@@ -58,7 +58,7 @@ public final class TimeSequenceIdFormatter {
         return formatter;
     }
 
-    public Function<LongTimeSequenceId, String> getTimeSequenceIdFormatter(){
+    public Function<TimeSequenceId, String> getTimeSequenceIdFormatter(){
         return timeSequenceIdFormatter;
     }
 }

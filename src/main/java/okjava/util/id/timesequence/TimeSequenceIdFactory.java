@@ -33,6 +33,7 @@ public final class TimeSequenceIdFactory {
         return LongTimeSequenceIdImpl.fromLong(id);
     }
 
+    @Deprecated // todo use public TimeSequenceId create(long time, long sequence) {
     public LongTimeSequenceId createLongTimeSequence(long time, long sequence) {
         if (ifUnderLimit(time, sequence)) {
             return LongTimeSequenceIdImpl.create(time, sequence);
