@@ -3,7 +3,7 @@ package okjava.util.id.timesequence;
 import okjava.util.annotation.Singleton;
 
 import static okjava.util.check.Once.calledOnce;
-import static okjava.util.id.timesequence.LongTimeSequenceIdUtils.ifUnderLimit;
+import static okjava.util.id.timesequence.LongTimeSequenceIdUtils.isUnderLimit;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -32,7 +32,7 @@ public final class TimeSequenceIdFactory {
     }
 
     public TimeSequenceId create(long time, long sequence) {
-        if (ifUnderLimit(time, sequence)) {
+        if (isUnderLimit(time, sequence)) {
             return LongTimeSequenceIdImpl.create(time, sequence);
         }
         return TimeSequenceIdImpl.create(time, sequence);

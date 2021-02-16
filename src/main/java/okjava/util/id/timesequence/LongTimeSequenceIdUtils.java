@@ -24,7 +24,7 @@ enum LongTimeSequenceIdUtils {
         neverNeverCalled();
     }
 
-    static boolean ifUnderLimit(long time, long sequence) {
+    static boolean isUnderLimit(long time, long sequence) {
         assert time > 0 : time;
         assert sequence >= 0 : sequence;
         return time <= MAX_TIME && sequence <= MAX_SEQUENCE;

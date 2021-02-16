@@ -45,36 +45,33 @@ class TimeSequenceIdGenerator implements IdGenerator<TimeSequenceId> {
     }
 
     public TimeSequenceId generate() {
-        long time;
-        long sequence = 0;
-        int repeatCount = 1;
+        int repeatCount = 0;
         try {
             for (; ; ) {
+
+                long time = millis();
                 final TimeSequenceId oldValue = timeSequenceId.get();
-                sequence = 0;
-                time = millis();
-                assert oldValue.getTime() <= time;
-                if (time == oldValue.getTime() && sequence <= oldValue.getSequence()) {
-                    sequence = oldValue.getSequence() + 1;
-                }
-                TimeSequenceId value = timeSequenceIdFactory().create(time, sequence);
-                if (this.timeSequenceId.compareAndSet(oldValue, value)) {
-                    return value;
+                assert oldValue.getTime() <= time : ToStringBuffer.string("oldValue.getTime() <= time").add("oldValue", oldValue).add("time", time).toString();
+                long sequence = time > oldValue.getTime() ? 0 : oldValue.getSequence() + 1;
+                TimeSequenceId resultValue = timeSequenceIdFactory().create(time, sequence);
+                if (this.timeSequenceId.compareAndSet(oldValue, resultValue)) {
+                    return resultValue;
                 }
 
-                if (repeatCount++ < 0) {
-                    ToStringBuffer.string("RepeatCount hit limit").add("repeatCount=", repeatCount).toException(IllegalStateException::new);
+                if (++repeatCount >= 1_000_000) {
+                    throw ToStringBuffer.string("RepeatCount hit limit").add("repeatCount", repeatCount).toException(IllegalStateException::new);
                 }
             }
         } finally {
             if (repeatCount >= 10_000) {
-                LOGGER.error(ToStringBuffer.string("RepeatCountReached").add("repeatCount=", repeatCount).toString());
-                assert false : ToStringBuffer.string("RepeatCountReached").add("repeatCount=", repeatCount).toString();
+                String logMessage = ToStringBuffer.string("RepeatCountReached").add("repeatCount", repeatCount).toString();
+                LOGGER.error(logMessage);
+                assert false : logMessage;
             }
 
-            if (repeatCount >= 1_000_000) {
-                throw ToStringBuffer.string("RepeatCountReached").add("repeatCount=", repeatCount).toException(IllegalStateException::new);
-            }
+            // if (repeatCount >= 1_000_000) {
+            //     throw ToStringBuffer.string("RepeatCountReached").add("repeatCount=", repeatCount).toException(IllegalStateException::new);
+            // }
         }
     }
 }
