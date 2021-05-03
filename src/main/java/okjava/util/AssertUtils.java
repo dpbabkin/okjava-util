@@ -16,6 +16,7 @@ import static okjava.util.check.Never.neverNeverCalled;
 @Utility
 public enum AssertUtils {
     ;
+    private static final boolean isAssertEnabled = checkOnceIsAssertEnabled();
 
     AssertUtils(@SuppressWarnings("unused") Never never) {
         neverNeverCalled();
@@ -32,7 +33,7 @@ public enum AssertUtils {
 
     public static <E extends Exception> E throwAfterAssert(String message,
                                                            RuntimeException e,
-                                                           BiFunction<String,RuntimeException, E> exceptionConstructor) throws E {
+                                                           BiFunction<String, RuntimeException, E> exceptionConstructor) throws E {
         proceedAssert(message, e);
         throw exceptionConstructor.apply(message, e);
     }
@@ -43,12 +44,17 @@ public enum AssertUtils {
         }
     }
 
-    public static boolean isAssertEnabled() {
+
+    private static boolean checkOnceIsAssertEnabled() {
         try {
             assert false : "assert false";
             return false;
         } catch (java.lang.AssertionError assertionError) {
             return true;
         }
+    }
+
+    public static boolean isAssertEnabled() {
+        return isAssertEnabled;
     }
 }

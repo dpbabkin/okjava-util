@@ -22,9 +22,11 @@ public enum ThreadUtils {
     }
 
     public static void sleep(long time) {
-        sleep(time, e -> {
-            throw new RuntimeException(e);
-        });
+        sleep(time, ThreadUtils::throwNewRuntimeException);
+    }
+
+    private static void throwNewRuntimeException(Exception e) {
+        throw new RuntimeException(e);
     }
 
     public static void sleep(long time, Consumer<InterruptedException> handler) {
