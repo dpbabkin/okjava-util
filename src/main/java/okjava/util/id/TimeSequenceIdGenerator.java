@@ -49,8 +49,8 @@ class TimeSequenceIdGenerator implements IdGenerator<TimeSequenceId> {
         try {
             for (; ; ) {
 
-                long time = millis();
                 final TimeSequenceId oldValue = timeSequenceId.get();
+                long time = millis();
                 assert oldValue.getTime() <= time : ToStringBuffer.string("oldValue.getTime() <= time").add("oldValue", oldValue).add("time", time).toString();
                 long sequence = time > oldValue.getTime() ? 0 : oldValue.getSequence() + 1;
                 TimeSequenceId resultValue = timeSequenceIdFactory().create(time, sequence);
