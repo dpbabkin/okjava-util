@@ -59,19 +59,14 @@ class TimeSequenceIdGenerator implements IdGenerator<TimeSequenceId> {
                 }
 
                 if (++repeatCount >= 1_000_000) {
-                    throw ToStringBuffer.string("RepeatCount hit limit").add("repeatCount", repeatCount).toException(IllegalStateException::new);
+                    throw ToStringBuffer.string("RepeatCount hit limit.").add("repeatCount", repeatCount).add("limit", 1_000_000).toException(IllegalStateException::new);
                 }
             }
         } finally {
             if (repeatCount >= 10_000) {
-                String logMessage = ToStringBuffer.string("RepeatCountReached").add("repeatCount", repeatCount).toString();
-                LOGGER.error(logMessage);
-                assert false : logMessage;
+                ToStringBuffer.string("RepeatCount hit threshold.").add("repeatCount", repeatCount).add("threshold", 10_000).toError(LOGGER)
+                        .assertFalse();
             }
-
-            // if (repeatCount >= 1_000_000) {
-            //     throw ToStringBuffer.string("RepeatCountReached").add("repeatCount=", repeatCount).toException(IllegalStateException::new);
-            // }
         }
     }
 }
