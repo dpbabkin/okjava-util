@@ -14,6 +14,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static java.util.function.UnaryOperator.identity;
 import static okjava.util.NotNull.notNull;
 import static okjava.util.id.timesequence.TimeSequenceIdFactory.timeSequenceIdFactory;
 import static okjava.util.string.ToStringUtils.i2s;
@@ -29,6 +30,7 @@ public class ToStringBuffer {
 
     private final StringBuilder builder = new StringBuilder();
     private static final String SEPARATOR = " ";
+    private static final String EQUAL = "=";
 
     private ToStringBuffer(String name) {
         this.builder.append(notNull(name));
@@ -61,7 +63,7 @@ public class ToStringBuffer {
 
     //public <O> ToStringBuffer addTimeSequence(String name, long id) {
     //    return  timeSequenceId(TimeSequenceIdFactory.timeSequenceIdFactory().fromLong(id));
-        //add(name, TimeSequenceIdFormatter.timeSequenceIdFormatter().format(id));
+    //add(name, TimeSequenceIdFormatter.timeSequenceIdFormatter().format(id));
     //}
 
     public <O> ToStringBuffer ln() {
@@ -129,8 +131,62 @@ public class ToStringBuffer {
         return this;
     }
 
+    public <O> ToStringBuffer add(O object) {
+        if (object instanceof java.lang.String) {
+            ToStringBuffer.string("Probably not what you want")
+                    .name("object").addWithClass().value(object)
+                    //.addWithClass("object", object)
+                    .throwException(IllegalArgumentException::new);
+        }
+        return add(object.getClass().getSimpleName(), object);
+    }
+
+    public <O> ToStringBuffer addWithClass(String name, O value) {
+        return this.name(name).addWithClass().value(value);
+    }
+
+    public Name name(String name) {
+        return new Name(name);
+    }
+
+    public class Name {
+        private final String name;
+        private final Decorator<String> nameDecorator;
+        private final Decorator<Object> valueDecorator;
+
+        Name(
+                String name,
+                Decorator<String> nameDecorator, Decorator<Object> valueDecorator) {
+            this.name = notNull(name);
+            this.nameDecorator = notNull(nameDecorator);
+            this.valueDecorator = notNull(valueDecorator);
+        }
+
+
+        private Name(String name) {
+            this(name, Decorator.create(), Decorator.create());
+        }
+
+        public Name wrapQuotes() {
+            return new Name(this.name, this.nameDecorator, this.valueDecorator.decorateBefore(s -> "'" + s + "'"));
+        }
+
+        public Name addWithClass() {
+            return new Name(this.name, this.nameDecorator, this.valueDecorator.decorateAfter(s -> "[" + nullableClass(s) + "]=" + s));
+        }
+
+        private static String nullableClass(Object object) {
+            return object == null ? "" : object.getClass().getSimpleName();
+        }
+
+        public <O> ToStringBuffer value(O value) {
+            return add(this.nameDecorator.decorate(name), this.valueDecorator.decorate(value));
+        }
+    }
+
+
     public <O> ToStringBuffer add(String name, O value) {
-        this.builder.append(name).append("=").append(nullable(value)).append(SEPARATOR);
+        this.builder.append(name).append(EQUAL).append(nullable(value)).append(SEPARATOR);
         return this;
     }
 
