@@ -40,6 +40,10 @@ public final class ExecutorFactory {
         return INSTANCE;
     }
 
+    public static ExecutorFactory getExecutorFactory() {
+        return INSTANCE;
+    }
+
     private static int getCorePoolSize() {
         return min(CPU_COUNT + 1, MIN_CORE_POOL_SIZE);
     }

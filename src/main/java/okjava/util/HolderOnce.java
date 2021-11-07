@@ -13,16 +13,16 @@ import static okjava.util.NotNull.notNull;
  * 26/9/2020
  * 20:45.
  */
-public final class HolderOnce<T> implements Supplier<T>, Consumer<T> {
+public final class HolderOnce<T> implements Supplier<T> {
 
-    private final AtomicReference<T> t = new AtomicReference<>();
+    private final AtomicReference<T> t = new AtomicReference<>(null);
+    private T tLocal;
 
     private HolderOnce(T t) {
         this.t.set(t);
     }
 
     private HolderOnce() {
-        this(null);
     }
 
     public static <T> HolderOnce<T> of(T t) {
@@ -35,11 +35,16 @@ public final class HolderOnce<T> implements Supplier<T>, Consumer<T> {
 
     @Override
     public T get() {
-        T t = this.t.get();
+        final T t0 = this.tLocal;
+        if (t0 != null) {
+            return t0;
+        }
+        final T t = this.t.get();
         if (t == null) {
             ToStringBuffer.string("Invalid State. value had not been set.")
                     .throwException(IllegalStateException::new);
         }
+        this.tLocal = t;
         return t;
     }
 
@@ -76,12 +81,13 @@ public final class HolderOnce<T> implements Supplier<T>, Consumer<T> {
         return this.getClass().getSimpleName() + "|" + (t != null ? t.toString() : "null");
     }
 
-    @Override
-    public void accept(T t) {
+    public void setValue(T t) {
         if (!this.t.compareAndSet(null, t)) {
             ToStringBuffer.string("Invalid State. Value had already been initialized.")
-                    .add("value", this.t.get())
+                    .add("existingValue", this.t.get())
+                    .add("newValue", t)
                     .throwException(IllegalStateException::new);
         }
+        this.tLocal = t;
     }
 }

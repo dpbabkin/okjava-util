@@ -14,7 +14,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static java.util.function.UnaryOperator.identity;
 import static okjava.util.NotNull.notNull;
 import static okjava.util.id.timesequence.TimeSequenceIdFactory.timeSequenceIdFactory;
 import static okjava.util.string.ToStringUtils.i2s;
@@ -28,9 +27,13 @@ import static okjava.util.string.ToStringUtils.nullable;
  */
 public class ToStringBuffer {
 
-    private final StringBuilder builder = new StringBuilder();
     private static final String SEPARATOR = " ";
     private static final String EQUAL = "=";
+    private final static List<Class<? extends Throwable>> exceptionTypes = ImmutableList.of(RuntimeException.class, java.lang.Error.class, Exception.class,
+            Throwable.class);
+    private final StringBuilder builder = new StringBuilder();
+    private Throwable throwable = null;
+    private String toString = null;
 
     private ToStringBuffer(String name) {
         this.builder.append(notNull(name));
@@ -49,6 +52,19 @@ public class ToStringBuffer {
         return ofClass(object.getClass());
     }
 
+    //public <O> ToStringBuffer addTimeSequence(String name, long id) {
+    //    return  timeSequenceId(TimeSequenceIdFactory.timeSequenceIdFactory().fromLong(id));
+    //add(name, TimeSequenceIdFormatter.timeSequenceIdFormatter().format(id));
+    //}
+
+    private static String getType(Throwable throwable) {
+        return exceptionTypes.stream()
+                .filter(c -> c.isAssignableFrom(throwable.getClass()))
+                .findFirst()
+                .orElseThrow(() -> new java.lang.Error("Throwable, must be assignable at least from Throwable."))
+                .getSimpleName();
+    }
+
     public <O> ToStringBuffer timeSequenceId(long id) {
         return timeSequenceId(timeSequenceIdFactory().fromLong(id));
     }
@@ -61,11 +77,6 @@ public class ToStringBuffer {
         return add("id", id.toString());
     }
 
-    //public <O> ToStringBuffer addTimeSequence(String name, long id) {
-    //    return  timeSequenceId(TimeSequenceIdFactory.timeSequenceIdFactory().fromLong(id));
-    //add(name, TimeSequenceIdFormatter.timeSequenceIdFormatter().format(id));
-    //}
-
     public <O> ToStringBuffer ln() {
         return addRaw(System.lineSeparator());
     }
@@ -74,9 +85,6 @@ public class ToStringBuffer {
         this.builder.append(line);
         return this;
     }
-
-
-    private Throwable throwable = null;
 
     public <O> ToStringBuffer addNullableThrowable(Throwable throwable) {
         if (throwable != null) {
@@ -96,16 +104,6 @@ public class ToStringBuffer {
                 .addNullable("message", throwable.getMessage())
                 .addThread()
                 .toString());
-    }
-
-    private final static List<Class<? extends Throwable>> exceptionTypes = ImmutableList.of(RuntimeException.class, java.lang.Error.class, Exception.class, Throwable.class);
-
-    private static String getType(Throwable throwable) {
-        return exceptionTypes.stream()
-                .filter(c -> c.isAssignableFrom(throwable.getClass()))
-                .findFirst()
-                .orElseThrow(() -> new java.lang.Error("Throwable, must be assignable at least from Throwable."))
-                .getSimpleName();
     }
 
     public <O> ToStringBuffer addException(Exception exception) {
@@ -149,42 +147,6 @@ public class ToStringBuffer {
         return new Name(name);
     }
 
-    public class Name {
-        private final String name;
-        private final Decorator<String> nameDecorator;
-        private final Decorator<Object> valueDecorator;
-
-        Name(
-                String name,
-                Decorator<String> nameDecorator, Decorator<Object> valueDecorator) {
-            this.name = notNull(name);
-            this.nameDecorator = notNull(nameDecorator);
-            this.valueDecorator = notNull(valueDecorator);
-        }
-
-
-        private Name(String name) {
-            this(name, Decorator.create(), Decorator.create());
-        }
-
-        public Name wrapQuotes() {
-            return new Name(this.name, this.nameDecorator, this.valueDecorator.decorateBefore(s -> "'" + s + "'"));
-        }
-
-        public Name addWithClass() {
-            return new Name(this.name, this.nameDecorator, this.valueDecorator.decorateAfter(s -> "[" + nullableClass(s) + "]=" + s));
-        }
-
-        private static String nullableClass(Object object) {
-            return object == null ? "" : object.getClass().getSimpleName();
-        }
-
-        public <O> ToStringBuffer value(O value) {
-            return add(this.nameDecorator.decorate(name), this.valueDecorator.decorate(value));
-        }
-    }
-
-
     public <O> ToStringBuffer add(String name, O value) {
         this.builder.append(name).append(EQUAL).append(nullable(value)).append(SEPARATOR);
         return this;
@@ -197,8 +159,6 @@ public class ToStringBuffer {
     public <K, V> ToStringBuffer add(String name, Map<K, V> map) {
         return add(name, m2s(map));
     }
-
-    private String toString = null;
 
     @Override
     public String toString() {
@@ -272,11 +232,54 @@ public class ToStringBuffer {
         consumer.accept(this.toString());
     }
 
+    public RuntimeException toIllegalArgumentException() {
+        return toException(IllegalArgumentException::new);
+    }
+
+    public RuntimeException toIllegalStateException() {
+        return toException(IllegalStateException::new);
+    }
+
     public <E extends Exception> E toException(Function<String, E> function) {
         return function.apply(toString());
     }
 
     public <E extends Exception> void throwException(Function<String, E> function) throws E {
         throw toException(function);
+    }
+
+    public class Name {
+        private final String name;
+        private final Decorator<String> nameDecorator;
+        private final Decorator<Object> valueDecorator;
+
+        Name(
+                String name,
+                Decorator<String> nameDecorator, Decorator<Object> valueDecorator) {
+            this.name = notNull(name);
+            this.nameDecorator = notNull(nameDecorator);
+            this.valueDecorator = notNull(valueDecorator);
+        }
+
+
+        private Name(String name) {
+            this(name, Decorator.create(), Decorator.create());
+        }
+
+        private static String nullableClass(Object object) {
+            return object == null ? "" : object.getClass().getSimpleName();
+        }
+
+        public Name wrapQuotes() {
+            return new Name(this.name, this.nameDecorator, this.valueDecorator.decorateBefore(s -> "'" + s + "'"));
+        }
+
+        public Name addWithClass() {
+            return new Name(this.name, this.nameDecorator, this.valueDecorator.decorateAfter(s -> "[" + nullableClass(s) + "]=" + s));
+        }
+
+        public <O> ToStringBuffer value(O value) {
+            return add(this.nameDecorator.decorate(name), this.valueDecorator.decorate(value));
+        }
     }
 }
