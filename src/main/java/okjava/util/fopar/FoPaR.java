@@ -1,13 +1,13 @@
-package okjava.util.forper;
+package okjava.util.fopar;
 
 import java.util.function.Function;
 
 /**
- * Name ForPer stands for Formatter+Parser
+ * Name FoPar stands for Formatter+Parser
  *
  * @param <V>
  */
-public interface ForPer<V> {
+public interface FoPaR<V> {
     Function<String, V> getParser();
 
     Function<V, String> getFormatter();

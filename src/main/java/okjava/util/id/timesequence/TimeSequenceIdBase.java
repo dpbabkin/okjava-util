@@ -3,7 +3,7 @@ package okjava.util.id.timesequence;
 
 import javax.annotation.Nonnull;
 
-import static okjava.util.id.format.TimeSequenceIdForPer.timeSequenceIdForPer;
+import static okjava.util.id.format.TimeSequenceIdFoPaR.timeSequenceIdFoPaR;
 import static okjava.util.id.timesequence.TimeSequenceIdComparator.timeSequenceIdComparator;
 
 /**
@@ -34,6 +34,6 @@ abstract class TimeSequenceIdBase implements TimeSequenceId {
     @Override
     public String toString() {
         // format to yyyyMMdd.HHmmss.SSSX_sequence
-        return timeSequenceIdForPer().format(this);
+        return timeSequenceIdFoPaR().format(this);
     }
 }

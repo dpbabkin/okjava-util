@@ -9,7 +9,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static okjava.util.check.Never.neverNeverCalled;
-import static okjava.util.id.format.TimeSequenceIdForPer.timeSequenceIdForPer;
+import static okjava.util.id.format.TimeSequenceIdFoPaR.timeSequenceIdFoPaR;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -22,14 +22,14 @@ public enum TimeSequenceIdGeneratorFactory {
 
     // private static final IdGenerator<LongTimeSequenceId> LONG_TIME_SEQUENCE_ID_ID_GENERATOR = withMapper(id -> ((LongTimeSequenceId)id));
     //private static final IdGenerator<TimeSequenceId> TIME_SEQUENCE_ID_ID_GENERATOR = LONG_TIME_SEQUENCE_ID_ID_GENERATOR::generate;
-    private static final IdGenerator<String> STRING_TIME_SEQUENCE_ID_ID_GENERATOR = withMapper(timeSequenceIdForPer().getFormatter());
+    private static final IdGenerator<String> STRING_TIME_SEQUENCE_ID_ID_GENERATOR = withMapper(timeSequenceIdFoPaR().getFormatter());
 
     TimeSequenceIdGeneratorFactory(@SuppressWarnings("unused") Never never) {
         neverNeverCalled();
     }
 
     public static IdGenerator<String> withStringPrefixAndFormattedId(String prefix) {
-        Function<TimeSequenceId, String> mapper = timeSequenceIdForPer().getFormatter().andThen(prefix::concat);
+        Function<TimeSequenceId, String> mapper = timeSequenceIdFoPaR().getFormatter().andThen(prefix::concat);
         return withMapper(mapper);
     }
 

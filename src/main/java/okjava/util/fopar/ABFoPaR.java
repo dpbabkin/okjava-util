@@ -1,4 +1,4 @@
-package okjava.util.forper;
+package okjava.util.fopar;
 
 import java.util.function.Function;
 
@@ -10,12 +10,12 @@ import static okjava.util.NotNull.notNull;
  * 18:05.
  */
 
-public abstract class ABForPer<V> implements ForPer<V> {
+public abstract class ABFoPaR<V> implements FoPaR<V> {
 
     private final Function<String, V> parser;
     private final Function<V, String> formatter;
 
-    protected ABForPer(Function<String, V> parser, Function<V, String> formatter) {
+    protected ABFoPaR(Function<String, V> parser, Function<V, String> formatter) {
         this.parser = notNull(parser);
         this.formatter = notNull(formatter);
     }
