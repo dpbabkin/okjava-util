@@ -169,6 +169,11 @@ public class ToStringBuffer {
         return toString;
     }
 
+    public ToStringBuffer assertStatement(boolean statement) {
+        assert statement : this.toString();
+        return this;
+    }
+
     public ToStringBuffer assertFalse() {
         assert false : this.toString();
         return this;
