@@ -30,7 +30,7 @@ public enum LoggerUtils {
         return ConsumerUtils.map(logger::info, (Function<String, String>) s -> name + " " + s);
     }
 
-    public static Consumer<String> createLoggerConsumerWithPrefix(Class<?> clazz, String ... prefix) {
+    public static Consumer<String> createLoggerConsumerWithPrefix(Class<?> clazz, Object... prefix) {
         Logger logger = createLogger(clazz, prefix);
         return logger::info;
     }
@@ -42,9 +42,9 @@ public enum LoggerUtils {
     public static Logger createLogger(Class<?> clazz, Object... prefix) {
         String logPrefix = Stream.of(prefix)
                 .map(Object::toString)
-                .collect(Collectors.joining("//", "@@", "::"));
+                .collect(Collectors.joining("//", clazz.getName() + "@@", "::"));
 
-        return LoggerFactory.getLogger(clazz.getName() + logPrefix);
+        return LoggerFactory.getLogger(logPrefix);
     }
 }
 

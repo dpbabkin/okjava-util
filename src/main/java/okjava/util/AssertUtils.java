@@ -22,7 +22,7 @@ public enum AssertUtils {
         neverNeverCalled();
     }
 
-    public static <E extends Exception> E throwAfterAssert(String message, Function<String, E> exceptionConstructor) throws E {
+    public static <E extends Throwable> E throwAfterAssert(String message, Function<String, E> exceptionConstructor) throws E {
         assert false : message;
         throw exceptionConstructor.apply(message);
     }
@@ -30,6 +30,11 @@ public enum AssertUtils {
     public static IllegalArgumentException throwIllegalArgumentExceptionAfterAssert(String message) {
         return throwAfterAssert(message, IllegalArgumentException::new);
     }
+
+    public static Error throwErrorAfterAssert(String message) {
+        return throwAfterAssert(message, Error::new);
+    }
+
 
     public static <E extends Exception> E throwAfterAssert(String message,
                                                            RuntimeException e,

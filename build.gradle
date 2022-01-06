@@ -7,6 +7,9 @@ repositories {
 dependencies {
     implementation group: 'org.slf4j', name: 'slf4j-api', version: '+'
     implementation group: 'com.google.guava', name: 'guava', version: '+'
+    implementation group: 'com.google.mug', name: 'mug', version: '+'
+    implementation group: 'com.google.mug', name: 'mug-guava', version: '+'
+    implementation group: 'com.google.mug', name: 'mug-protobuf', version: '+'
 
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '+'
 
