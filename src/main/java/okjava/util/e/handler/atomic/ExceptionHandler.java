@@ -18,11 +18,6 @@ public interface ExceptionHandler<E extends Exception> extends ThrowableHandler<
         return exceptionHandler::accept;
     }
 
-    static ExceptionHandler<RuntimeException> createThrowRuntime() {
-        return e -> {
-            throw e;
-        };
-    }
 
     static Consumer<Runnable> createConsumer(ExceptionHandler<Exception> exceptionHandler) {
         Consumer<Runnable> consumer = runnable -> {

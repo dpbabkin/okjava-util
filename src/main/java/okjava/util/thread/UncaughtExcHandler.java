@@ -11,7 +11,7 @@ import java.util.stream.Stream;
  * 6/19/2017
  * 22:44.
  */
-public final class ExceptionHandler implements Thread.UncaughtExceptionHandler {
+public final class UncaughtExcHandler implements Thread.UncaughtExceptionHandler {
 
     private final static Thread.UncaughtExceptionHandler SOUT_SERR_UNCAUGHT_EXCEPTION_HANDLER = (t, e) -> {
         Stream.of(System.err, System.out).forEach(ps -> {
@@ -23,7 +23,7 @@ public final class ExceptionHandler implements Thread.UncaughtExceptionHandler {
     private final Thread.UncaughtExceptionHandler delegate;
 
 
-    private static final ExceptionHandler DEFAULT_EXCEPTION_HANDLER = new ExceptionHandler(ExceptionHandler.class);
+    private static final UncaughtExcHandler DEFAULT_EXCEPTION_HANDLER = new UncaughtExcHandler(UncaughtExcHandler.class);
 
     public static Thread.UncaughtExceptionHandler create() {
         return DEFAULT_EXCEPTION_HANDLER;
@@ -33,22 +33,22 @@ public final class ExceptionHandler implements Thread.UncaughtExceptionHandler {
         return ThreadForwardUncaughtExceptionHandler.threadForwardUncaughtExceptionHandler();
     }
 
-    private ExceptionHandler(Class<?> clazz) {
+    private UncaughtExcHandler(Class<?> clazz) {
         this(LoggerFactory.getLogger(clazz), SOUT_SERR_UNCAUGHT_EXCEPTION_HANDLER);
     }
 
-    private ExceptionHandler(Logger logger) {
+    private UncaughtExcHandler(Logger logger) {
         this(logger, SOUT_SERR_UNCAUGHT_EXCEPTION_HANDLER);
     }
 
-    private ExceptionHandler(Logger logger, Thread.UncaughtExceptionHandler delegate) {
+    private UncaughtExcHandler(Logger logger, Thread.UncaughtExceptionHandler delegate) {
         this.logger = NotNull.notNull(logger);
         this.delegate = NotNull.notNull(delegate);
     }
 
     private static String systemExit(Logger logger) {
         try {
-            String message = ExceptionHandler.class.getName() + ".systemExit()";
+            String message = UncaughtExcHandler.class.getName() + ".systemExit()";
             message += Snail.getSnail0();
             Exception e = new Exception(message);
             logger.error(message, e);

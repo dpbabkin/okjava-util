@@ -3,6 +3,7 @@ package okjava.util.thread;
 import okjava.util.annotation.Singleton;
 import okjava.util.clazz.ClassResolver;
 import okjava.util.concurrent.ExecutableTaskQueueConfined;
+import okjava.util.e.handler.atomic.ExceptionHandler;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.ScheduledExecutorService;
@@ -10,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 import static java.lang.Math.min;
 import static okjava.util.check.Once.calledOnce;
+import static okjava.util.thread.RunnableUtils.wrapRunnableExceptionHandler;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -56,6 +58,11 @@ public final class ExecutorFactory {
         return KEEP_ALIVE_TIME;
     }
 
+    private static Executor wrapExceptionHandler(ExceptionHandler<Exception> exceptionHandler, Executor executor) {
+
+        return command -> executor.execute(wrapRunnableExceptionHandler(command, exceptionHandler));
+    }
+
 //    public ThreadPoolExecutor createCashing(final String name) {
 //        return createCashing(name, LoggerFactory.getLogger(clazz));
 //    }
@@ -70,6 +77,10 @@ public final class ExecutorFactory {
 //        return new ThreadPoolExecutor(getCorePoolSize(), getMaximumPoolSize(), getKeepAliveTime(), TimeUnit.MILLISECONDS,
 //                new LinkedBlockingQueue<>(), daemonThreadFactory);
 //    }
+
+    private static OkExecutor wrapOK(Executor executor) {
+        return OkExecutorImpl.create(executor);
+    }
 
     public Executor getWrapToStringRunnableExecutor(String toString, Executor delegate) {
         return command -> {
@@ -92,10 +103,6 @@ public final class ExecutorFactory {
 
     public OkExecutor getTaskQueueConfinedExecutor(Executor executor) {
         return wrapOK(ExecutableTaskQueueConfined.create(executor));
-    }
-
-    private static OkExecutor wrapOK(Executor executor) {
-        return OkExecutorImpl.create(executor);
     }
 
     public OkExecutor getExecutor() {

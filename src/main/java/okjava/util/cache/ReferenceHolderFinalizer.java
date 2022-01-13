@@ -1,6 +1,7 @@
 package okjava.util.cache;
 
 import okjava.util.annotation.Singleton;
+import okjava.util.string.ToStringBuffer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,7 +51,10 @@ final class ReferenceHolderFinalizer<X> {
 
     private static Thread newThread(Runnable runnable) {
         Thread thread = new Thread(runnable, NAME + "-worker");
-        thread.setUncaughtExceptionHandler((t, e) -> LOGGER.error("Exception in " + NAME + ": " + e.getMessage(), e));
+        thread.setUncaughtExceptionHandler((t, e) -> LOGGER.error(ToStringBuffer.ofClass(ReferenceHolderFinalizer.class)
+                .add("e.getMessage()", e.getMessage())
+                .addThrowable(e)
+                .addThread(t).toString(), e));
         thread.setDaemon(true);
         return thread;
     }

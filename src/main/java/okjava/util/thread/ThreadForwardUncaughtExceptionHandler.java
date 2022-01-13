@@ -23,7 +23,7 @@ final class ThreadForwardUncaughtExceptionHandler implements Thread.UncaughtExce
             tueh = Thread.getDefaultUncaughtExceptionHandler();
         }
         if (tueh == null) {
-            tueh = ExceptionHandler.create();
+            tueh = UncaughtExcHandler.create();
         }
         tueh.uncaughtException(t, e);
     }

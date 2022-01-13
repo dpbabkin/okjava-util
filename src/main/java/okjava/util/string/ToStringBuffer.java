@@ -65,35 +65,35 @@ public class ToStringBuffer {
                 .getSimpleName();
     }
 
-    public <O> ToStringBuffer timeSequenceId(long id) {
+    public ToStringBuffer timeSequenceId(long id) {
         return timeSequenceId(timeSequenceIdFactory().fromLong(id));
     }
 
-    public <O> ToStringBuffer timeSequenceId(HasTimeSequenceId id) {
+    public ToStringBuffer timeSequenceId(HasTimeSequenceId id) {
         return timeSequenceId(id.getId());
     }
 
-    public <O> ToStringBuffer timeSequenceId(TimeSequenceId id) {
+    public ToStringBuffer timeSequenceId(TimeSequenceId id) {
         return add("id", id.toString());
     }
 
-    public <O> ToStringBuffer ln() {
+    public ToStringBuffer ln() {
         return addRaw(System.lineSeparator());
     }
 
-    public <O> ToStringBuffer addRaw(String line) {
+    public ToStringBuffer addRaw(String line) {
         this.builder.append(line);
         return this;
     }
 
-    public <O> ToStringBuffer addNullableThrowable(Throwable throwable) {
+    public ToStringBuffer addNullableThrowable(Throwable throwable) {
         if (throwable != null) {
             return addThrowable(throwable);
         }
         return this;
     }
 
-    public <O> ToStringBuffer addThrowable(Throwable throwable) {
+    public ToStringBuffer addThrowable(Throwable throwable) {
         if (this.throwable != null) {
             ToStringBuffer.string("throwable already set.").addThrowable(this.throwable).toException(IllegalStateException::new);
         }
@@ -106,19 +106,19 @@ public class ToStringBuffer {
                 .toString());
     }
 
-    public <O> ToStringBuffer addException(Exception exception) {
-        return add("exception.getMessage()", exception.getMessage());
+    public ToStringBuffer addException(Exception exception) {
+        return addThrowable(exception);
     }
 
-    public <O> ToStringBuffer addThread() {
+    public ToStringBuffer addThread() {
         return addThread(Thread.currentThread());
     }
 
-    public <O> ToStringBuffer addThread(Thread t) {
+    public ToStringBuffer addThread(Thread t) {
         return add("thread", t.getName());
     }
 
-    public <O> ToStringBuffer addTime() {
+    public ToStringBuffer addTime() {
         return add("time", DateTimeFormat.create().longTimeToString(System.currentTimeMillis()));
     }
 

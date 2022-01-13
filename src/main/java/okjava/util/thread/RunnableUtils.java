@@ -2,6 +2,9 @@ package okjava.util.thread;
 
 import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
+import okjava.util.e.handler.atomic.ExceptionHandler;
+import okjava.util.e.handler.atomic.ExceptionHandlers;
+import okjava.util.e.handler.atomic.ThrowableHandler;
 
 import java.util.function.Supplier;
 
@@ -30,6 +33,75 @@ public enum RunnableUtils {
         return new RunnableWithString(runnable, toString);
     }
 
+    public static Runnable wrapRunnableExceptionHandler(Runnable delegate, ExceptionHandler<Exception> exceptionHandler) {
+        return new ExceptionHandlerRunnable(delegate, exceptionHandler);
+    }
+
+    public static Runnable wrapRunnableRuntimeExceptionHandler(Runnable delegate, ExceptionHandler<RuntimeException> exceptionHandler) {
+        return new RuntimeExceptionHandlerRunnable(delegate, exceptionHandler);
+    }
+
+    public static Runnable wrapRunnableThrowableHandler(Runnable delegate, ThrowableHandler<Throwable> throwableHandler) {
+        return new ThrowableHandlerRunnable(delegate, throwableHandler);
+    }
+
+    private static final class ThrowableHandlerRunnable implements Runnable {
+        private final Runnable runnable;
+        private final ThrowableHandler<Throwable> throwableHandler;
+
+        private ThrowableHandlerRunnable(Runnable runnable,ThrowableHandler<Throwable> throwableHandler) {
+            this.runnable = notNull(runnable);
+            this.throwableHandler = notNull(throwableHandler);
+        }
+
+        @Override
+        public final void run() {
+            try {
+                runnable.run();
+            } catch (Throwable e) {
+                throwableHandler.accept(e);
+            }
+        }
+    }
+
+    private static final class RuntimeExceptionHandlerRunnable implements Runnable {
+        private final Runnable runnable;
+        private final ExceptionHandler<RuntimeException> exceptionHandler;
+
+        private RuntimeExceptionHandlerRunnable(Runnable runnable, ExceptionHandler<RuntimeException> exceptionHandler) {
+            this.runnable = notNull(runnable);
+            this.exceptionHandler = notNull(exceptionHandler);
+        }
+
+        @Override
+        public final void run() {
+            try {
+                runnable.run();
+            } catch (RuntimeException e) {
+                exceptionHandler.accept(e);
+            }
+        }
+    }
+
+    private static final class ExceptionHandlerRunnable implements Runnable {
+        private final Runnable runnable;
+        private final ExceptionHandler<Exception> exceptionHandler;
+
+        private ExceptionHandlerRunnable(Runnable runnable, ExceptionHandler<Exception> exceptionHandler) {
+            this.runnable = notNull(runnable);
+            this.exceptionHandler = notNull(exceptionHandler);
+        }
+
+        @Override
+        public final void run() {
+            try {
+                runnable.run();
+            } catch (Exception e) {
+                exceptionHandler.accept(e);
+            }
+        }
+    }
+
     private static abstract class ABRunnable implements Runnable {
         private final Runnable runnable;
 
@@ -38,7 +110,7 @@ public enum RunnableUtils {
         }
 
         @Override
-        public void run() {
+        public final void run() {
             runnable.run();
         }
 

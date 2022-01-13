@@ -15,7 +15,7 @@ class PoolFactoryImpl implements PoolFactory {
 
     private static PoolFactory INSTANCE = new PoolFactoryImpl();
 
-    private final Thread.UncaughtExceptionHandler exceptionHandler = ExceptionHandler.create();
+    private final Thread.UncaughtExceptionHandler exceptionHandler = UncaughtExcHandler.create();
 
     private PoolFactoryImpl() {
         calledOnce(this.getClass());
