@@ -2,11 +2,13 @@ package okjava.util;
 
 import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
+import okjava.util.e.EBiConsumer;
 import okjava.util.e.EConsumer;
 import okjava.util.e.EFunction;
 import okjava.util.e.handler.atomic.ExceptionHandler;
 import okjava.util.exception.SneakyThrower;
 
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -80,4 +82,25 @@ public enum ConsumerUtils {
         };
         return result;
     }
+
+    @SuppressWarnings("unchecked")
+    public static <V1,V2, E extends Exception> BiConsumer<V1,V2> divertExceptionFromEConsumer(EBiConsumer<V1,V2, E> eConsumer, ExceptionHandler<E> exceptionHandler) {
+
+        BiConsumer<V1,V2> result = (value1,value2) -> {
+            try {
+                eConsumer.accept(value1,value2);
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Exception e) {
+                try {
+                    exceptionHandler.accept((E) e);
+                } catch (ClassCastException e1) {
+                    //hm... not declared checked exception type thrown.
+                    SneakyThrower.sneakyThrow(e);
+                }
+            }
+        };
+        return result;
+    }
+
 }

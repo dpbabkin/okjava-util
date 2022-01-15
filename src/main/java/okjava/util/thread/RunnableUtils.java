@@ -3,8 +3,8 @@ package okjava.util.thread;
 import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
 import okjava.util.e.handler.atomic.ExceptionHandler;
-import okjava.util.e.handler.atomic.ExceptionHandlers;
 import okjava.util.e.handler.atomic.ThrowableHandler;
+import okjava.util.string.ToStringBuffer;
 
 import java.util.function.Supplier;
 
@@ -49,7 +49,7 @@ public enum RunnableUtils {
         private final Runnable runnable;
         private final ThrowableHandler<Throwable> throwableHandler;
 
-        private ThrowableHandlerRunnable(Runnable runnable,ThrowableHandler<Throwable> throwableHandler) {
+        private ThrowableHandlerRunnable(Runnable runnable, ThrowableHandler<Throwable> throwableHandler) {
             this.runnable = notNull(runnable);
             this.throwableHandler = notNull(throwableHandler);
         }
@@ -61,6 +61,10 @@ public enum RunnableUtils {
             } catch (Throwable e) {
                 throwableHandler.accept(e);
             }
+        }
+        @Override
+        public String toString() {
+            return ToStringBuffer.of(this).addWithClass("runnable", runnable).toString();
         }
     }
 
@@ -81,6 +85,10 @@ public enum RunnableUtils {
                 exceptionHandler.accept(e);
             }
         }
+        @Override
+        public String toString() {
+            return ToStringBuffer.of(this).addWithClass("runnable", runnable).toString();
+        }
     }
 
     private static final class ExceptionHandlerRunnable implements Runnable {
@@ -99,6 +107,11 @@ public enum RunnableUtils {
             } catch (Exception e) {
                 exceptionHandler.accept(e);
             }
+        }
+
+        @Override
+        public String toString() {
+            return ToStringBuffer.of(this).addWithClass("runnable", runnable).toString();
         }
     }
 
