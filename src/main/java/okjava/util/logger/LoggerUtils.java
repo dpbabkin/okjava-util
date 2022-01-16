@@ -40,6 +40,11 @@ public enum LoggerUtils {
         return LoggerFactory.getLogger(clazz);
     }
 
+    public static Logger createLogger(Class<?> clazz, Object... prefix) {
+        return createLogger(clazz, Stream.of(prefix).map(Object::toString).toArray(String[]::new));
+
+    }
+
     public static Logger createLogger(Class<?> clazz, String... prefix) {
         String logPrefix = Stream.of(prefix)
                 .map(Object::toString)

@@ -14,6 +14,7 @@ import static okjava.util.NotNull.notNull;
  * 5/22/2019
  * 01:10.
  */
+@Deprecated ///never used as QueueBridgeFactory
 final class QueueBridgeImpl<E> implements QueueBridge<E> {
 
     private final BlockingQueue<E> eventsQueue;

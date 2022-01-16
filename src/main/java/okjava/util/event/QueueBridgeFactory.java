@@ -14,6 +14,7 @@ import static okjava.util.check.Never.neverNeverCalled;
  * 10:59.
  */
 @Utility
+@Deprecated ///never used
 public enum QueueBridgeFactory {
     ;
 

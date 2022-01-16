@@ -14,6 +14,7 @@ import static okjava.util.NotNull.notNull;
  * 5/23/2019
  * 11:04.
  */
+@Deprecated ///never used as QueueBridgeFactory  and QueueBridgeImpl
 class EventQueuePollerThreadBridge<E> {
 
     private final Consumer<E> eventConsumer;

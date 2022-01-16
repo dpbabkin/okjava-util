@@ -48,7 +48,8 @@ public enum FunctionUtils {
         };
     }
 
-    public static <V1, V2, E extends Exception> Function<V1, V2> divertExceptionFromEFunction(EFunction<V1, V2, E> eFunction, ExceptionHandler<E> exceptionHandler) {
+    public static <V1, V2, E extends Exception> Function<V1, V2> divertExceptionFromEFunction(EFunction<V1, V2, E> eFunction,
+                                                                                              ExceptionHandler<E> exceptionHandler, V2 onErrorValue) {
 
         Function<V1, V2> result = value -> {
             try {
@@ -63,7 +64,8 @@ public enum FunctionUtils {
                     SneakyThrower.sneakyThrow(e);
                 }
             }
-            throw new Error("should never happen");
+            return onErrorValue;
+            //throw new Error("should never happen");
         };
         return result;
     }
