@@ -30,7 +30,7 @@ public enum Snail {
         return snail0;
     }
 
-    public static String generateSnail0() {
+    private static String generateSnail0() {
         return """
 
 
@@ -50,7 +50,7 @@ public enum Snail {
         return snail1;
     }
 
-    public static String generateSnail1() {
+    private static String generateSnail1() {
         return """
 
 
@@ -76,7 +76,7 @@ public enum Snail {
         return snail2;
     }
 
-    public static String generateSnail2() {
+    private static String generateSnail2() {
         return """
 
 
