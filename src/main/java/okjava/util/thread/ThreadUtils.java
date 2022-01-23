@@ -29,6 +29,13 @@ public enum ThreadUtils {
         throw new RuntimeException(e);
     }
 
+    public static <R> R sleepForever() throws InterruptedException {
+        for (long l = 0; l < Long.MAX_VALUE; l += 0) {
+            Thread.sleep(Long.MAX_VALUE);
+        }
+        throw new IllegalStateException();
+    }
+
     public static void sleep(long time, Consumer<InterruptedException> handler) {
         try {
             Thread.sleep(time);
