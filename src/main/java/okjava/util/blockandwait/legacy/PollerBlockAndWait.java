@@ -1,5 +1,6 @@
 package okjava.util.blockandwait.legacy;
 
+import okjava.util.blockandwait.BlockAndWaitUpdatable;
 import okjava.util.check.MathCheck;
 
 import java.util.function.LongSupplier;
@@ -14,7 +15,7 @@ final class PollerBlockAndWait extends AbstractBlockAndWait {
         this.getPollIntervalWaitTime = () -> pollInterval;
     }
 
-    static AbstractBlockAndWait create(long pollInterval) {
+    static BlockAndWaitUpdatable create(long pollInterval) {
         return new PollerBlockAndWait(pollInterval);
     }
 

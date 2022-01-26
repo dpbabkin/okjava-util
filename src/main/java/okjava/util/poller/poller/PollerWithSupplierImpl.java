@@ -55,8 +55,13 @@ public class PollerWithSupplierImpl<V> implements PollerWithSupplier<V> {
         return Optional.ofNullable(blockAndWait.await(createSupplierAdapter(tester), time));
     }
 
+    private Supplier<V> createSupplierAdapter(Predicate<V> predicate) {
+        return new SupplierAdapter(predicate);
+    }
+
+
     /**
-     * Purpose of this adapter is to abey contract of BlockAndWaitUpdatable to return null on ase of fail, or Object in case of success.
+     * Purpose of this adapter is to abey contract of BlockAndWaitUpdatable to return null on case of fail, or Object in case of success.
      */
 
     private final class SupplierAdapter implements Supplier<V> {
@@ -74,17 +79,5 @@ public class PollerWithSupplierImpl<V> implements PollerWithSupplier<V> {
             }
             return null;
         }
-    }
-
-    private Supplier<V> createSupplierAdapter(Predicate<V> predicate) {
-        return new SupplierAdapter(predicate);
-//        Supplier<V> supplierAdapter = () -> {
-//            V value = PollerWithSupplierImpl.this.get();
-//            if (predicate.test(value)) {
-//                return value;
-//            }
-//            return null;
-//        };
-//        return supplierAdapter;
     }
 }
