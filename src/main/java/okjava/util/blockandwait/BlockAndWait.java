@@ -1,9 +1,12 @@
 package okjava.util.blockandwait;
 
+import okjava.util.condition.Cancellable;
+import okjava.util.condition.Updatable;
+
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
-public interface BlockAndWait {
+public interface BlockAndWait extends Cancellable, Updatable {
 
     <V> V await(Supplier<V> isEventHappened, long time) throws InterruptedException;
 

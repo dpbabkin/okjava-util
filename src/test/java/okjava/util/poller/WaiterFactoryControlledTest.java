@@ -1,23 +1,22 @@
 package okjava.util.poller;
 
-import okjava.util.blockandwait.supplier.WaitTimeSupplierFactory;
-import okjava.util.condition.waiter.WaiterProviderImpl;
-import okjava.util.condition.waiter.WaiterProviderUpdatable;
+import okjava.util.condition.WaiterFactories;
+import okjava.util.condition.WaiterFactory;
 import org.junit.Test;
 
 import static java.lang.Thread.State.TERMINATED;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-public class WaiterProviderUpdatableTest {
+public class WaiterFactoryControlledTest {
 
     @Test
     public void test() throws InterruptedException {
 
-        WaiterProviderUpdatable waiterProviderUpdatable = WaiterProviderImpl.create(WaitTimeSupplierFactory.createWithDefaultPoll());
+        WaiterFactory waiterFactory = WaiterFactories.create().withoutDefaultPoll();
         Runnable runnable = () -> {
             try {
-                waiterProviderUpdatable.waiter(() -> null).await(200);
+                waiterFactory.waiter(() -> null).await(200);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }

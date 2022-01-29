@@ -1,6 +1,6 @@
 package okjava.util.poller.poller;
 
-import okjava.util.poller.Updatable;
+import okjava.util.condition.Updatable;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com

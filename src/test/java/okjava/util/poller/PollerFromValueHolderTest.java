@@ -13,7 +13,7 @@ public class PollerFromValueHolderTest extends AbstractBasePollerTest<Poller<Lon
     public PollerFromValueHolderTest() {
         UpdatableValueHolder<Long> valueHolder = ValueHolderFactory.create(reference::get);
         this.poller = valueHolder.getPoller();
-        onUpdate = valueHolder;
+        this.onUpdate = valueHolder::onUpdate;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package okjava.util.condition.waiter;
+package okjava.util.condition;
 
 import okjava.util.blockandwait.Constants;
 
@@ -9,9 +9,7 @@ import java.util.concurrent.TimeUnit;
  * 6/6/2019
  * 19:39.
  */
-public interface Waiter<V> {
-
-    void cancel();
+public interface Waiter<V> extends Updatable, Cancellable, Pollable<Waiter<V>> {
 
     V await(long time) throws InterruptedException;
 

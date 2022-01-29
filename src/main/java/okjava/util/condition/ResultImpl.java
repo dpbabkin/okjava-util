@@ -2,7 +2,7 @@ package okjava.util.condition;
 
 final class ResultImpl implements Result {
 
-    private final Boolean result;
+    private final boolean result;
 
     static Result result(boolean result) {
         return new ResultImpl(result);

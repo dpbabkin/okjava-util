@@ -18,6 +18,7 @@ public class PollerWithVaueImpl<V> implements PollerWithValue<V> {
     private final static Logger LOGGER = LoggerFactory.getLogger(Poller.class);
     private volatile V value;
     private final PollerWithSupplier<V> pollerDelegate = PollerWithSupplierImpl.create(() -> value);
+    private final Runnable updatePollerDelegate = pollerDelegate::onUpdate;
 
     private PollerWithVaueImpl(V value) {
         this.value = value;
@@ -35,7 +36,7 @@ public class PollerWithVaueImpl<V> implements PollerWithValue<V> {
     @Override
     public void accept(V value) {
         this.value = value;
-        ExecutorFactory.getInstance().getExecutor().execute(pollerDelegate);
+        ExecutorFactory.getInstance().getExecutor().execute(updatePollerDelegate);
         if (LOGGER.isTraceEnabled()) {
             LOGGER.trace(ToStringBuffer.string("poller accepted").add("value", value).toString());
         }

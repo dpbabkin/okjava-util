@@ -22,7 +22,7 @@ public class WaitForCollection<E, C extends Collection<E>> implements Consumer<E
 
     private final C collection;
 
-    private final BlockingWaitForEvent block = BlockingWaitForEvent.create();
+    private final WaiterFactory block = WaiterFactories.create();
 
     private WaitForCollection(C collection) {
         this.collection = notNull(collection);
@@ -45,10 +45,12 @@ public class WaitForCollection<E, C extends Collection<E>> implements Consumer<E
     }
 
     public boolean add(E element) {
-        try {
-            return collection.add(element);
-        } finally {
-            block.onUpdate();
+        synchronized (block) { //need to avoid size value skipped.
+            try {
+                return collection.add(element);
+            } finally {
+                block.getUpdatable().onUpdate();
+            }
         }
     }
 
@@ -56,12 +58,20 @@ public class WaitForCollection<E, C extends Collection<E>> implements Consumer<E
         return collection;
     }
 
-    public ResultWaiter createWaiter(int number) {
-        return block.waiter(() -> collection.size() >= number);
+    public Waiter<Result> createSizeMoreOrEqualWaiter(int size) {
+        return block.waiterBoolean(() -> collection.size() >= size);
     }
 
-    public ResultWaiter createWaiter(Function<C, Boolean> tester) {
-        return block.waiter(() -> tester.apply(collection));
+    public Waiter<Result> createSizeEqualWaiter(int size) {
+        return block.waiterBoolean(() -> collection.size() == size);
+    }
+
+    public Waiter<Result> createSizeMoreWaiter(int size) {
+        return block.waiterBoolean(() -> collection.size() > size);
+    }
+
+    public Waiter<Result> createWaiter(Function<C, Boolean> tester) {
+        return block.waiterBoolean(() -> tester.apply(collection));
     }
 
     @Override

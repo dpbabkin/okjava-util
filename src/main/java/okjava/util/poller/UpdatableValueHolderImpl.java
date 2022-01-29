@@ -16,6 +16,7 @@ import static okjava.util.NotNull.notNull;
 class UpdatableValueHolderImpl<V> implements UpdatableValueHolder<V> {
 
     private final PollerWithSupplier<V> poller;
+    private final Runnable updatePoller;
     private final SupplierListenerCollection<V> supplierListenerCollection;
 
     private final Runnable supplierListenerCollectionUpdater;
@@ -31,13 +32,14 @@ class UpdatableValueHolderImpl<V> implements UpdatableValueHolder<V> {
     private UpdatableValueHolderImpl(Supplier<V> valueSupplier) {
         this.valueSupplier = notNull(valueSupplier);
         this.poller = PollerWithSupplierImpl.create(valueSupplier);
+        this.updatePoller= poller::onUpdate;
         SupplierListenerCollectionImpl<V> supplierListenerCollection = SupplierListenerCollectionImpl.create();
         this.supplierListenerCollection = supplierListenerCollection;
         this.supplierListenerCollectionUpdater = new SupplierListenerCollectionUpdater<>(supplierListenerCollection, valueSupplier);
     }
 
     private void onUpdateNative() {
-        EXECUTOR.execute(poller);
+        EXECUTOR.execute(updatePoller);
         EXECUTOR.execute(supplierListenerCollectionUpdater);
     }
 

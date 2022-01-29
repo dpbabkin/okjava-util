@@ -1,7 +1,7 @@
 apply plugin: 'java'
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
@@ -17,4 +17,5 @@ dependencies {
     testImplementation group: 'org.hamcrest', name: 'hamcrest-all', version: '+'
     testImplementation group: 'org.hamcrest', name: 'java-hamcrest', version: '+'
     testImplementation group: 'org.slf4j', name: 'slf4j-simple', version: '+'
+    testImplementation group: 'org.apache.commons', name: 'commons-collections4', version: '+'
 }

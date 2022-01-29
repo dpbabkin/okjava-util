@@ -12,18 +12,19 @@ import java.util.function.Function;
 import static okjava.util.NotNull.notNull;
 
 class ConsumerValueHolderImpl<V> implements ConsumerValueHolder<V> {
+    private static final Executor EXECUTOR = ExecutorFactory.getInstance().getExecutor();
     private final AtomicReference<V> value;
     private final UpdatableValueHolder<V> valueHolder;
-
-    private static final Executor EXECUTOR = ExecutorFactory.getInstance().getExecutor();
-
-    static <V> ConsumerValueHolder<V> create(V value) {
-        return new ConsumerValueHolderImpl<>(value);
-    }
+    private final Runnable updateValueHolder;
 
     private ConsumerValueHolderImpl(V value) {
         this.value = new AtomicReference<>(notNull(value));
         this.valueHolder = ValueHolderFactory.create(this.value::get);
+        this.updateValueHolder = this.valueHolder::onUpdate;
+    }
+
+    static <V> ConsumerValueHolder<V> create(V value) {
+        return new ConsumerValueHolderImpl<>(value);
     }
 
     @Override
@@ -44,7 +45,7 @@ class ConsumerValueHolderImpl<V> implements ConsumerValueHolder<V> {
     @Override
     public V apply(V value) {
         V oldValue = this.value.getAndSet(value);
-        EXECUTOR.execute(valueHolder);
+        EXECUTOR.execute(updateValueHolder);
         return oldValue;
     }
 
@@ -53,7 +54,7 @@ class ConsumerValueHolderImpl<V> implements ConsumerValueHolder<V> {
             V oldValue = this.value.get();
             V newValue = mutator.apply(oldValue);
             if (this.value.compareAndSet(oldValue, newValue)) {
-                EXECUTOR.execute(valueHolder);
+                EXECUTOR.execute(updateValueHolder);
                 return Two.create(oldValue, newValue);
             }
         }

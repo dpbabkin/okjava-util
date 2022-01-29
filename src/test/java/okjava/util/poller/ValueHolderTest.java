@@ -24,14 +24,14 @@ public class ValueHolderTest {
         valueHolder.getSupplierListenerCollection().registerListener(longSupplier -> waitForCollection.add(longSupplier.get()));
 
         setNewValue(1L);
-        waitForCollection.createWaiter(1).second().assertTrue();
+        waitForCollection.createSizeMoreOrEqualWaiter(1).second().assertTrue();
         assertThat(waitForCollection.getCollection(), contains(1L));
         setNewValue(3L);
-        waitForCollection.createWaiter(2).second().assertTrue();
+        waitForCollection.createSizeMoreOrEqualWaiter(2).second().assertTrue();
         assertThat(waitForCollection.getCollection(), contains(1L, 3L));
 
         setNewValue(5L);
-        waitForCollection.createWaiter(3).second().assertTrue();
+        waitForCollection.createSizeMoreOrEqualWaiter(3).second().assertTrue();
         assertThat(waitForCollection.getCollection(), contains(1L, 3L, 5L));
     }
 

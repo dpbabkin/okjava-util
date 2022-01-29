@@ -1,7 +1,9 @@
 package okjava.util.condition;
 
 import com.google.common.collect.Lists;
+
 import okjava.util.string.ToStringBuffer;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,13 +15,14 @@ import java.util.function.Supplier;
 import static java.lang.Thread.State.TERMINATED;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertFalse;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
  * 6/5/2019
  * 15:43.
  */
-public class BlockingWaitForEventTest {
+public class WaiterFactoryControlledTest {
 //
 //    private final BlockWaitForEventHappenedStateless block = BlockWaitForEventHappenedStateless.create();
 //    private final BlockWaitForEventHappenedStateless2 block2 = BlockWaitForEventHappenedStateless2.create();
@@ -32,45 +35,47 @@ public class BlockingWaitForEventTest {
     @Before
     public void setUp() {
         fail = false;
-        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-            @Override
-            public void uncaughtException(Thread t, Throwable e) {
-                System.out.println(t.getName());
-                e.printStackTrace();
-                BlockingWaitForEventTest.this.fail = true;
-            }
+        Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
+            System.out.println(t.getName());
+            e.printStackTrace();
+            WaiterFactoryControlledTest.this.fail = true;
         });
 
     }
 
+    @After
+    public void after() {
+        assertFalse(fail);
+    }
+
     @Test
     public void test001_0() throws InterruptedException {
-        forkThreads(BlockingWaitForEvent.create(), 1, 1, 1);
+        forkThreads(WaiterFactories.create(), 1, 1, 1);
     }
 
     @Test
     public void test001_1() throws InterruptedException {
-        doTest01(BlockingWaitForEvent::createWithDefaultPoll);
+        doTest01(() -> WaiterFactories.create().withoutDefaultPoll());
     }
 
     @Test
     public void test001_2() throws InterruptedException {
-        doTest02(BlockingWaitForEvent::create);
+        doTest02(WaiterFactories::create);
     }
 
     //@Test //takes too long
     public void test001_3() throws InterruptedException {
-        doTest03(BlockingWaitForEvent::create);
+        doTest03(WaiterFactories::create);
     }
 
-    public void doTest01(Supplier<BlockingWaitForEvent> waitLock) throws InterruptedException {
+    public void doTest01(Supplier<WaiterFactory> waitLock) throws InterruptedException {
         forkThreads(waitLock.get(), 10, 100, 10);
         forkThreads(waitLock.get(), 10, 100, 10);
         forkThreads(waitLock.get(), 10, 100, 10);
         forkThreads(waitLock.get(), 10, 100, 10);
     }
 
-    public void doTest02(Supplier<BlockingWaitForEvent> waitLock) throws InterruptedException {
+    public void doTest02(Supplier<WaiterFactory> waitLock) throws InterruptedException {
 
         for (int i = 1; i < 10; i++) {
             for (int j = 1_000; j < 1_010; j++) {
@@ -82,7 +87,7 @@ public class BlockingWaitForEventTest {
     }
 
 
-    public void doTest03(Supplier<BlockingWaitForEvent> waitLock) throws InterruptedException {
+    public void doTest03(Supplier<WaiterFactory> waitLock) throws InterruptedException {
 
         for (int i = 1; i < 40; i++) {
             for (int j = 100; j < 140; j++) {
@@ -95,11 +100,11 @@ public class BlockingWaitForEventTest {
 
     @Test
     public void abortTest01() throws InterruptedException {
-        abortTest(BlockingWaitForEvent.create());
+        abortTest(WaiterFactories.create());
     }
 
-    private void abortTest(BlockingWaitForEvent waitLock) throws InterruptedException {
-        ResultWaiter waiter = waitLock.waiter(() -> false);
+    private void abortTest(WaiterFactory waitLock) throws InterruptedException {
+        Waiter<Result> waiter = waitLock.waiterBoolean(() -> false);
         Thread thread = new Thread(() -> {
             try {
                 waiter.await(1, TimeUnit.MINUTES);
@@ -113,18 +118,19 @@ public class BlockingWaitForEventTest {
         assertThat(thread.getState(), is(TERMINATED));
     }
 
-    private void forkThreads(BlockingWaitForEvent waitLock, int numberOfThreads, int everyThreadCount, int numberOfTakingThread) throws InterruptedException {
+    private void forkThreads(WaiterFactory waitLock, int numberOfThreads, int everyThreadCount,
+                             int numberOfTakingThread) throws InterruptedException {
         System.out.println(ToStringBuffer.string("forkThreads")
                 .add("numberOfThreads", numberOfThreads)
                 .add("everyThreadCount", everyThreadCount)
                 .add("numberOfTakingThread", numberOfTakingThread)
                 .addTime()
         );
-        final long waitForNumber = numberOfThreads * everyThreadCount;
+        final long waitForNumber = (long) numberOfThreads * everyThreadCount;
 
         //final Counter counter = new Counter();
         final AtomicLong counter = new AtomicLong(0);
-        ResultWaiter waiter = waitLock.waiter(() -> counter.get() == waitForNumber);
+        Waiter<Result> waiter = waitLock.waiterBoolean(() -> counter.get() == waitForNumber);
 
         List<Thread> puttingThreads = Lists.newArrayList();
         for (int i = 0; i < numberOfThreads; i++) {
@@ -132,7 +138,7 @@ public class BlockingWaitForEventTest {
                 for (int j = 0; j < everyThreadCount; j++) {
 
                     counter.incrementAndGet();
-                    waitLock.onUpdate();
+                    waitLock.getUpdatable().onUpdate();
                     //System.out.println(ToStringBuffer.string("increment count").addThread().add("count", count));
                 }
             }, "putting-" + i);

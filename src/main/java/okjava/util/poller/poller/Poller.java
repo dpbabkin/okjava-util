@@ -16,6 +16,7 @@ public interface Poller<V> extends Supplier<V> {
 
     Optional<V> poll(Predicate<V> tester, long time) throws InterruptedException;
 
+    @Deprecated //use with caution. as old value might be set already before method starts.
     default V poll() throws InterruptedException {
         V oldValue = get();
         return poll(oldValue);
@@ -26,10 +27,10 @@ public interface Poller<V> extends Supplier<V> {
     }
 
     default Optional<V> poll(long time, TimeUnit timeUnit) throws InterruptedException {
-        return poll(timeUnit.toMillis(time));
+        return pollWait(timeUnit.toMillis(time));
     }
 
-    default Optional<V> poll(long time) throws InterruptedException {
+    default Optional<V> pollWait(long time) throws InterruptedException {
         V oldValue = get();
         return poll(oldValue, time);
     }
