@@ -44,7 +44,7 @@ abstract class AbstractBasePollerTest<P extends Poller<Long>> {
         P poller = getPoller();
         PollerTestUtils.waitAssertValue(poller, 0L);
 
-        WaiterFactory block = WaiterFactories.create().withoutDefaultPoll();
+        WaiterFactory block = WaiterFactories.withoutDefaultPoll();
         Thread thread = new Thread(() -> {
             try {
                 long oldValue = poller.get();
@@ -67,7 +67,7 @@ abstract class AbstractBasePollerTest<P extends Poller<Long>> {
     public void test03() throws InterruptedException {
 
         P poller = getPoller();
-        WaiterFactory block = WaiterFactories.create().withoutDefaultPoll();
+        WaiterFactory block = WaiterFactories.withoutDefaultPoll();
         WaitForCollection<Long, Queue<Long>> waitForCollection = WaitForCollection.create(Queues.newConcurrentLinkedQueue());
         Thread thread = new Thread(() -> {
             try {
@@ -111,7 +111,7 @@ abstract class AbstractBasePollerTest<P extends Poller<Long>> {
     public void test04() throws InterruptedException {
 
         P poller = getPoller();
-        WaiterFactory block = WaiterFactories.create().withoutDefaultPoll();
+        WaiterFactory block = WaiterFactories.withoutDefaultPoll();
         WaitForCollection<Long, Queue<Long>> waitForCollection = WaitForCollection.create(Queues.newConcurrentLinkedQueue());
         Thread thread = new Thread(() -> {
             try {
@@ -121,7 +121,6 @@ abstract class AbstractBasePollerTest<P extends Poller<Long>> {
                     Long value = poller.poll(lastValue);
                     lastValue = value;
                     waitForCollection.add(value);
-                    //System.out.println("value added="+value);
                 }
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
