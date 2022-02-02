@@ -19,4 +19,12 @@ public enum WaiterFactories {
     public static WaiterFactory create() {
         return WaiterFactoryImpl.create();
     }
+
+    public static WaiterFactory withoutDefaultPoll() {
+        return create().withoutDefaultPoll();
+    }
+
+    public static WaiterFactory withPoll(long poolInterval) {
+        return create().withPoll(poolInterval);
+    }
 }

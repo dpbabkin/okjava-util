@@ -11,9 +11,8 @@ import org.junit.Test;
 import java.util.List;
 import java.util.Queue;
 
+import static com.google.common.truth.Truth.assertThat;
 import static java.lang.Thread.State.WAITING;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
 
 abstract class AbstractBasePollerTest<P extends Poller<Long>> {
 
@@ -22,7 +21,7 @@ abstract class AbstractBasePollerTest<P extends Poller<Long>> {
     abstract void setNewValue(long value);
 
     @Test
-    public void testValueChanged01()  {
+    public void testValueChanged01() {
         P poller = getPoller();
         setNewValue(1L);
         PollerTestUtils.waitAssertValue(poller, 1L);
@@ -30,7 +29,7 @@ abstract class AbstractBasePollerTest<P extends Poller<Long>> {
     }
 
     @Test
-    public void testValueChanged02()  {
+    public void testValueChanged02() {
         P poller = getPoller();
         PollerTestUtils.waitAssertValue(poller, 0L);
         Thread thread = new Thread(() -> {
@@ -88,17 +87,17 @@ abstract class AbstractBasePollerTest<P extends Poller<Long>> {
         setNewValue(1L);
         waitForCollection.createSizeMoreOrEqualWaiter(1).second().assertTrue();
         PollerTestUtils.waitAssertValue(poller, 1L);
-        assertThat(waitForCollection.getCollection(), contains(1L));
+        assertThat(waitForCollection.getCollection()).containsExactly(1L).inOrder();
 
         setNewValue(3L);
         waitForCollection.createSizeMoreOrEqualWaiter(2).second().assertTrue();
         PollerTestUtils.waitAssertValue(poller, 3L);
-        assertThat(waitForCollection.getCollection(), contains(1L, 3L));
+        assertThat(waitForCollection.getCollection()).containsExactly(1L, 3L).inOrder();
 
         setNewValue(5L);
         waitForCollection.createSizeMoreOrEqualWaiter(3).second().assertTrue();
         PollerTestUtils.waitAssertValue(poller, 5L);
-        assertThat(waitForCollection.getCollection(), contains(1L, 3L, 5L));
+        assertThat(waitForCollection.getCollection()).containsExactly(1L, 3L, 5L).inOrder();
 
         thread.interrupt();
         block.waiterBoolean(() -> thread.isAlive() == false).second().assertTrue();
@@ -118,7 +117,7 @@ abstract class AbstractBasePollerTest<P extends Poller<Long>> {
             try {
                 Long lastValue = poller.get();
                 for (; ; ) {
-                    //make sure everytime ecpect new value.
+                    //make sure everytime expect new value.
                     Long value = poller.poll(lastValue);
                     lastValue = value;
                     waitForCollection.add(value);
@@ -131,16 +130,14 @@ abstract class AbstractBasePollerTest<P extends Poller<Long>> {
         thread.start();
         block.waiterBoolean(() -> thread.getState() == WAITING).second().assertTrue();
 
-
         List<Long> expectedResult = Lists.newArrayList();
 
-        for (long i = 1; i < 1000_0L; i++) {
+        for (long i = 1; i < 10_000L; i++) {
             setNewValue(i);
             waitForCollection.createSizeMoreOrEqualWaiter((int) i).second().assertTrue("i=" + i);
             PollerTestUtils.waitAssertValue(poller, i);
             expectedResult.add(i);
-            assertThat(waitForCollection.getCollection(), contains(expectedResult.toArray()));
-            //assertTrue(CollectionUtils.isEqualCollection(waitForCollection.getCollection(), expectedResult));
+            assertThat(waitForCollection.getCollection()).containsExactlyElementsIn(expectedResult).inOrder();
         }
 
         thread.interrupt();
