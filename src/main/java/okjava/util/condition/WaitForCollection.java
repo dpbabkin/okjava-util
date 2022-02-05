@@ -8,8 +8,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
-import java.util.function.Consumer;
-import java.util.function.Function;
+import java.util.function.Predicate;
 
 import static okjava.util.NotNull.notNull;
 
@@ -18,11 +17,12 @@ import static okjava.util.NotNull.notNull;
  * 5/16/2019
  * 18:19.
  */
-public class WaitForCollection<E, C extends Collection<E>> implements Consumer<E> {
+public class WaitForCollection<E, C extends Collection<E>> {
 
     private final C collection;
 
     private final WaiterFactory block = WaiterFactories.create();
+    private final CollectionWaiters<E, C> collectionWaiters = tester -> block.waiterBoolean(() -> tester.test(WaitForCollection.this.collection));
 
     private WaitForCollection(C collection) {
         this.collection = notNull(collection);
@@ -58,24 +58,7 @@ public class WaitForCollection<E, C extends Collection<E>> implements Consumer<E
         return collection;
     }
 
-    public Waiter<Result> createSizeMoreOrEqualWaiter(int size) {
-        return block.waiterBoolean(() -> collection.size() >= size);
-    }
-
-    public Waiter<Result> createSizeEqualWaiter(int size) {
-        return block.waiterBoolean(() -> collection.size() == size);
-    }
-
-    public Waiter<Result> createSizeMoreWaiter(int size) {
-        return block.waiterBoolean(() -> collection.size() > size);
-    }
-
-    public Waiter<Result> createWaiter(Function<C, Boolean> tester) {
-        return block.waiterBoolean(() -> tester.apply(collection));
-    }
-
-    @Override
-    public void accept(E e) {
-        add(e);
+    public CollectionWaiters<E, C> getCollectionWaiters() {
+        return collectionWaiters;
     }
 }

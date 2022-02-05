@@ -25,6 +25,14 @@ public interface Waiter<V> extends Updatable, Cancellable, Pollable<Waiter<V>> {
         return seconds(1L);
     }
 
+    default V fiveSeconds() throws InterruptedException {
+        return seconds(5L);
+    }
+
+    default V tenSeconds() throws InterruptedException {
+        return seconds(10L);
+    }
+
     default V seconds(long seconds) throws InterruptedException {
         return await(seconds, TimeUnit.SECONDS);
     }

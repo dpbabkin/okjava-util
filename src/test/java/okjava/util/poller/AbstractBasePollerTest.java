@@ -85,17 +85,17 @@ abstract class AbstractBasePollerTest<P extends Poller<Long>> {
         block.waiterBoolean(() -> thread.getState() == WAITING).second().assertTrue();
 
         setNewValue(1L);
-        waitForCollection.createSizeMoreOrEqualWaiter(1).second().assertTrue();
+        waitForCollection.getCollectionWaiters().createSizeMoreOrEqualWaiter(1).second().assertTrue();
         PollerTestUtils.waitAssertValue(poller, 1L);
         assertThat(waitForCollection.getCollection()).containsExactly(1L).inOrder();
 
         setNewValue(3L);
-        waitForCollection.createSizeMoreOrEqualWaiter(2).second().assertTrue();
+        waitForCollection.getCollectionWaiters().createSizeMoreOrEqualWaiter(2).second().assertTrue();
         PollerTestUtils.waitAssertValue(poller, 3L);
         assertThat(waitForCollection.getCollection()).containsExactly(1L, 3L).inOrder();
 
         setNewValue(5L);
-        waitForCollection.createSizeMoreOrEqualWaiter(3).second().assertTrue();
+        waitForCollection.getCollectionWaiters().createSizeMoreOrEqualWaiter(3).second().assertTrue();
         PollerTestUtils.waitAssertValue(poller, 5L);
         assertThat(waitForCollection.getCollection()).containsExactly(1L, 3L, 5L).inOrder();
 
@@ -133,7 +133,7 @@ abstract class AbstractBasePollerTest<P extends Poller<Long>> {
 
         for (long i = 1; i < 10_000L; i++) {
             setNewValue(i);
-            waitForCollection.createSizeMoreOrEqualWaiter((int) i).second().assertTrue("i=" + i);
+            waitForCollection.getCollectionWaiters().createSizeMoreOrEqualWaiter((int) i).second().assertTrue("i=" + i);
             PollerTestUtils.waitAssertValue(poller, i);
             expectedResult.add(i);
             assertThat(waitForCollection.getCollection()).containsExactlyElementsIn(expectedResult).inOrder();
