@@ -7,7 +7,7 @@ import java.util.function.Predicate;
  * @author Dmitry Babkin dpbabkin@gmail.com
  * 05.02.2022 - 15:56.
  */
-public interface CollectionWaiters<E, C extends Collection<E>> {
+public interface CollectionWaiters<E, C extends Collection<E>> extends Pollable<CollectionWaiters<E, C>> {
 
     Waiter<Result> createWaiter(Predicate<C> tester);
 

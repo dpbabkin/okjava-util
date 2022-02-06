@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 import static okjava.util.NotNull.notNull;
+import static okjava.util.blockandwait.Constants.WAIT_FOREVER;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -22,7 +23,7 @@ public class WaitForCollection<E, C extends Collection<E>> {
     private final C collection;
 
     private final WaiterFactory block = WaiterFactories.create();
-    private final CollectionWaiters<E, C> collectionWaiters = tester -> block.waiterBoolean(() -> tester.test(WaitForCollection.this.collection));
+    private final CollectionWaiters<E, C> collectionWaiters = new CollectionWaitersImpl();
 
     private WaitForCollection(C collection) {
         this.collection = notNull(collection);
@@ -60,5 +61,30 @@ public class WaitForCollection<E, C extends Collection<E>> {
 
     public CollectionWaiters<E, C> getCollectionWaiters() {
         return collectionWaiters;
+    }
+
+    private final class CollectionWaitersImpl implements CollectionWaiters<E, C> {
+        private final long pollInterval;
+
+        private CollectionWaitersImpl() {
+            this(WAIT_FOREVER);
+        }
+
+        private CollectionWaitersImpl(long pollInterval) {
+            this.pollInterval = pollInterval;
+        }
+
+        @Override
+        public Waiter<Result> createWaiter(Predicate<C> tester) {
+            return block.waiterBoolean(() -> tester.test(WaitForCollection.this.collection)).withPoll(pollInterval);
+        }
+
+        @Override
+        public CollectionWaiters<E, C> withPoll(long pollInterval) {
+            if (pollInterval == this.pollInterval) {
+                return this;
+            }
+            return new CollectionWaitersImpl(pollInterval);
+        }
     }
 }
