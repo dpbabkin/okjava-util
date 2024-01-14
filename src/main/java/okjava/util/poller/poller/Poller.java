@@ -22,6 +22,9 @@ public interface Poller<V> extends Supplier<V> {
         return poll(oldValue);
     }
 
+    /**
+     * Returns when values in the poller became is not equal to {@code oldValue}
+     */
     default V poll(final V oldValue) throws InterruptedException {
         return poll(v -> !oldValue.equals(v));
     }
@@ -30,19 +33,35 @@ public interface Poller<V> extends Supplier<V> {
         return pollWait(timeUnit.toMillis(time));
     }
 
+    /**
+     * After call immediately takes current value.
+     * Returns when value changes.
+     */
     default Optional<V> pollWait(long time) throws InterruptedException {
         V oldValue = get();
         return poll(oldValue, time);
     }
 
+    /**
+     * Returns when values in the poller became is not equal to {@code oldValue}
+     * Returns empty {@code Optional} if after time elapsed condition mentioned is not met.
+     */
     default Optional<V> poll(final V oldValue, long time, TimeUnit timeUnit) throws InterruptedException {
         return poll(oldValue, timeUnit.toMillis(time));
     }
 
+    /**
+     * Returns when values in the poller became is not equal to {@code oldValue}
+     * Returns empty {@code Optional} if after time elapsed condition mentioned is not met.
+     */
     default Optional<V> poll(final V oldValue, long time) throws InterruptedException {
         return poll(v -> !oldValue.equals(v), time);
     }
 
+    /**
+     * Returns when values in the poller became is not equal to {@code oldValue}
+     * Returns empty {@code Optional} if after time elapsed @{code Predicate} on value is not true.
+     */
     default Optional<V> poll(Predicate<V> tester, long time, TimeUnit timeUnit) throws InterruptedException {
         return poll(tester, timeUnit.toMillis(time));
     }

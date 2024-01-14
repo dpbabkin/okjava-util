@@ -5,11 +5,10 @@ import okjava.util.blockandwait.BlockAndWaits;
 import okjava.util.check.MathCheck;
 
 import java.util.function.BooleanSupplier;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import static okjava.util.blockandwait.Constants.WAIT_FOREVER;
-import static okjava.util.condition.ResultWaiterBooleanAdapter.NOT_NULL_OBJECT;
+
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -48,8 +47,13 @@ final class WaiterFactoryImpl implements WaiterFactory {
 
     @Override
     public Waiter<Result> waiterBoolean(BooleanSupplier isEventHappened) {
-        Supplier<Object> delegate = () -> isEventHappened.getAsBoolean() ? NOT_NULL_OBJECT : null;
-        return ResultWaiterBooleanAdapter.create(waiter(delegate));
+        Supplier<Boolean> delegate = () -> isEventHappened.getAsBoolean() ? Boolean.TRUE : null;
+        return WaiterDelegateMapper.create(waiter(delegate), WaiterFactoryImpl::createResult);
+    }
+
+    private static Result createResult(Boolean object) {
+        assert object == null || object == Boolean.TRUE;
+        return ResultImpl.result(object != null);
     }
 
     @Override

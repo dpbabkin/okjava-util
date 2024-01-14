@@ -1,6 +1,7 @@
 package okjava.util.thread;
 
 import okjava.util.NotNull;
+import okjava.util.string.ToStringBuffer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,19 +20,10 @@ public final class UncaughtExcHandler implements Thread.UncaughtExceptionHandler
             e.printStackTrace(ps);
         });
     };
-    private final Logger logger;
-    private final Thread.UncaughtExceptionHandler delegate;
-
-
     private static final UncaughtExcHandler DEFAULT_EXCEPTION_HANDLER = new UncaughtExcHandler(UncaughtExcHandler.class);
 
-    public static Thread.UncaughtExceptionHandler create() {
-        return DEFAULT_EXCEPTION_HANDLER;
-    }
-
-    public static Thread.UncaughtExceptionHandler createThreadForward() {
-        return ThreadForwardUncaughtExceptionHandler.threadForwardUncaughtExceptionHandler();
-    }
+    private final Logger logger;
+    private final Thread.UncaughtExceptionHandler delegate;
 
     private UncaughtExcHandler(Class<?> clazz) {
         this(LoggerFactory.getLogger(clazz), SOUT_SERR_UNCAUGHT_EXCEPTION_HANDLER);
@@ -45,6 +37,14 @@ public final class UncaughtExcHandler implements Thread.UncaughtExceptionHandler
         this.logger = NotNull.notNull(logger);
         this.delegate = NotNull.notNull(delegate);
     }
+
+    public static Thread.UncaughtExceptionHandler create() {
+        return DEFAULT_EXCEPTION_HANDLER;
+    }
+
+//    public static Thread.UncaughtExceptionHandler createThreadForward() {
+//        return ThreadForwardUncaughtExceptionHandler.threadForwardUncaughtExceptionHandler();
+//    }
 
     private static String systemExit(Logger logger) {
         try {
@@ -63,7 +63,10 @@ public final class UncaughtExcHandler implements Thread.UncaughtExceptionHandler
 
     @Override
     public void uncaughtException(Thread t, Throwable e) {
-        logger.error("Ohh... my god... unbelievable... exception in  executor thread: " + t.getName(), e);
+        ToStringBuffer.string("Ohh... my god... unbelievable... exception in executor thread")
+                .addThread(t)
+                .addThrowable(e)
+                .toError(logger);
         try {
             delegate.uncaughtException(t, e);
         } catch (Throwable ex) {

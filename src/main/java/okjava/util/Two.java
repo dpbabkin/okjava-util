@@ -4,6 +4,7 @@ import okjava.util.function.BiSupplier;
 import okjava.util.string.ToStringBuffer;
 
 import java.util.Objects;
+import java.util.function.Function;
 
 import static okjava.util.NotNull.notNull;
 
@@ -35,9 +36,25 @@ public final class Two<A, B> implements BiSupplier<A, B> {
         return a;
     }
 
+    public <A1> Two<A1, B> setA(A1 a1) {
+        return create(a1, getB());
+    }
+
+    public <A1> Two<A1, B> mapA(Function<A,A1> mapper) {
+        return create(mapper.apply(getA()), getB());
+    }
+
     @Override
     public B getB() {
         return b;
+    }
+
+    public <B1> Two<A, B1> setB(B1 b1) {
+        return create(getA(), b1);
+    }
+
+    public <B1> Two<A, B1> mapB(Function<B,B1> mapper) {
+        return create(getA(), mapper.apply(getB()));
     }
 
     @Override
@@ -51,14 +68,14 @@ public final class Two<A, B> implements BiSupplier<A, B> {
         if (o == null || getClass() != o.getClass()) return false;
         Two<?, ?> two = (Two<?, ?>) o;
         return Objects.equals(a, two.a)
-                   && Objects.equals(b, two.b);
+                && Objects.equals(b, two.b);
     }
 
     @Override
     public String toString() {
         return ToStringBuffer.of(this)
-                   .add("a", a)
-                   .add("b", b)
-                   .toString();
+                .add("a", a)
+                .add("b", b)
+                .toString();
     }
 }

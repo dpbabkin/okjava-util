@@ -20,20 +20,20 @@ public class ValueHolderTest {
         this.reference = new AtomicReference<>(0L);
         this.valueHolder= UpdatableValueHolderImpl.create(reference::get);
 
-        WaitForCollection<Long, Queue<Long>> waitForCollection = WaitForCollection.create(Queues.newConcurrentLinkedQueue());
+        WaitForCollection<Long, Queue<Long>> waitForCollection = WaitForCollection.createWithConcurrentLinkedQueue();
         valueHolder.getSupplierListenerCollection().registerListener(longSupplier -> waitForCollection.add(longSupplier.get()));
 
         setNewValue(1L);
         waitForCollection.getCollectionWaiters().createSizeEqualWaiter(1).second().assertTrue();
-        assertThat(waitForCollection.getCollection(), contains(1L));
+        assertThat(waitForCollection.getCopyOfCollection(), contains(1L));
 
         setNewValue(3L);
         waitForCollection.getCollectionWaiters().createSizeEqualWaiter(2).second().assertTrue();
-        assertThat(waitForCollection.getCollection(), contains(1L, 3L));
+        assertThat(waitForCollection.getCopyOfCollection(), contains(1L, 3L));
 
         setNewValue(5L);
         waitForCollection.getCollectionWaiters().createSizeEqualWaiter(3).second().assertTrue();
-        assertThat(waitForCollection.getCollection(), contains(1L, 3L, 5L));
+        assertThat(waitForCollection.getCopyOfCollection(), contains(1L, 3L, 5L));
     }
 
     private void setNewValue(Long value){

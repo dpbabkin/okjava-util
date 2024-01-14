@@ -11,8 +11,12 @@ public interface CollectionWaiters<E, C extends Collection<E>> extends Pollable<
 
     Waiter<Result> createWaiter(Predicate<C> tester);
 
+    default Waiter<Result> createContainsElement(E element) {
+        return createWaiter(c -> c.contains(element));
+    }
+
     default Waiter<Result> createSizeMoreOrEqualWaiter(int size) {
-        return createWaiter(c -> c.size() > size);
+        return createWaiter(c -> c.size() >= size);
     }
 
     default Waiter<Result> createSizeEqualWaiter(int size) {

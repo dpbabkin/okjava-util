@@ -6,6 +6,7 @@ import okjava.util.concurrent.ExecutableTaskQueueConfined;
 import okjava.util.e.handler.atomic.ExceptionHandler;
 
 import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -14,6 +15,9 @@ import static okjava.util.check.Once.calledOnce;
 import static okjava.util.thread.RunnableUtils.wrapRunnableExceptionHandler;
 
 /**
+ * Entry point for crating executor for all application.
+ * Every executor created by wrapping PoolFactory resolved by name.
+ *
  * @author Dmitry Babkin dpbabkin@gmail.com
  * 6/19/2017
  * 22:37.
@@ -63,6 +67,10 @@ public final class ExecutorFactory {
         return command -> executor.execute(wrapRunnableExceptionHandler(command, exceptionHandler));
     }
 
+    private static OkExecutor wrapOK(Executor executor) {
+        return OkExecutorImpl.create(executor);
+    }
+
 //    public ThreadPoolExecutor createCashing(final String name) {
 //        return createCashing(name, LoggerFactory.getLogger(clazz));
 //    }
@@ -78,8 +86,13 @@ public final class ExecutorFactory {
 //                new LinkedBlockingQueue<>(), daemonThreadFactory);
 //    }
 
-    private static OkExecutor wrapOK(Executor executor) {
-        return OkExecutorImpl.create(executor);
+
+    /**
+     * Some tasks takes one thread for long time. For instance polling tasks.
+     * This executor has not limit on thread count.
+     */
+    public OkExecutor getCachedExecutor() {
+        return wrapOK(Executors.newCachedThreadPool());
     }
 
     public Executor getWrapToStringRunnableExecutor(String toString, Executor delegate) {

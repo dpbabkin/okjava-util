@@ -2,6 +2,8 @@ package okjava.util.thread;
 
 import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
+import okjava.util.e.ERunnable;
+import okjava.util.e.ESupplier;
 
 import java.util.function.Consumer;
 
@@ -34,6 +36,31 @@ public enum ThreadUtils {
             Thread.sleep(Long.MAX_VALUE);
         }
         throw new IllegalStateException();
+    }
+
+    public static <V> V getInterrupted(ESupplier<V, InterruptedException> runnable) {
+        try {
+            return runnable.get();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
+    public static void runInterrupted(ERunnable<InterruptedException> runnable) {
+        getInterrupted(() -> {
+            runnable.run();
+            return Void.class;
+        });
+    }
+
+    public static void join(Thread thread) {
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException(e.getMessage(), e);
+        }
     }
 
     public static void sleep(long time, Consumer<InterruptedException> handler) {

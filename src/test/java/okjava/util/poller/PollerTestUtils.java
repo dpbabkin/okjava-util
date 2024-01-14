@@ -25,11 +25,11 @@ public class PollerTestUtils {
         waitAssertValue(poller, expectedValue, DEFAULT_WAIT_TIME);
     }
 
-    public static <V> void waitAssertValue(Poller<V> poller, final V expectedValue, long time, TimeUnit timeUnit)  {
+    public static <V> void waitAssertValue(Poller<V> poller, final V expectedValue, long time, TimeUnit timeUnit) {
         waitAssertValue(poller, expectedValue, timeUnit.toMillis(time));
     }
 
-    public static <V> void waitAssertValue(Poller<V> poller, final V expectedValue, long time)  {
+    public static <V> void waitAssertValue(Poller<V> poller, final V expectedValue, long time) {
         Optional<V> value = null;
         try {
             value = poller.poll(v -> v.equals(expectedValue), time);
@@ -37,6 +37,8 @@ public class PollerTestUtils {
             catchInterrupted(e);
         }
         if (value.isEmpty()) {
+            assertThat(false, is(true));
+
             assertThat(poller.get(), is(expectedValue));
         }
     }
@@ -49,7 +51,7 @@ public class PollerTestUtils {
         waitAssertValue(valueHolder, expectedValue, timeUnit.toMillis(time));
     }
 
-    public static <V> void waitAssertValue(ValueHolder<V> valueHolder, final V expectedValue, long time)  {
+    public static <V> void waitAssertValue(ValueHolder<V> valueHolder, final V expectedValue, long time) {
         waitAssertValue(valueHolder.getPoller(), expectedValue, time);
     }
 }

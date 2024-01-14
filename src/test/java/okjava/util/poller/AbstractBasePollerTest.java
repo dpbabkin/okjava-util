@@ -1,11 +1,11 @@
 package okjava.util.poller;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Queues;
 import okjava.util.condition.WaitForCollection;
 import okjava.util.condition.WaiterFactories;
 import okjava.util.condition.WaiterFactory;
 import okjava.util.poller.poller.Poller;
+import okjava.util.thread.ThreadUtils;
 import org.junit.Test;
 
 import java.util.List;
@@ -13,6 +13,7 @@ import java.util.Queue;
 
 import static com.google.common.truth.Truth.assertThat;
 import static java.lang.Thread.State.WAITING;
+import static okjava.util.thread.ThreadUtils.sleep;
 
 abstract class AbstractBasePollerTest<P extends Poller<Long>> {
 
@@ -25,19 +26,34 @@ abstract class AbstractBasePollerTest<P extends Poller<Long>> {
         P poller = getPoller();
         setNewValue(1L);
         PollerTestUtils.waitAssertValue(poller, 1L);
-
     }
 
     @Test
     public void testValueChanged02() {
         P poller = getPoller();
         PollerTestUtils.waitAssertValue(poller, 0L);
-        Thread thread = new Thread(() -> {
-            setNewValue(1L);
-        });
+        Thread thread = new Thread(() -> setNewValue(1L));
         thread.start();
         PollerTestUtils.waitAssertValue(poller, 1L);
     }
+
+    /**
+     * The same as testValueChanged02. can be removed.
+     * @throws InterruptedException
+     */
+    @Test
+    public void testValueChanged02_01() throws InterruptedException {
+        P poller = getPoller();
+        setNewValue(1L);
+        Thread thread = new Thread(() -> {
+            assertThat(poller.get()).isEqualTo(1L);
+            setNewValue(123L);
+        });
+        thread.start();
+        poller.poll(1L);
+        assertThat(poller.get()).isEqualTo(123L);
+    }
+
 
     @Test
     public void testValueChanged03() throws InterruptedException {
@@ -68,7 +84,7 @@ abstract class AbstractBasePollerTest<P extends Poller<Long>> {
 
         P poller = getPoller();
         WaiterFactory block = WaiterFactories.withoutDefaultPoll();
-        WaitForCollection<Long, Queue<Long>> waitForCollection = WaitForCollection.create(Queues.newConcurrentLinkedQueue());
+        WaitForCollection<Long, Queue<Long>> waitForCollection = WaitForCollection.createWithConcurrentLinkedQueue();
         Thread thread = new Thread(() -> {
             try {
                 long oldValue = poller.get();
@@ -87,17 +103,17 @@ abstract class AbstractBasePollerTest<P extends Poller<Long>> {
         setNewValue(1L);
         waitForCollection.getCollectionWaiters().createSizeMoreOrEqualWaiter(1).second().assertTrue();
         PollerTestUtils.waitAssertValue(poller, 1L);
-        assertThat(waitForCollection.getCollection()).containsExactly(1L).inOrder();
+        assertThat(waitForCollection.getCopyOfCollection()).containsExactly(1L).inOrder();
 
         setNewValue(3L);
         waitForCollection.getCollectionWaiters().createSizeMoreOrEqualWaiter(2).second().assertTrue();
         PollerTestUtils.waitAssertValue(poller, 3L);
-        assertThat(waitForCollection.getCollection()).containsExactly(1L, 3L).inOrder();
+        assertThat(waitForCollection.getCopyOfCollection()).containsExactly(1L, 3L).inOrder();
 
         setNewValue(5L);
         waitForCollection.getCollectionWaiters().createSizeMoreOrEqualWaiter(3).second().assertTrue();
         PollerTestUtils.waitAssertValue(poller, 5L);
-        assertThat(waitForCollection.getCollection()).containsExactly(1L, 3L, 5L).inOrder();
+        assertThat(waitForCollection.getCopyOfCollection()).containsExactly(1L, 3L, 5L).inOrder();
 
         thread.interrupt();
         block.waiterBoolean(() -> thread.isAlive() == false).second().assertTrue();
@@ -112,7 +128,7 @@ abstract class AbstractBasePollerTest<P extends Poller<Long>> {
 
         P poller = getPoller();
         WaiterFactory block = WaiterFactories.withoutDefaultPoll();
-        WaitForCollection<Long, Queue<Long>> waitForCollection = WaitForCollection.create(Queues.newConcurrentLinkedQueue());
+        WaitForCollection<Long, Queue<Long>> waitForCollection = WaitForCollection.createWithConcurrentLinkedQueue();
         Thread thread = new Thread(() -> {
             try {
                 Long lastValue = poller.get();
@@ -136,7 +152,7 @@ abstract class AbstractBasePollerTest<P extends Poller<Long>> {
             waitForCollection.getCollectionWaiters().createSizeMoreOrEqualWaiter((int) i).second().assertTrue("i=" + i);
             PollerTestUtils.waitAssertValue(poller, i);
             expectedResult.add(i);
-            assertThat(waitForCollection.getCollection()).containsExactlyElementsIn(expectedResult).inOrder();
+            assertThat(waitForCollection.getCopyOfCollection()).containsExactlyElementsIn(expectedResult).inOrder();
         }
 
         thread.interrupt();

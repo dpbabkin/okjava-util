@@ -20,11 +20,11 @@ public class SupplierListenerCollectionImpl<V> implements SupplierListenerCollec
 
     private final Map<TimeSequenceId, SupplierListener<V>> listeners = Maps.newConcurrentMap();
 
-    public static <V> SupplierListenerCollectionImpl<V> create() {
-        return new SupplierListenerCollectionImpl<>();
+    private SupplierListenerCollectionImpl() {
     }
 
-    private SupplierListenerCollectionImpl() {
+    public static <V> SupplierListenerCollectionImpl<V> create() {
+        return new SupplierListenerCollectionImpl<>();
     }
 
     @Override
@@ -32,11 +32,10 @@ public class SupplierListenerCollectionImpl<V> implements SupplierListenerCollec
         TimeSequenceId id = TimeSequenceIdGeneratorFactory.timeSequenceIdGenerator().generate();
         listeners.put(id, listener);
         return () -> listeners.remove(id);
-
     }
 
     private void onUpdateInParallel(Supplier<V> supplier) {
-        listeners.values().forEach(l -> EXECUTOR.execute(() -> l.accept(supplier)));
+        listeners.values().forEach(listener -> EXECUTOR.execute(() -> listener.accept(supplier)));
     }
 
     @Override

@@ -12,6 +12,7 @@ dependencies {
     implementation group: 'com.google.mug', name: 'mug-protobuf', version: '+'
 
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '+'
+    implementation 'org.jetbrains:annotations:20.1.0'
 
     testImplementation group: 'junit', name: 'junit', version: '+'
     testImplementation group: 'org.hamcrest', name: 'hamcrest-all', version: '+'

@@ -152,6 +152,11 @@ public class ToStringBuffer {
         return this;
     }
 
+    public ToStringBuffer separator() {
+        this.builder.append(SEPARATOR);
+        return this;
+    }
+
     public <T> ToStringBuffer add(String name, Collection<T> collection) {
         return add(name, i2s(collection));
     }
@@ -233,8 +238,9 @@ public class ToStringBuffer {
         };
     }
 
-    public void toConsumer(Consumer<String> consumer) {
+    public ToStringBuffer toConsumer(Consumer<String> consumer) {
         consumer.accept(this.toString());
+        return this;
     }
 
     public RuntimeException toIllegalArgumentException() {
