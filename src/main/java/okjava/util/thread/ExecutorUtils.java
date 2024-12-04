@@ -14,9 +14,11 @@ import static okjava.util.thread.RunnableUtils.wrapRunnableExceptionHandler;
  */
 @Utility
 public class ExecutorUtils {
-    ;ExecutorUtils(@SuppressWarnings("unused") Never never) {
-            Never.neverNeverCalled();
-        }
+    ;
+
+    ExecutorUtils(@SuppressWarnings("unused") Never never) {
+        Never.neverNeverCalled();
+    }
 
 
     public static Executor wrapExceptionHandler(ExceptionHandler<Exception> exceptionHandler, Executor executor) {

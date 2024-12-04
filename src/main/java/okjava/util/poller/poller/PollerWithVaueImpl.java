@@ -1,9 +1,9 @@
 package okjava.util.poller.poller;
 
+import okjava.util.logger.LoggerUtils;
 import okjava.util.string.ToStringBuffer;
 import okjava.util.thread.ExecutorFactory;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -15,7 +15,7 @@ import java.util.function.Predicate;
  */
 public class PollerWithVaueImpl<V> implements PollerWithValue<V> {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(Poller.class);
+    private final static Logger LOGGER = LoggerUtils.createLogger(Poller.class);
     private volatile V value;
     private final PollerWithSupplier<V> pollerDelegate = PollerWithSupplierImpl.create(() -> value);
     private final Runnable updatePollerDelegate = pollerDelegate::onUpdate;

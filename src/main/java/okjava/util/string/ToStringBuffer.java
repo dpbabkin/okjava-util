@@ -131,10 +131,10 @@ public class ToStringBuffer {
 
     public <O> ToStringBuffer add(O object) {
         if (object instanceof java.lang.String) {
-            ToStringBuffer.string("Probably not what you want")
+            throw ToStringBuffer.string("Probably not what you want")
                     .name("object").addWithClass().value(object)
                     //.addWithClass("object", object)
-                    .throwException(IllegalArgumentException::new);
+                    .toIllegalArgumentException();
         }
         return add(object.getClass().getSimpleName(), object);
     }
@@ -243,11 +243,11 @@ public class ToStringBuffer {
         return this;
     }
 
-    public RuntimeException toIllegalArgumentException() {
+    public IllegalArgumentException toIllegalArgumentException() {
         return toException(IllegalArgumentException::new);
     }
 
-    public RuntimeException toIllegalStateException() {
+    public IllegalStateException toIllegalStateException() {
         return toException(IllegalStateException::new);
     }
 
@@ -255,9 +255,9 @@ public class ToStringBuffer {
         return function.apply(toString());
     }
 
-    public <E extends Exception> void throwException(Function<String, E> function) throws E {
-        throw toException(function);
-    }
+//    public <E extends Exception> void throwException(Function<String, E> function) throws E {
+//        throw toException(function);
+//    }
 
     public class Name {
         private final String name;

@@ -76,9 +76,9 @@ class EventQueuePollerThreadBridge<E> {
     @Override
     public String toString() {
         return ToStringBuffer.of(this)
-                   .add("eventConsumer", eventConsumer.toString())
-                   .add("pollerThread", pollerThread)
-                   .add("eventsQueue", eventsQueue)
-                   .toString();
+                .add("eventConsumer", eventConsumer.toString())
+                .add("pollerThread", pollerThread)
+                .add("eventsQueue", eventsQueue)
+                .toString();
     }
 }

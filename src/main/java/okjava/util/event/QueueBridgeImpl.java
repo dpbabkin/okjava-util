@@ -71,10 +71,10 @@ final class QueueBridgeImpl<E> implements QueueBridge<E> {
     @Override
     public String toString() {
         return ToStringBuffer.of(this)
-                   .add("active", active)
-                   .add("eventsQueue", eventsQueue)
-                   .add("eventQueuePollerThreadBridge", eventQueuePollerThreadBridge)
-                   .toString();
+                .add("active", active)
+                .add("eventsQueue", eventsQueue)
+                .add("eventQueuePollerThreadBridge", eventQueuePollerThreadBridge)
+                .toString();
     }
 
 }

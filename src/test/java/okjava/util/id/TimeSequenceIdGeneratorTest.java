@@ -7,7 +7,7 @@ import okjava.util.id.timesequence.TimeSequenceId;
  * 5/6/2019
  * 23:30.
  */
-public class TimeSequenceIdGeneratorTest extends BaseIdGeneratorTest {
+public class TimeSequenceIdGeneratorTest extends BaseIdGeneratorTest<TimeSequenceId> {
 
     @Override
     IdGenerator<TimeSequenceId> getIdGenerator() {

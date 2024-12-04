@@ -62,6 +62,7 @@ public enum RunnableUtils {
                 throwableHandler.accept(e);
             }
         }
+
         @Override
         public String toString() {
             return ToStringBuffer.of(this).addWithClass("runnable", runnable).toString();
@@ -85,6 +86,7 @@ public enum RunnableUtils {
                 exceptionHandler.accept(e);
             }
         }
+
         @Override
         public String toString() {
             return ToStringBuffer.of(this).addWithClass("runnable", runnable).toString();

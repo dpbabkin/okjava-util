@@ -5,7 +5,6 @@ import okjava.util.condition.WaitForCollection;
 import okjava.util.condition.WaiterFactories;
 import okjava.util.condition.WaiterFactory;
 import okjava.util.poller.poller.Poller;
-import okjava.util.thread.ThreadUtils;
 import org.junit.Test;
 
 import java.util.List;
@@ -13,7 +12,6 @@ import java.util.Queue;
 
 import static com.google.common.truth.Truth.assertThat;
 import static java.lang.Thread.State.WAITING;
-import static okjava.util.thread.ThreadUtils.sleep;
 
 abstract class AbstractBasePollerTest<P extends Poller<Long>> {
 
@@ -39,6 +37,7 @@ abstract class AbstractBasePollerTest<P extends Poller<Long>> {
 
     /**
      * The same as testValueChanged02. can be removed.
+     *
      * @throws InterruptedException
      */
     @Test

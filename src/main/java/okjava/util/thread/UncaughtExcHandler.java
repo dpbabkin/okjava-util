@@ -1,9 +1,9 @@
 package okjava.util.thread;
 
 import okjava.util.NotNull;
+import okjava.util.logger.LoggerUtils;
 import okjava.util.string.ToStringBuffer;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.stream.Stream;
 
@@ -26,7 +26,7 @@ public final class UncaughtExcHandler implements Thread.UncaughtExceptionHandler
     private final Thread.UncaughtExceptionHandler delegate;
 
     private UncaughtExcHandler(Class<?> clazz) {
-        this(LoggerFactory.getLogger(clazz), SOUT_SERR_UNCAUGHT_EXCEPTION_HANDLER);
+        this(LoggerUtils.createLogger(clazz), SOUT_SERR_UNCAUGHT_EXCEPTION_HANDLER);
     }
 
     private UncaughtExcHandler(Logger logger) {

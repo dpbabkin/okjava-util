@@ -13,7 +13,7 @@ import static java.util.Objects.requireNonNull;
 @FunctionalInterface
 public interface EConsumer<T, E extends Exception> {
 
-    static <T,E extends Exception> EConsumer<T, E> delegate(Consumer<T> consumer) {
+    static <T, E extends Exception> EConsumer<T, E> delegate(Consumer<T> consumer) {
         requireNonNull(consumer);
         return consumer::accept;
     }

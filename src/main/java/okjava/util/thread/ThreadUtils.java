@@ -4,7 +4,9 @@ import okjava.util.annotation.Utility;
 import okjava.util.check.Never;
 import okjava.util.e.ERunnable;
 import okjava.util.e.ESupplier;
+import okjava.util.string.ToStringBuffer;
 
+import java.time.Duration;
 import java.util.function.Consumer;
 
 import static okjava.util.check.Never.neverNeverCalled;
@@ -57,6 +59,21 @@ public enum ThreadUtils {
     public static void join(Thread thread) {
         try {
             thread.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
+    public static void join(Thread thread, Duration duration) {
+        try {
+            thread.join(duration.toMillis());
+            if (thread.isAlive()) {
+                throw ToStringBuffer.string("Waiting for thread finish failed.")
+                        .add(duration)
+                        .add(thread)
+                        .toIllegalStateException();
+            }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new RuntimeException(e.getMessage(), e);

@@ -2,18 +2,23 @@ apply plugin: 'java'
 
 repositories {
     mavenCentral()
+    google()
+}
+
+compileJava {
+    options.compilerArgs << '-Xlint:unchecked' << '-Xlint:deprecation'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_23
+    targetCompatibility = JavaVersion.VERSION_23
 }
 
 dependencies {
     implementation group: 'org.slf4j', name: 'slf4j-api', version: '+'
     implementation group: 'com.google.guava', name: 'guava', version: '+'
-    implementation group: 'com.google.mug', name: 'mug', version: '+'
-    implementation group: 'com.google.mug', name: 'mug-guava', version: '+'
-    implementation group: 'com.google.mug', name: 'mug-protobuf', version: '+'
-
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '+'
-    implementation 'org.jetbrains:annotations:20.1.0'
-
+    implementation group: 'org.jetbrains', name: 'annotations', version: '+'
     testImplementation group: 'junit', name: 'junit', version: '+'
     testImplementation group: 'org.hamcrest', name: 'hamcrest-all', version: '+'
     testImplementation group: 'org.hamcrest', name: 'java-hamcrest', version: '+'
@@ -21,5 +26,4 @@ dependencies {
     testImplementation group: 'org.apache.commons', name: 'commons-collections4', version: '+'
     testImplementation group: 'com.google.truth', name: 'truth', version: '+'
     testImplementation group: 'com.google.truth.extensions', name: 'truth-java8-extension', version: '+'
-
 }

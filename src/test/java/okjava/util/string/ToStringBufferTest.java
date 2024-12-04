@@ -75,6 +75,7 @@ public class ToStringBufferTest {
         String result = ToStringBuffer.string("test").addThrowable(new NoneThrowable("msg7")).toString();
         assertThat(result, regExpMatcher("test { Throwable=okjava.util.string.ToStringBufferTest$NoneThrowable { message=msg7 thread=*ANY_THREAD_NAME* } }"));
     }
+
     static Matcher<String> regExpMatcher(String regexp) {
         return matchesPattern(regexp
                 .replace("*ANY_THREAD_NAME*", "[A-z ]+")

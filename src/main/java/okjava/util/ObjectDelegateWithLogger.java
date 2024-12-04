@@ -1,7 +1,7 @@
 package okjava.util;
 
+import okjava.util.logger.LoggerUtils;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
@@ -13,7 +13,7 @@ public class ObjectDelegateWithLogger<D> extends ObjectDelegate<D> {
 
     public ObjectDelegateWithLogger(D delegate) {
         super(delegate);
-        this.logger = LoggerFactory.getLogger(delegate.getClass());
+        this.logger = LoggerUtils.createLogger(delegate.getClass());
     }
 
     protected Logger getLogger() {

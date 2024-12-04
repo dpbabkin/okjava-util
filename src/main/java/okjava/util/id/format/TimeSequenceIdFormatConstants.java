@@ -15,12 +15,12 @@ import static okjava.util.check.Never.neverNeverCalled;
 enum TimeSequenceIdFormatConstants {
     ;
 
-     final static String PATTERN = "yyyyMMdd:HHmmss.SSSX";
-     final static DateTimeFormat FORMATTER = DateTimeFormat.create(PATTERN);
-     final static String SEPARATOR = "'";
+    final static String PATTERN = "yyyyMMdd:HHmmss.SSSX";
+    final static DateTimeFormat FORMATTER = DateTimeFormat.create(PATTERN);
+    final static String SEPARATOR = "'";
 
     TimeSequenceIdFormatConstants(@SuppressWarnings("unused") Never never) {
         neverNeverCalled();
-   }
+    }
 
 }

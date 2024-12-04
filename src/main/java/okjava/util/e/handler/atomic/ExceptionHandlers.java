@@ -17,7 +17,7 @@ public class ExceptionHandlers {
         Never.neverNeverCalled();
     }
 
-    public static  ExceptionHandler<Exception> createRethrow(){
+    public static ExceptionHandler<Exception> createRethrow() {
         return emptyExceptionHandler();
     }
 }

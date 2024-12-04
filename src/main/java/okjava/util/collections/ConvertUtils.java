@@ -35,7 +35,8 @@ public enum ConvertUtils {
         return output;
     }
 
-    public static <I, O, C extends Collection<O>, E extends Exception> C transform(Iterable<? extends I> input, C output, EFunction<I, O, E> itemResolver) throws E {
+    public static <I, O, C extends Collection<O>, E extends Exception> C transform(Iterable<? extends I> input, C output,
+                                                                                   EFunction<I, O, E> itemResolver) throws E {
         for (I item : input) {
             O o = itemResolver.apply(item);
             output.add(o);

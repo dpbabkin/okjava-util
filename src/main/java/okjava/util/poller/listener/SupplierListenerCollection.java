@@ -10,7 +10,6 @@ import java.util.function.Supplier;
 public interface SupplierListenerCollection<V> extends ListenerCollection<Supplier<V>> {
 
     /**
-     *
      * @param listener
      * @return unsubscribe callBack
      */
@@ -18,6 +17,7 @@ public interface SupplierListenerCollection<V> extends ListenerCollection<Suppli
 
     @Override
     default Runnable registerListener(Listener<Supplier<V>> listener) {
-        return registerListener(listener::accept);
+        SupplierListener<V> supplierListener = listener::accept;
+        return registerListener(supplierListener);
     }
 }

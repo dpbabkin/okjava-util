@@ -45,7 +45,7 @@ public enum Clazz {
 
     /**
      * Helper function to simplifier cast.
-     *
+     * <p>
      * <p/>Using this function, this code:
      * <pre> {@code
      * try {
@@ -54,7 +54,7 @@ public enum Clazz {
      *     throw new MyWrongTypeException("wrong class. expected: " + MyType.class + " actual: " + object.getClass() e);
      * }
      * }</pre>
-     *
+     * <p>
      * <p/>can be replaced by this code:
      * <pre> {@code
      * MyType myType = Clazz.cast(object, e -> new MyWrongTypeException("wrong class. expected: " + MyType.class + " actual: " + object.getClass(), e));

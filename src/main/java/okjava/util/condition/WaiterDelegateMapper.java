@@ -19,8 +19,8 @@ final class WaiterDelegateMapper<V1, V2> implements Waiter<V2> {
         this.mapper = notNull(mapper);
     }
 
-    static <V1, V2>  Waiter<V2> create (Waiter<V1> delegate, Function<V1, V2> mapper) {
-        return new WaiterDelegateMapper<>(delegate,mapper);
+    static <V1, V2> Waiter<V2> create(Waiter<V1> delegate, Function<V1, V2> mapper) {
+        return new WaiterDelegateMapper<>(delegate, mapper);
     }
 
     @Override

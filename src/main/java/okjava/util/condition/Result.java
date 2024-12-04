@@ -2,7 +2,7 @@ package okjava.util.condition;
 
 import java.util.function.Supplier;
 
-public interface Result extends Supplier<Boolean>{
+public interface Result extends Supplier<Boolean> {
 
     default void assertTrue() {
         assertTrue(AssertionError::new);

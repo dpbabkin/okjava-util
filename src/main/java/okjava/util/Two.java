@@ -40,7 +40,7 @@ public final class Two<A, B> implements BiSupplier<A, B> {
         return create(a1, getB());
     }
 
-    public <A1> Two<A1, B> mapA(Function<A,A1> mapper) {
+    public <A1> Two<A1, B> mapA(Function<A, A1> mapper) {
         return create(mapper.apply(getA()), getB());
     }
 
@@ -53,7 +53,7 @@ public final class Two<A, B> implements BiSupplier<A, B> {
         return create(getA(), b1);
     }
 
-    public <B1> Two<A, B1> mapB(Function<B,B1> mapper) {
+    public <B1> Two<A, B1> mapB(Function<B, B1> mapper) {
         return create(getA(), mapper.apply(getB()));
     }
 

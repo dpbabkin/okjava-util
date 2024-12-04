@@ -17,7 +17,8 @@ public interface E4BiConsumer<T1, T2, E1 extends Exception, E2 extends Exception
         return consumer::accept;
     }
 
-    static <T1, T2, E extends Exception> E4BiConsumer<T1, T2, E, RuntimeException, RuntimeException, RuntimeException> delegate(EBiConsumer<T1, T2, E> consumer) {
+    static <T1, T2, E extends Exception> E4BiConsumer<T1, T2, E, RuntimeException, RuntimeException, RuntimeException> delegate(
+            EBiConsumer<T1, T2, E> consumer) {
         assert notNull(consumer) != null;
         return consumer::accept;
     }

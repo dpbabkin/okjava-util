@@ -1,7 +1,6 @@
 package okjava.util.condition;
 
 import java.util.function.BooleanSupplier;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public interface WaiterFactory extends Pollable<WaiterFactory> {

@@ -4,6 +4,7 @@ import okjava.util.e.handler.atomic.ThrowableHandler;
 
 import java.util.Optional;
 
+@Deprecated // do not see any usages of this class.
 public interface MapHandler {
 
     default <T extends Throwable> ThrowableHandler<T> getHandler(Class<? extends T> clazz) {
@@ -12,7 +13,7 @@ public interface MapHandler {
         });
     }
 
-    default  <T extends Throwable> ThrowableHandler<T> getHandler(Class<? extends T> clazz, ThrowableHandler<T> defaultValue) {
+    default <T extends Throwable> ThrowableHandler<T> getHandler(Class<? extends T> clazz, ThrowableHandler<T> defaultValue) {
         Optional<ThrowableHandler<T>> optional = getHandlerAsOptional(clazz);
         return optional.orElse(defaultValue);
     }

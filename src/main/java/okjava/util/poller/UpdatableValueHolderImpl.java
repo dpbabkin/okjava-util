@@ -32,7 +32,7 @@ class UpdatableValueHolderImpl<V> implements UpdatableValueHolder<V> {
     private UpdatableValueHolderImpl(Supplier<V> valueSupplier) {
         this.valueSupplier = notNull(valueSupplier);
         this.poller = PollerWithSupplierImpl.create(valueSupplier);
-        this.updatePoller= poller::onUpdate;
+        this.updatePoller = poller::onUpdate;
         SupplierListenerCollectionImpl<V> supplierListenerCollection = SupplierListenerCollectionImpl.create();
         this.supplierListenerCollection = supplierListenerCollection;
         this.supplierListenerCollectionUpdater = new SupplierListenerCollectionUpdater<>(supplierListenerCollection, valueSupplier);

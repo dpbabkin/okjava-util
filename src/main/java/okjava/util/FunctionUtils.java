@@ -50,7 +50,7 @@ public enum FunctionUtils {
 
     public static <V1, V2, E extends Exception> Function<V1, V2> divertExceptionFromEFunction(EFunction<V1, V2, E> eFunction,
                                                                                               ExceptionHandler<E> exceptionHandler, V2 onErrorValue) {
-
+        @SuppressWarnings("unchecked") // safe as EFunction has the same Exception type.
         Function<V1, V2> result = value -> {
             try {
                 return eFunction.apply(value);

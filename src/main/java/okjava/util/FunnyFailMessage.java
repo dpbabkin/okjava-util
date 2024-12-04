@@ -21,7 +21,7 @@ enum FunnyFailMessage {
 
     static String getFunnyFailMessage() {
         return "\n I'd like to take this opportunity to remind that my daughter's birthday is on 2nd of December."
-                   + "\n Do not forget to congratulate her. She will be very happy!"
-                   + "\n>Thread.currentThread().getName()~" + Thread.currentThread().getName();
+                + "\n Do not forget to congratulate her. She will be very happy!"
+                + "\n>Thread.currentThread().getName()~" + Thread.currentThread().getName();
     }
 }

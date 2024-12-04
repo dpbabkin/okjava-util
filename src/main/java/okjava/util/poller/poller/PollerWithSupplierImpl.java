@@ -2,8 +2,8 @@ package okjava.util.poller.poller;
 
 import okjava.util.blockandwait.BlockAndWait;
 import okjava.util.blockandwait.BlockAndWaits;
+import okjava.util.logger.LoggerUtils;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -18,7 +18,7 @@ import static okjava.util.NotNull.notNull;
  */
 public class PollerWithSupplierImpl<V> implements PollerWithSupplier<V> {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(Poller.class);
+    private final static Logger LOGGER = LoggerUtils.createLogger(Poller.class);
 
     private final BlockAndWait blockAndWait = BlockAndWaits.create();
 

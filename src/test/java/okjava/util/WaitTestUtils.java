@@ -40,6 +40,7 @@ public enum WaitTestUtils {
         }
         assertThat(thread.getState(), is(Thread.State.TERMINATED));
     }
+
     public static void catchInterrupted(InterruptedException e) {
         Thread.currentThread().interrupt();
         fail(ToStringBuffer.string("thread interrupted").addThread().toString());

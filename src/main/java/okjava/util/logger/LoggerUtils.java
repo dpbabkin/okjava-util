@@ -27,6 +27,12 @@ public enum LoggerUtils {
         neverNeverCalled();
     }
 
+    static {
+        // disable anoying message in stderr "SLF4J(I): Connected with provider of type [org.slf4j.simple.SimpleServiceProvider]"
+        System.setProperty("slf4j.internal.verbosity", "WARN");
+        System.setProperty("slf4j.internal.report.stream", "stdout");
+    }
+
     public static Consumer<String> createNamedLogger(String name, Logger logger) {
         return ConsumerUtils.map(logger::info, (Function<String, String>) s -> name + " " + s);
     }
@@ -42,14 +48,12 @@ public enum LoggerUtils {
 
     public static Logger createLogger(Class<?> clazz, Object... prefix) {
         return createLogger(clazz, Stream.of(prefix).map(Object::toString).toArray(String[]::new));
-
     }
 
     public static Logger createLogger(Class<?> clazz, String... prefix) {
         String logPrefix = Stream.of(prefix)
                 .map(Object::toString)
                 .collect(Collectors.joining("/", format("%s@", clazz.getName()), "::"));
-
         return LoggerFactory.getLogger(logPrefix);
     }
 }

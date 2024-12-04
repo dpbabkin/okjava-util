@@ -5,6 +5,8 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.ImmutableBiMap;
 
+import static okjava.util.NotNull.notNull;
+
 /**
  * @author Dmitry Babkin dpbabkin@gmail.com
  * 2/9/2015
@@ -12,27 +14,28 @@ import com.google.common.collect.ImmutableBiMap;
  */
 public final class Fibonacci {
 
-    private final int maxValue;
-    private final int maxFibonache;
-    private final BiMap<Integer, Integer> table;
+    private final long maxRange;
+    private final long maxFibonacci;
+
+    private final BiMap<Integer, Long> table;
 
     public Fibonacci() {
-        this(Integer.MAX_VALUE);
+        this(Long.MAX_VALUE);
     }
 
-    public Fibonacci(int maxValue) {
-        this.maxValue = maxValue;
-        this.table = ImmutableBiMap.copyOf(generate(maxValue));
-        this.maxFibonache = table.get(table.size() + 1);
+    public Fibonacci(long maxRange) {
+        this.maxRange = maxRange;
+        this.table = ImmutableBiMap.copyOf(generate(maxRange));
+        this.maxFibonacci = table.get(1 + table.size());
     }
 
-    private static BiMap<Integer, Integer> generate(int maxValue) {
-        BiMap<Integer, Integer> result = HashBiMap.create();
+    private static BiMap<Integer, Long> generate(long maxValue) {
+        BiMap<Integer, Long> result = HashBiMap.create();
 
-        int a = 1;
-        int b = 1;
+        long a = 1L;
+        long b = 1L;
 
-        result.put(2, 1);
+        result.put(2, 1L);
         int index = 3;
         for (; ; ) {
             b = a + b;
@@ -43,39 +46,52 @@ public final class Fibonacci {
         return result;
     }
 
-    public int getMaxFibonache() {
-        return maxFibonache;
+    public long getMaxFibonacci() {
+        return maxFibonacci;
     }
 
-    public BiMap<Integer, Integer> getTable() {
+    private BiMap<Integer, Long> getTable() {
         return table;
     }
 
-    public int getMaxValue() {
-        return maxValue;
+    public long getMaxRange() {
+        return maxRange;
     }
 
-    public int getNext(int number) {
-        if (number == maxFibonache) {
+
+    public long get(int number) {
+        return switch (number) {
+            case 0 -> 0L;
+            case 1 -> 1L;
+            case 2 -> 1L;
+            default -> notNull(table.get(number));
+        };
+    }
+
+    public long getNext(long number) {
+        if (number >= maxFibonacci || number <= 0) {
             throw new IllegalArgumentException("out of range: " + number);
         }
-        return table.get(getIndexAndCheck(number) + 1);
+        return notNull(table.get(getIndexAndCheck(number) + 1));
     }
 
-    public int getPrev(int number) {
-        if (number == 1) {
-            return 1;
+    public long getPrev(long number) {
+        if (number < 1L) {
+            throw new IllegalArgumentException("out of range: " + number);
+        }
+        if (number == 1L) {
+            return 1L;
         }
         return table.get(getIndexAndCheck(number) - 1);
     }
 
-    private Integer getIndexAndCheck(int number) {
-        if (number > maxFibonache | number < 1) {
+    private Integer getIndexAndCheck(long number) {
+        if (number > maxFibonacci | number < 1) {
             throw new IllegalArgumentException("out of range: " + number);
         }
         Integer index = table.inverse().get(number);
         if (index == null) {
-            throw new IllegalArgumentException("is not a fibonachi number: " + number);
+            throw new IllegalArgumentException("is not a fibonacci number: " + number);
         }
         return index;
     }

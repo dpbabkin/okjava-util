@@ -1,7 +1,6 @@
 package okjava.util.condition;
 
 import com.google.common.collect.Lists;
-
 import okjava.util.string.ToStringBuffer;
 import org.junit.After;
 import org.junit.Before;

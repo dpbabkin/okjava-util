@@ -17,11 +17,13 @@ final class HandlerImpl implements Handler {
 
     private final ThrowableHandler<Throwable> throwableHandler;
 
-    static Handler create(RuntimeExceptionHandler<RuntimeException> runtimeExceptionHandler, ExceptionHandler<Exception> exceptionHandler, ErrorHandler<Error> errorHandler, ThrowableHandler<Throwable> throwableHandler) {
+    static Handler create(RuntimeExceptionHandler<RuntimeException> runtimeExceptionHandler, ExceptionHandler<Exception> exceptionHandler,
+                          ErrorHandler<Error> errorHandler, ThrowableHandler<Throwable> throwableHandler) {
         return new HandlerImpl(runtimeExceptionHandler, exceptionHandler, errorHandler, throwableHandler);
     }
 
-    private HandlerImpl(RuntimeExceptionHandler<RuntimeException> runtimeExceptionHandler, ExceptionHandler<Exception> exceptionHandler, ErrorHandler<Error> errorHandler, ThrowableHandler<Throwable> throwableHandler) {
+    private HandlerImpl(RuntimeExceptionHandler<RuntimeException> runtimeExceptionHandler, ExceptionHandler<Exception> exceptionHandler,
+                        ErrorHandler<Error> errorHandler, ThrowableHandler<Throwable> throwableHandler) {
         this.runtimeExceptionHandler = notNull(runtimeExceptionHandler);
         this.exceptionHandler = notNull(exceptionHandler);
         this.errorHandler = notNull(errorHandler);

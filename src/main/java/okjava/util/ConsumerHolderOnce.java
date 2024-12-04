@@ -1,7 +1,6 @@
 package okjava.util;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class ConsumerHolderOnce<T> implements Consumer<T> { //}, Supplier<Consumer<T>> {
 
@@ -12,7 +11,7 @@ public class ConsumerHolderOnce<T> implements Consumer<T> { //}, Supplier<Consum
         holderOnce.get().accept(t);
     }
 
-//    @Override
+    //    @Override
     public Consumer<T> get() {
         return holderOnce.get();
     }

@@ -84,11 +84,12 @@ public enum ConsumerUtils {
     }
 
     @SuppressWarnings("unchecked")
-    public static <V1,V2, E extends Exception> BiConsumer<V1,V2> divertExceptionFromEConsumer(EBiConsumer<V1,V2, E> eConsumer, ExceptionHandler<E> exceptionHandler) {
+    public static <V1, V2, E extends Exception> BiConsumer<V1, V2> divertExceptionFromEConsumer(EBiConsumer<V1, V2, E> eConsumer,
+                                                                                                ExceptionHandler<E> exceptionHandler) {
 
-        BiConsumer<V1,V2> result = (value1,value2) -> {
+        BiConsumer<V1, V2> result = (value1, value2) -> {
             try {
-                eConsumer.accept(value1,value2);
+                eConsumer.accept(value1, value2);
             } catch (RuntimeException e) {
                 throw e;
             } catch (Exception e) {

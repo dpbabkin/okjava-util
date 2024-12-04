@@ -96,7 +96,8 @@ public enum EIfElse {
     }
 
 
-    public static <T, E extends Exception> void ifNotNullElse(T object, EConsumer<T, E> ifConsumer, ERunnable<E> elseRunnable, Consumer<Exception> exceptionHandler) {
+    public static <T, E extends Exception> void ifNotNullElse(T object, EConsumer<T, E> ifConsumer, ERunnable<E> elseRunnable,
+                                                              Consumer<Exception> exceptionHandler) {
         ifElse(object, Objects::nonNull, ifConsumer, o -> elseRunnable.run(), exceptionHandler);
     }
 }

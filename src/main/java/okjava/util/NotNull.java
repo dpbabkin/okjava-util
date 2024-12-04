@@ -62,11 +62,11 @@ public enum NotNull {
         return object;
     }
 
-    public static <T> void checkEquals(T object1,T object2) {
+    public static <T> void checkEquals(T object1, T object2) {
         if (!object1.equals(object2)) {
             throw ToStringBuffer.string("checkEquals")
-                    .add("object1",object1)
-                    .add("object2",object2)
+                    .add("object1", object1)
+                    .add("object2", object2)
                     .toException(IllegalStateException::new);
         }
     }

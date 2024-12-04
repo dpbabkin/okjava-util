@@ -4,16 +4,18 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSortedSet;
+import com.google.common.collect.Ordering;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
 
+import static com.google.common.collect.ImmutableList.toImmutableList;
+import static com.google.common.collect.ImmutableMap.toImmutableMap;
+import static com.google.common.collect.ImmutableSet.toImmutableSet;
+
+import static com.google.common.collect.ImmutableSortedSet.toImmutableSortedSet;
 import static java.util.Collections.emptyList;
-import static okjava.util.GuavaCollectors.toImmutableList;
-import static okjava.util.GuavaCollectors.toImmutableMap;
-import static okjava.util.GuavaCollectors.toImmutableSet;
-import static okjava.util.GuavaCollectors.toImmutableSortedSet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -24,24 +26,32 @@ import static org.junit.Assert.assertTrue;
  */
 public class GuavaCollectorsTest {
 
+
+
+    static {
+        //String name = "Joan";
+        String info = "test ";
+        System.out.println(info);
+
+    }
     @Test
     public void testToImmutableSortedSet_Sort() {
         List<String> values = Arrays.asList("charlie", "bravo", "delta", "india", "echo", "alpha");
-        ImmutableSet<String> res = values.stream().collect(toImmutableSortedSet());
+        ImmutableSet<String> res = values.stream().collect(toImmutableSortedSet(Ordering.natural()));
         assertEquals("[alpha, bravo, charlie, delta, echo, india]", res.toString());
     }
 
     @Test
     public void testToImmutableSortedSet_Parallel() {
         List<String> values = Arrays.asList("charlie", "bravo", "delta", "india", "echo", "alpha");
-        ImmutableSet<String> res = values.parallelStream().collect(toImmutableSortedSet());
+        ImmutableSet<String> res = values.parallelStream().collect(toImmutableSortedSet(Ordering.natural()));
         assertEquals("[alpha, bravo, charlie, delta, echo, india]", res.toString());
     }
 
     @Test
     public void testToImmutableSortedSet_Empty() {
         List<String> values = emptyList();
-        ImmutableSortedSet<String> res = values.stream().collect(toImmutableSortedSet());
+        ImmutableSortedSet<String> res = values.stream().collect(toImmutableSortedSet(Ordering.natural()));
         assertTrue(res.isEmpty());
     }
 
@@ -82,8 +92,7 @@ public class GuavaCollectorsTest {
 
     @Test
     public void testToImmutableMap_Sort() {
-        List<Data> values = Arrays.asList(new Data(22, "a"), new Data(11, "bb"), new Data(231, "cc"),
-            new Data(1231, "cc"));
+        List<Data> values = Arrays.asList(new Data(22, "a"), new Data(11, "bb"), new Data(231, "cc"), new Data(1231, "cc"));
         ImmutableMap<Integer, String> res = values.stream().collect(toImmutableMap(d -> d.i, d -> d.s));
         assertEquals("{22=a, 11=bb, 231=cc, 1231=cc}", res.toString());
     }

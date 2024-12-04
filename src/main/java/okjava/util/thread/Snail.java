@@ -22,6 +22,7 @@ public enum Snail {
     private static final String snail0 = generateSnail0();
     private static final String snail1 = generateSnail1();
     private static final String snail2 = generateSnail2();
+
     Snail(@SuppressWarnings("unused") Never never) {
         neverNeverCalled();
     }

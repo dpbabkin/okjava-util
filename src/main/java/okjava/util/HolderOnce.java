@@ -3,7 +3,6 @@ package okjava.util;
 import okjava.util.string.ToStringBuffer;
 
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static okjava.util.NotNull.notNull;
@@ -41,8 +40,8 @@ public final class HolderOnce<T> implements Supplier<T> {
         }
         final T t = this.t.get();
         if (t == null) {
-            ToStringBuffer.string("Invalid State. value had not been set.")
-                    .throwException(IllegalStateException::new);
+            throw ToStringBuffer.string("Value had not been set.")
+                    .toIllegalStateException();
         }
         this.tLocal = t;
         return t;
@@ -83,10 +82,10 @@ public final class HolderOnce<T> implements Supplier<T> {
 
     public void setValue(T t) {
         if (!this.t.compareAndSet(null, t)) {
-            ToStringBuffer.string("Invalid State. Value had already been initialized.")
+            throw ToStringBuffer.string("Invalid State. Value had already been initialized.")
                     .add("existingValue", this.t.get())
                     .add("newValue", t)
-                    .throwException(IllegalStateException::new);
+                    .toIllegalStateException();
         }
         this.tLocal = t;
     }

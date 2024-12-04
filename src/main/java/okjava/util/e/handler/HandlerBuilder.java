@@ -22,11 +22,11 @@ public class HandlerBuilder {
     };
 
     private ThrowableHandler<Throwable> throwableHandler = e -> {
-        if(e instanceof RuntimeException){
-            throw (RuntimeException)e;
+        if (e instanceof RuntimeException) {
+            throw (RuntimeException) e;
         }
-        if(e instanceof Error){
-            throw (Error)e;
+        if (e instanceof Error) {
+            throw (Error) e;
         }
         throw new RuntimeUnhandledExceptionWrapper(ThrowableHandler.class, e);
     };

@@ -43,7 +43,7 @@ abstract class ReferenceHolder<T> implements Supplier<T> {
     private Reference<T> createReference(T value) {
         Reference<T> reference = getReferenceFactory().apply(value);
         ReferenceHolderFinalizer.<T>instance().registerReference(reference,
-            wrapToString(this::clean, () -> ReferenceHolder.this.getClass().getSimpleName() + ":" + valueFactory.toString()));
+                wrapToString(this::clean, () -> ReferenceHolder.this.getClass().getSimpleName() + ":" + valueFactory.toString()));
         return reference;
     }
 

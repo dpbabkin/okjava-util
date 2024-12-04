@@ -10,7 +10,7 @@ import static okjava.util.check.Once.calledOnce;
  * 14:40.
  */
 @Singleton
-public  final class EmptyRunnable implements Runnable {
+public final class EmptyRunnable implements Runnable {
 
     private static EmptyRunnable INSTANCE = new EmptyRunnable();
 

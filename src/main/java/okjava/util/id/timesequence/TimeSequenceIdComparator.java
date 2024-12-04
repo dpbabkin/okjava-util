@@ -17,7 +17,7 @@ enum TimeSequenceIdComparator {
     ;
 
     private static final Comparator<TimeSequenceId> TIME_SEQUENCE_ID_COMPARATOR
-        = Comparator.comparingLong(TimeSequenceId::getTime).thenComparing(TimeSequenceId::getSequence);
+            = Comparator.comparingLong(TimeSequenceId::getTime).thenComparing(TimeSequenceId::getSequence);
 
     TimeSequenceIdComparator(@SuppressWarnings("unused") Never never) {
         neverNeverCalled();
